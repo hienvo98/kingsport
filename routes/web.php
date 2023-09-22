@@ -30,8 +30,6 @@ Route::get('/register', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    
-    //Route::resource('admin', AdminController::class);
     Route::post('admin/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/category', [CategoryController::class, 'index'])->name('list-category');
     Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('create-category');
@@ -40,4 +38,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/category/update/{categoryId}', [CategoryController::class, 'update'])->name('update-category');
     Route::post('/admin/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('create-sub-category');
     Route::get('/admin/product', [ProductController::class, 'index'])->name('list-product');
+    Route::resource('admin', AdminController::class);
 });
