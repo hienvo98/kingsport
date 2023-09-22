@@ -23,7 +23,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/register', function () {
+        return view('auth.404');  
+});
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin', AdminController::class);
@@ -34,6 +36,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/category/edit/{categoryId}', [CategoryController::class, 'edit']);
     Route::post('/admin/category/update/{categoryId}', [CategoryController::class, 'update'])->name('update-category');
     Route::post('/admin/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('create-sub-category');
-    
     Route::get('/admin/product', [ProductController::class, 'index'])->name('list-product');
 });
