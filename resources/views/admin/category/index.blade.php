@@ -17,9 +17,16 @@
     <div class="row">   
             <div class="col-xl-12">
                 <div class="card custom-card">
-                    <div class="card-header">
+                    <div class="card-header justify-content-between">
                         <div class="card-title">
                             Danh sách
+                        </div>
+                        <div class="header-element header-search">
+                            <!-- Start::header-link -->
+                            <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <i class="bx bx-search-alt-2 header-link-icon"></i>
+                            </a>
+                            <!-- End::header-link -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -64,7 +71,7 @@
                                             <span class="badge bg-light text-default">{{$cate->ordinal_number}}</span>
                                         </td>
                                         <td style="text-align: center;">
-                                        <span class="badge {{ $cate->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                        <span id="statusCategory" class="badge {{ $cate->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                             {{ $cate->status == 1 ? 'Đang Mở' : 'Đã Tắt' }}
                                         </span>
                                         </td>
@@ -74,7 +81,7 @@
                                         <td>
                                             <div class="hstack gap-2 fs-15">
                                                 <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-edit-category" data-category-id="{{ $cate->id }}"><i class="ri-edit-line"></i></a>
-                                                <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light product-btn"><i class="ri-delete-bin-line"></i></a>
+                                                <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light product-btn" id="deleteModalCategoryOpen"><i class="ri-delete-bin-line" data-toggle="modal" data-target="#exampleModalCenter" ></i></a>
                                                 <button id="subcategory" class="btn btn-icon btn-secondary-light ms-2 subcategory" data-category-id="{{ $cate->id }}" data-category-name="{{ $cate->name }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Thêm danh mục con"><i class="ri-add-line"></i></button>
                                             </div>
                                         </td>
@@ -129,4 +136,5 @@
                 </div>
             </div>
         </div>
+        @include('admin.components.delete')
 @endsection
