@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\AdminController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryControlelr;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +28,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('admin', AdminController::class);
+    
+    //Route::resource('admin', AdminController::class);
     Route::post('admin/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/category', [CategoryController::class, 'index'])->name('list-category');
     Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('create-category');
