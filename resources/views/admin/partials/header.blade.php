@@ -48,7 +48,7 @@
             <!-- End::header-element -->
 
             <!-- Start::header-element -->
-            <div class="header-element country-selector">
+            {{-- <div class="header-element country-selector">
                 <!-- Start::header-link|dropdown-toggle -->
                 <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
                     <img src="{{asset('assets/images/flags/us_flag.jpg')}}" alt="img" class="rounded-circle">
@@ -104,7 +104,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
             <!-- End::header-element -->
 
             <!-- Start::header-element -->
@@ -129,13 +129,13 @@
             <!-- Start::header-element -->
             <div class="header-element cart-dropdown">
                 <!-- Start::header-link|dropdown-toggle -->
-                <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+                {{-- <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
                     <i class="bx bx-cart header-link-icon"></i>
                     <span class="badge bg-primary rounded-pill header-icon-badge" id="cart-icon-badge">5</span>
-                </a>
+                </a> --}}
                 <!-- End::header-link|dropdown-toggle -->
                 <!-- Start::main-header-dropdown -->
-                <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none">
+                {{-- <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none">
                     <div class="p-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <p class="mb-0 fs-17 fw-semibold">Cart Items</p>
@@ -269,7 +269,7 @@
                             <a href="products.html" class="btn btn-primary btn-wave btn-sm m-1" data-abc="true">continue shopping <i class="bi bi-arrow-right ms-1"></i></a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- End::main-header-dropdown -->
             </div>
             <!-- End::header-element -->
@@ -277,10 +277,10 @@
             <!-- Start::header-element -->
             <div class="header-element notifications-dropdown">
                 <!-- Start::header-link|dropdown-toggle -->
-                <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
+                {{-- <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
                     <i class="bx bx-bell header-link-icon"></i>
                     <span class="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">5</span>
-                </a>
+                </a> --}}
                 <!-- End::header-link|dropdown-toggle -->
                 <!-- Start::main-header-dropdown -->
                 <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none">
@@ -392,7 +392,7 @@
             <!-- End::header-element -->
 
             <!-- Start::header-element -->
-            <div class="header-element header-shortcuts-dropdown">
+            {{-- <div class="header-element header-shortcuts-dropdown">
                 <!-- Start::header-link|dropdown-toggle -->
                 <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="notificationDropdown" aria-expanded="false">
                     <i class="bx bx-grid-alt header-link-icon"></i>
@@ -508,7 +508,7 @@
                 </div>
                 <!-- End::main-header-dropdown -->
             </div>
-            <!-- End::header-element -->
+            <!-- End::header-element --> --}}
 
             <!-- Start::header-element -->
             <div class="header-element header-fullscreen">
@@ -530,7 +530,7 @@
                             <img src="{{asset('assets/images/faces/9.jpg')}}" alt="img" width="32" height="32" class="rounded-circle">
                         </div>
                         <div class="d-sm-block d-none">
-                            <p class="fw-semibold mb-0 lh-1">Json Taylor</p>
+                            <p class="fw-semibold mb-0 lh-1">{{ Auth::user() -> name }}</p>
                             <span class="op-7 fw-normal d-block fs-11">Web Designer</span>
                         </div>
                     </div>

@@ -30,8 +30,6 @@ Route::get('/register', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    
-    
     Route::post('admin/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/category', [CategoryController::class, 'index'])->name('list-category');
     Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('create-category');
