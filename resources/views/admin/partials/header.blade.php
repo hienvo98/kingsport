@@ -38,13 +38,13 @@
         <div class="header-content-right">
 
             <!-- Start::header-element -->
-            <div class="header-element header-search">
+            {{-- <div class="header-element header-search">
                 <!-- Start::header-link -->
                 <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <i class="bx bx-search-alt-2 header-link-icon"></i>
                 </a>
                 <!-- End::header-link -->
-            </div>
+            </div> --}}
             <!-- End::header-element -->
 
             <!-- Start::header-element -->

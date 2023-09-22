@@ -101,8 +101,16 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($categoryId)
     {
-        //
+        $category = Category::find($categoryId);
+        if(!$category){
+            return response()->json([
+                'message' => 'danh mục không tồn tại'
+            ],404);
+        }
+        $category->status = 0;
+        $category->save();
+        return response()->json(['message'=>'đã xoá sản phẩm']);
     }
 }

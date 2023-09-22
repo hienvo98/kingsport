@@ -5,7 +5,32 @@ $(document).ready(function() {
             $("#createModal").modal("show");
         });
     });
-    
+
+    $("#deleteModalCategoryOpen").click(function() {
+        $("#deleteModalCategory").modal("show");
+    });
+
+    $('button#deleteCategory').click(function(){
+        var categoryId = $(this).data('category-id'); 
+        $.ajax({
+            url: '/admin/category/delete/' + categoryId,
+            type: 'GET',
+            success: function(data) {
+                $('span#statusCategory').text('Đã Tắt');
+                $('span#statusCategory').removeClass('bg-success');
+                $('span#statusCategory').addClass('bg-danger');
+                $('#successAlertContainer').removeClass('d-none');
+
+                setTimeout(function() {
+                    $('#successAlertContainer').addClass('d-none');
+                    location.reload();
+                }, 2000);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+            }
+        });
+    });
+
     $('.btn-edit-category').click(function () {
         var categoryId = $(this).data('category-id');       
         $.ajax({
@@ -22,6 +47,7 @@ $(document).ready(function() {
                 $('#category_id').val(data.data.id);
                 $('#editModal').modal('show');
             },
+
             error: function(xhr, textStatus, errorThrown) {
             }
         });
@@ -46,6 +72,7 @@ $(document).ready(function() {
                     $('#categories_ordinal_number').val(data.data.ordinal_number);
                 
                     $('#editModal').modal('hide');
+
                     $('#successAlertContainer').removeClass('d-none');
 
                     setTimeout(function() {
