@@ -36,7 +36,7 @@
                             {{-- <p class="">This alert is created to just show the related information.</p> --}}
                             <div class="">
                                 <button class="btn btn-sm btn-outline-danger m-1" data-bs-dismiss="modal">Huỷ</button>
-                                <button class="btn btn-sm btn-primary m-1" data-bs-dismiss="modal" id="deleteCategory" data-category-id="{{ $cate->id }}" >Đồng ý</button>
+                                <button class="btn btn-sm btn-primary m-1" data-bs-dismiss="modal" id="deleteCategory"  >Đồng ý</button>
                             </div>
                         </div>
                     </div>
