@@ -1,37 +1,12 @@
 
 $(document).ready(function () {
-    
-    $("#openCreateModal").click(function () {
-        $("#createModal").modal("show");
-    });
 
-    $(".deleteModalCategoryOpen").click(function () {
+    let deleteModalCategory = function () {
         var categoryId = $(this).data('category-id');
-        $('button#deleteCategory').attr('data-id',categoryId);
+        $('button#deleteCategory').attr('data-id', categoryId);
         $("#deleteModalCategory").modal("show");
-    });
-
-    $('button#deleteCategory').click(function () {
-        var categoryId = $(this).attr('data-id');
-        $.ajax({
-            url: '/admin/category/delete/' + categoryId,
-            type: 'GET',
-            success: function (data) {
-                $('span#statusCategory-'+categoryId).text('Đã Tắt');
-                $('span#statusCategory-'+categoryId).removeClass('bg-success');
-                $('span#statusCategory-'+categoryId).addClass('bg-danger');
-                $('#successAlertContainer').removeClass('d-none');
-                setTimeout(function () {
-                    $('#successAlertContainer').addClass('d-none');
-                    // location.reload();
-                }, 2000);
-            },
-            error: function (xhr, textStatus, errorThrown) {
-            }
-        });
-    });
-
-    $('.btn-edit-category').click(function () {
+    }
+    let editModalCategory = function () {
         var categoryId = $(this).data('category-id');
         $.ajax({
             url: '/admin/category/edit/' + categoryId,
@@ -51,7 +26,64 @@ $(document).ready(function () {
             error: function (xhr, textStatus, errorThrown) {
             }
         });
+    }
+    let addSubmodalCategory = function () {
+        var categoryName = $(this).data('category-name');
+        var categoryId = $(this).data('category-id');
+        $('#createSubCateModal').modal('show');
+        $('#SubCategory_name').val(categoryName);
+    }
+
+    $("#openCreateModal").click(function () {
+        $("#createModal").modal("show");
     });
+
+    $("input[type='search']").keyup(function (e) {
+        let type = $(this).data('type-name');
+        let keyword = this.value;
+        let data = {
+            type: type,
+            keyword: keyword
+        };
+        $.ajax({
+            type: 'get',
+            url: '/admin/category/search',
+            data: data,
+            success: function (data) {
+                $('tbody#type').html(data.html);
+                $("a.deleteModalCategoryOpen").click(deleteModalCategory);
+                $('.btn-edit-category').click(editModalCategory);
+                $('.subcategory').click(addSubmodalCategory);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    });
+
+    $("a.deleteModalCategoryOpen").click(deleteModalCategory);
+
+    $('button#deleteCategory').click(function () {
+        var categoryId = $(this).attr('data-id');
+        $.ajax({
+            url: '/admin/category/delete/' + categoryId,
+            type: 'GET',
+            success: function (data) {
+                $('span#statusCategory-' + categoryId).text('Đã Tắt');
+                $('span#statusCategory-' + categoryId).removeClass('bg-success');
+                $('span#statusCategory-' + categoryId).addClass('bg-danger');
+                $('#successAlertContainer').removeClass('d-none');
+                setTimeout(function () {
+                    $('#successAlertContainer').addClass('d-none');
+                    // location.reload();
+                }, 2000);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+            }
+        });
+    });
+
+    $('.btn-edit-category').click(editModalCategory);
 
     //save data
 
@@ -110,12 +142,7 @@ $(document).ready(function () {
 
     //subcategory
 
-    $('.subcategory').click(function () {
-        var categoryName = $(this).data('category-name');
-        var categoryId = $(this).data('category-id');
-        $('#createSubCateModal').modal('show');
-        $('#SubCategory_name').val(categoryName);
-    });
+    $('.subcategory').click(addSubmodalCategory);
 
 
     $('#btnAddSubCate').click(function (e) {
@@ -139,7 +166,7 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
                     location.reload();
-                }, 4000);
+                }, 2000);
             },
             error: function (error) {
                 console.log(error);
@@ -154,5 +181,4 @@ $(document).ready(function () {
             toast.show();
         }
     }
-
 });
