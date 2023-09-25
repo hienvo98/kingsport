@@ -147,6 +147,7 @@ class CategoryController extends Controller
             } else {
                 $html .= 'Đã Tắt';
             }
+            $status = $cat->status==0?'disable-link':'';
             $html .= "</span>
             </td>
             <td>
@@ -159,8 +160,8 @@ class CategoryController extends Controller
                         data-category-id='$cat->id'><i class='ri-edit-line'></i></a>
 
                     <a
-                        class='btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen'
-                        data-category-id='$cat->id'><i class='ri-delete-bin-line'
+                        class='btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen $status'
+                        data-category-id='$cat->id' id='cat-$cat->id' ><i class='ri-delete-bin-line'
                             data-toggle='modal' data-target='#exampleModalCenter'></i></a>
 
                     <button id='subcategory'
@@ -174,7 +175,8 @@ class CategoryController extends Controller
         </tr>";
         }
         return response()->json([
-            'html' => $html
+            'code'=>'200',
+            'data' => $html
         ]);
     }
 }

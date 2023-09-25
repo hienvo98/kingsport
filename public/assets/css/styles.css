@@ -21449,4 +21449,7 @@ a:hover {
   transform: none !important;
 }
 
+.disable-link {
+  pointer-events: none;
+}
 /* End::Transform */

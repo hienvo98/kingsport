@@ -88,8 +88,8 @@
                                                     data-category-id="{{ $cate->id }}"><i class="ri-edit-line"></i></a>
 
                                                 <a href="javascript:void(0);"
-                                                    class="btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen"
-                                                    data-category-id="{{ $cate->id }}"><i class="ri-delete-bin-line"
+                                                    class="btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen {{ $cate->status==0?'disable-link':'' }}"
+                                                    data-category-id="{{ $cate->id }}" id="cat-{{ $cate->id }}" ><i class="ri-delete-bin-line"
                                                         data-toggle="modal" data-target="#exampleModalCenter"></i></a>
 
                                                 <button id="subcategory"
