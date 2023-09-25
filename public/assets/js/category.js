@@ -50,7 +50,7 @@ $(document).ready(function () {
             url: '/admin/category/search',
             data: data,
             success: function (data) {
-                $('tbody#type').html(data.html);
+                $('tbody#type').html(data.data);
                 $("a.deleteModalCategoryOpen").click(deleteModalCategory);
                 $('.btn-edit-category').click(editModalCategory);
                 $('.subcategory').click(addSubmodalCategory);
@@ -72,6 +72,7 @@ $(document).ready(function () {
                 $('span#statusCategory-' + categoryId).text('Đã Tắt');
                 $('span#statusCategory-' + categoryId).removeClass('bg-success');
                 $('span#statusCategory-' + categoryId).addClass('bg-danger');
+                $("a#cat-"+categoryId).addClass('disable-link');
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
