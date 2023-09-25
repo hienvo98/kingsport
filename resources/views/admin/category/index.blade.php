@@ -21,12 +21,12 @@
                     <div class="card-title">
                         Danh sách
                     </div>
-                    <div class="header-element header-search">
+                    <div class="header-element header-search" style="width:40%">
                         <!-- Start::header-link -->
                         {{-- <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                                 <i class="bx bx-search-alt-2 header-link-icon"></i>
                             </a> --}}
-                        <input type="search" data-type-name="Category" name="category" class="form-control border-0 px-2" placeholder="Tìm Kiếm" aria-label="Username">
+                        <input type="search" data-type-name="Category" style="background-color: #F0F1F7" name="category" class="form-control border-0 px-2 " placeholder="Tìm Kiếm" aria-label="Username">
                         
                         <!-- End::header-link -->
                     </div>
