@@ -52,4 +52,5 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
     Route::resource('/', AdminController::class);
 });
 
-
+Route::get('/test',[HomeController::class,'test']);
+Route::post('/test2',[HomeController::class,'store']);
