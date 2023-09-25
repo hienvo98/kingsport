@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,23 +31,25 @@ Route::get('/register', function () {
         return view('auth.404');  
 });
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::post('admin/logout',[AdminController::class,'logout'])->name('admin.logout');
-    Route::get('/admin/category', [CategoryController::class, 'index'])->name('list-category');
-    Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('create-category');
-    Route::post('/admin/category/store', [CategoryController::class, 'store'])->name('store-category');
-    Route::get('/admin/category/edit/{categoryId}', [CategoryController::class, 'edit']);
-    Route::post('/admin/category/update/{categoryId}', [CategoryController::class, 'update'])->name('update-category');
-    Route::post('/admin/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('create-sub-category');
-    Route::get('/admin/category/delete/{categoryId}',[CategoryController::class,'destroy']);
-    Route::get('/admin/category/search',[CategoryController::class,'search']);
-    Route::get('/admin/product', [ProductController::class, 'index'])->name('list-product');
-    Route::resource('admin', AdminController::class);
-
+Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function () {
+    Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    
+    Route::prefix('category')->group(function () {       
+        Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+        Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+        Route::get('/edit/{categoryId}', [CategoryController::class, 'edit'])->name('category.edit');
+        Route::post('/update/{categoryId}', [CategoryController::class, 'update'])->name('category.update');
+        Route::post('/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('subCategory.create');
+        Route::get('/delete/{categoryId}',[CategoryController::class,'destroy'])->name('category.destroy');
+        Route::get('/search',[CategoryController::class,'search']);
+    });
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('admin.product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('admin.product.create');
         
     });
+    Route::resource('/', AdminController::class);
 });
+
 

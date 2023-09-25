@@ -98,7 +98,7 @@
                                 <i class="fe fe-chevron-right side-menu__angle"></i></a>
                             <ul class="slide-menu child2">
                                 <li class="slide">
-                                    <a href="{{route('list-category')}}" class="side-menu__item">Danh Sách</a>
+                                    <a href="{{route('admin.category.index')}}" class="side-menu__item">Danh Sách</a>
                                 </li>
                             </ul>
                         </li>
@@ -107,7 +107,7 @@
                                 <i class="fe fe-chevron-right side-menu__angle"></i></a>
                             <ul class="slide-menu child2">
                                 <li class="slide">
-                                    <a href="{{route('list-product')}}" class="side-menu__item">Danh Sách</a>
+                                    <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
                                 </li>
                             </ul>
                         </li>
