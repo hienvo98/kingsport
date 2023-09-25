@@ -2,7 +2,7 @@
   "use strict";
 
   /* page loader */
-  
+
   function hideLoader() {
     const loader = document.getElementById("loader");
     loader.classList.add("d-none")
@@ -443,12 +443,10 @@ headerbtn.forEach((button) => {
     e.preventDefault();
     e.stopPropagation();
     button.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
-    document.getElementById("cart-data").innerText = `${
-      document.querySelectorAll(".dropdown-item-close").length
-    } Items`;
-    document.getElementById("cart-icon-badge").innerText = `${
-      document.querySelectorAll(".dropdown-item-close").length
-    }`;
+    document.getElementById("cart-data").innerText = `${document.querySelectorAll(".dropdown-item-close").length
+      } Items`;
+    document.getElementById("cart-icon-badge").innerText = `${document.querySelectorAll(".dropdown-item-close").length
+      }`;
     console.log(
       document.getElementById("header-cart-items-scroll").children.length
     );
@@ -469,12 +467,10 @@ headerbtn1.forEach((button) => {
     e.preventDefault();
     e.stopPropagation();
     button.parentNode.parentNode.parentNode.parentNode.remove();
-    document.getElementById("notifiation-data").innerText = `${
-      document.querySelectorAll(".dropdown-item-close1").length
-    } Unread`;
-    document.getElementById("notification-icon-badge").innerText = `${
-      document.querySelectorAll(".dropdown-item-close1").length
-    }`;
+    document.getElementById("notifiation-data").innerText = `${document.querySelectorAll(".dropdown-item-close1").length
+      } Unread`;
+    document.getElementById("notification-icon-badge").innerText = `${document.querySelectorAll(".dropdown-item-close1").length
+      }`;
     if (document.querySelectorAll(".dropdown-item-close1").length == 0) {
       let elementHide1 = document.querySelector(".empty-header-item1");
       let elementShow1 = document.querySelector(".empty-item1");

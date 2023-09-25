@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\SubCategory;
 use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
@@ -19,7 +20,7 @@ class CategoryController extends Controller
     public function index()
     {
         $cate = Category::with('subCategory')->orderBy('ordinal_number', 'desc')->paginate(5);
-        return view('admin.category.index')->with('category',$cate);
+        return view('admin.category.index')->with('category', $cate);
     }
 
     /**
@@ -27,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-       return view('admin.category.create');
+        return view('admin.category.create');
     }
 
     /**
@@ -45,7 +46,7 @@ class CategoryController extends Controller
         $cate->ordinal_number = $ordinal_number;
         $cate->save();
         return response()->json([
-            'message' => 'Thêm thành công', 
+            'message' => 'Thêm thành công',
             'data' => $cate
         ]);
     }
@@ -92,7 +93,7 @@ class CategoryController extends Controller
 
         $category->save();
         return response()->json([
-            'message' => 'Cập nhật thành công', 
+            'message' => 'Cập nhật thành công',
             'data' => $category
         ]);
     }
@@ -104,13 +105,76 @@ class CategoryController extends Controller
     public function destroy($categoryId)
     {
         $category = Category::find($categoryId);
-        if(!$category){
+        if (!$category) {
             return response()->json([
                 'message' => 'danh mục không tồn tại'
-            ],404);
+            ], 404);
         }
         $category->status = 0;
         $category->save();
-        return response()->json(['message'=>'đã xoá sản phẩm']);
+        return response()->json(['message' => 'đã xoá sản phẩm']);
+    }
+
+    public function search(Request $request)
+    {
+        $type = $request->type;
+        $keyword = $request->keyword;
+        if ($type == 'Category') $data = Category::where('name', 'like', "%{$keyword}%")->orderby('id','desc')-> get();
+        $html = '';
+        foreach ($data as $cat) {
+            $html .= "<tr class='product-list'><td><div class='d-flex align-items-center'><div class='fw-semibold'>";
+            $html .= $cat->name;
+            $html .= "</div></div></td><td><ul class='list-unstyled'>";
+            if (isset($cat->subCategory) && count($cat->subCategory) > 0) {
+                foreach ($cat->subCategory as $child) {
+                    $html .= "<li>--$child->name</li>";
+                }
+            } else {
+                $html .= "<li>--Trống</li>";
+            }
+            $html .= "</ul></td><td>";
+            $html .= "<span class='badge bg-light text-default'> $cat->ordinal_number </span>";
+            $html .= "</td><td style='text-align: center;'>";
+            $html .= "<span id='statusCategory-$cat->id'";
+            if( $cat->status ==1 ){
+                $bg = 'bg-success';
+            }else{
+                $bg = 'bg-danger';
+            }
+            $html .= "class='badge $bg'>";
+            if ($cat->status == 1) {
+                $html .= 'Đang Mở';
+            } else {
+                $html .= 'Đã Tắt';
+            }
+            $html .= "</span>
+            </td>
+            <td>
+                để sau
+            </td>
+            <td>
+                <div class='hstack gap-2 fs-15'>
+                    <a
+                        class='btn btn-icon btn-sm btn-info-light btn-edit-category'
+                        data-category-id='$cat->id'><i class='ri-edit-line'></i></a>
+
+                    <a
+                        class='btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen'
+                        data-category-id='$cat->id'><i class='ri-delete-bin-line'
+                            data-toggle='modal' data-target='#exampleModalCenter'></i></a>
+
+                    <button id='subcategory'
+                        class='btn btn-icon btn-secondary-light ms-2 subcategory'
+                        data-category-id='$cat->id'
+                        data-category-name='$cat->name' data-bs-toggle='tooltip'
+                        data-bs-placement='top' data-bs-title='Thêm danh mục con'><i
+                            class='ri-add-line'></i></button>
+                </div>
+            </td>
+        </tr>";
+        }
+        return response()->json([
+            'html' => $html
+        ]);
     }
 }
