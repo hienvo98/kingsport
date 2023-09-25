@@ -1,6 +1,6 @@
 @extends('layouts.appAdmin')
 @section('content')
-    <form action="{{ url() }}" method="post">
+    <form action="{{ url('/test2') }}" method="post">
         @csrf
         <div class="input-group mb-3">
             <div class="input-group-prepend">
