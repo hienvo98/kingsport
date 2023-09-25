@@ -41,5 +41,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/category/search',[CategoryController::class,'search']);
     Route::get('/admin/product', [ProductController::class, 'index'])->name('list-product');
     Route::resource('admin', AdminController::class);
+
+    Route::prefix('product')->group(function () {
+        Route::get('/index', [ProductController::class, 'index'])->name('admin.product.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('admin.product.create');
+        
+    });
 });
 

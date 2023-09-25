@@ -111,7 +111,42 @@
                                 </li>
                             </ul>
                         </li>
-                        
+                        <li class="slide has-sub active">
+                            <a href="javascript:void(0);" class="side-menu__item active">Ecommerce
+                                <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                            <ul class="slide-menu child2 active" style="display: block;">
+                                <li class="slide active">
+                                    <a href="add-products.html" class="side-menu__item active">Add Products</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="cart.html" class="side-menu__item">Cart</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="checkout.html" class="side-menu__item">Checkout</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="edit-products.html" class="side-menu__item">Edit Products</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="order-details.html" class="side-menu__item">Order Details</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="orders.html" class="side-menu__item">Orders</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="products.html" class="side-menu__item">Products</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="product-details.html" class="side-menu__item">Product Details</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="products-list.html" class="side-menu__item">Products List</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="wishlist.html" class="side-menu__item">Wishlist</a>
+                                </li>
+                            </ul>
+                        </li>                     
                     </ul>
                 </li>
                 <!-- End::slide -->
