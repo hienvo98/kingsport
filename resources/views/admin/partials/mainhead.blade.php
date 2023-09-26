@@ -42,3 +42,22 @@
 
     <!-- Choices Css -->
     <link rel="stylesheet" href="{{asset('assets/libs/choices.js/public/assets/styles/choices.min.css')}}">
+
+    <link rel="stylesheet" href="{{asset('assets/libs/jsvectormap/css/jsvectormap.min.css')}}">
+
+    <link rel="stylesheet" href="{{asset('assets/libs/swiper/swiper-bundle.min.css')}}">
+    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
+    <script src="{{ asset('assets/js/alerts.js') }}"></script>
+    <!--add-product -->
+    <link rel="stylesheet" href="{{asset('assets/libs/quill/quill.snow.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/libs/quill/quill.bubble.css')}}">
+
+    <!-- Filepond CSS -->
+    <link rel="stylesheet" href="{{asset('assets/libs/filepond/filepond.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/libs/filepond-plugin-image-edit/filepond-plugin-image-edit.min.css')}}">
+
+    <!-- Date & Time Picker CSS -->
+    <link rel="stylesheet" href="{{asset('assets/libs/flatpickr/flatpickr.min.css')}}">
+    <!-- end add-products -->
+</head>

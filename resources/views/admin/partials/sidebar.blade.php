@@ -102,33 +102,12 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="slide has-sub">
-                            <a href="javascript:void(0);" class="side-menu__item">Sản Phẩm
-                                <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                            <ul class="slide-menu child2">
-                                <li class="slide">
-                                    <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="slide has-sub">
-                            <a href="javascript:void(0);" class="side-menu__item"> Roles
-                                <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                            <ul class="slide-menu child2">
-                                <li class="slide">
-                                    <a href="{{route('admin.role.create')}}" class="side-menu__item">Tạo Quyền</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="{{route('admin.role.index')}}" class="side-menu__item">Phân Quyền</a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="slide has-sub active">
-                            <a href="javascript:void(0);" class="side-menu__item active">Ecommerce
+                            <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
                                 <i class="fe fe-chevron-right side-menu__angle"></i></a>
                             <ul class="slide-menu child2 active" style="display: block;">
                                 <li class="slide active">
-                                    <a href="add-products.html" class="side-menu__item active">Add Products</a>
+                                    <a href="{{route('admin.product.create')}}" class="side-menu__item active">Thêm sản phẩm </a>
                                 </li>
                                 <li class="slide">
                                     <a href="cart.html" class="side-menu__item">Cart</a>
