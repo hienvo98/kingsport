@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -20,8 +21,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $cate = Category::with('subCategory')->get();
+        
+        return view('admin.product.create')->with('cate',$cate);
     }
+
+    // public function getSubCategory($id){
+    //     dd($request->all);
+    // }
 
     /**
      * Store a newly created resource in storage.

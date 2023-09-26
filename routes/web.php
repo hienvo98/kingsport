@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
         Route::post('/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('subCategory.create');
         Route::get('/delete/{categoryId}',[CategoryController::class,'destroy'])->name('category.destroy');
         Route::get('/search',[CategoryController::class,'search']);
+        Route::get('/get-subcategories/{categoryId}', [CategoryController::class, 'getSubCategory']);
     });
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');

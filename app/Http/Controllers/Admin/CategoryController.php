@@ -179,4 +179,14 @@ class CategoryController extends Controller
             'data' => $html
         ]);
     }
+
+    public  function getSubCategory($categoryId){
+        $id = (int)$categoryId;
+        $subCate = SubCategory::where('category_id', $id)->get()->toArray();
+        //dd($subCate);
+        // foreach ($subCate as $subCategory) {
+        //     dd($subCategory);
+        // }
+        return response()->json($subCate);
+    }
 }
