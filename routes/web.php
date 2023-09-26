@@ -54,14 +54,15 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
         // Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
     });
     Route::prefix('/role')->group(function(){
+        Route::get('/show',[RoleController::class,'show'])->name('role.show');
         Route::get('/index',[RoleController::class,'index'])->name('role.index');
         Route::get('/create',[RoleController::class,'create'])->name('role.create');
         Route::post('/store',[RoleController::class,'store'])->name('role.store');
-        Route::get('/edit',[RoleController::class,'edit'])->name('role.edit');
+        Route::get('/edit/{id}',[RoleController::class,'edit'])->name('role.edit');
         Route::post('/update',[RoleController::class,'update'])->name('role.update');
-        Route::get('/delete',[RoleController::class,'destroy'])->name('role.destroy');
+        Route::get('/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
     });
-
+    Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
     Route::resource('/', AdminController::class);
 });
 

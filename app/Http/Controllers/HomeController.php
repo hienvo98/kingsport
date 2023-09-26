@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,10 @@ class HomeController extends Controller
 
     public function test()
     {
+        // $role = Role::find(1)->permissions->pluck('name')->toArray();
+        // dd($role);
+        // return Auth::user() -> isSuperAdmin();
+        // return User::find(3)->isSuperAdmin();
         // $user = User::find(3);
         // return $user->roles()->attach([1]);
         // return view('admin.roles.index');

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
@@ -15,7 +17,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('admin.roles.index');
+        $roles = Role::where('name', '<>', 'Super Admin')->get();
+        $users = User::where('id', '<>', Auth::id())->get();
+        return view('admin.roles.index',compact('roles','users'));
     }
 
     /**
@@ -53,16 +57,18 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
+        $roles = Role::where('name','<>','Super Admin')->get();
+        return view('admin.roles.show',compact('roles'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        return $id;
     }
 
     /**

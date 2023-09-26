@@ -1,53 +1,56 @@
 @extends('layouts.appAdmin')
 @section('content')
-    <div class="container-fluid">
-
-        <!-- Page Header -->
-        <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-            <h1 class="page-title fw-semibold fs-18 mb-0">Phân Quyền</h1>
-            <div class="ms-md-1 ms-0">
-                <nav>
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Thêm Sản phẩm
-                </nav>
+    <div class="container">
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Tên Quyền</h5>
-                        </div>
-                        <div class="card-body">
-                            <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
-                            <select class="form-control">
-                                <option>Chọn tùy chọn</option>
-                                <option value="1">Tùy chọn 1</option>
-                                <option value="2">Tùy chọn 2</option>
-                                <option value="3">Tùy chọn 3</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Tên Admin</h5>
-                        </div>
-                        <div class="card-body">
-                            <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
-                            <select class="form-control">
-                                <option>Chọn tùy chọn</option>
-                                <option value="1">Tùy chọn 1</option>
-                                <option value="2">Tùy chọn 2</option>
-                                <option value="3">Tùy chọn 3</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
             </div>
-        </div>
+        @endif
+        <h4 class="text-info">Cấp Quyền Cho Admin</h4>
+        <form action="{{ url('/admin/authorizeUser') }}" method="post">
+            @csrf
+            <div class="col-xl-6 my-3">
+                <label for="product-gender-add" class="form-label">Admin</label>
+                @error('user')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                @enderror
+                <select class="form-control" data-trigger name="user" id="product-gender-add">
+                    <option value="">Chọn Admin Cần Cấp Quyền</option>
+                    @if (!empty($users))
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    @else
+                        <option value="">Không có admin nào</option>
+                    @endif
+                </select>
+            </div>
+            <div class="col-xl-6 my-3">
+                <label for="product-gender-add" class="form-label">Quyền</label>
+                @error('role')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                @enderror
+                <select class="form-control" data-trigger name="role" id="product-gender-add">
+                    <option value="">Chọn Quyền</option>
+                    @if (!empty($roles))
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        @endforeach
+                    @else
+                        <option value="All">Chưa có quyền nào được tạo</option>
+                    @endif
+                </select>
+            </div>
+            <button type="submit" class="btn btn-outline-info">Cấp Quyền</button>
+        </form>
     </div>
 @endsection
