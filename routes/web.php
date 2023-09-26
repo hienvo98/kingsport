@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
 use App\Http\Controllers\HomeController;
 
@@ -48,10 +49,24 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
-        
+        // Route::post('/store',[ProductController::class,'store'])->name('product.store');
+        // Route::get('/edit',[ProductController::class,'edit'])->name('product.edit');
+        // Route::post('/update',[ProductController::class,'update'])->name('product.update');
+        // Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
     });
+    Route::prefix('/role')->group(function(){
+        Route::get('/show',[RoleController::class,'show'])->name('role.show');
+        Route::get('/index',[RoleController::class,'index'])->name('role.index');
+        Route::get('/create',[RoleController::class,'create'])->name('role.create');
+        Route::post('/store',[RoleController::class,'store'])->name('role.store');
+        Route::get('/edit/{id}',[RoleController::class,'edit'])->name('role.edit');
+        Route::post('/update',[RoleController::class,'update'])->name('role.update');
+        Route::get('/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
+    });
+    Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
     Route::resource('/', AdminController::class);
 });
 
+
 Route::get('/test',[HomeController::class,'test']);
-Route::post('/test2',[HomeController::class,'store']);
+// Route::post('/test2',[HomeController::class,'test2']);
