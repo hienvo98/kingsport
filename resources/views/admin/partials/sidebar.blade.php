@@ -111,6 +111,18 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="slide has-sub">
+                            <a href="javascript:void(0);" class="side-menu__item"> Roles
+                                <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                            <ul class="slide-menu child2">
+                                <li class="slide">
+                                    <a href="{{route('admin.role.create')}}" class="side-menu__item">Tạo Quyền</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="{{route('admin.role.index')}}" class="side-menu__item">Phân Quyền</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="slide has-sub active">
                             <a href="javascript:void(0);" class="side-menu__item active">Ecommerce
                                 <i class="fe fe-chevron-right side-menu__angle"></i></a>
