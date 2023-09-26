@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -17,6 +19,26 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
+    public function authorizeUser(Request $request)
+    {
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        $request->validate(
+            [
+                'user' => 'required',
+                'role' => 'required'
+            ],
+            [
+                'user.required' => 'Vui lòng chọn admin cần cấp quyền',
+                'role.required' => 'Vui lòng chọn quyền cần cấp'
+            ]
+        );
+        $user = User::find($request->user);
+        if (in_array($request->role, $user->roles->pluck('id')->toArray())) return redirect()->back()->with('error', 'admin đã được cấp quyền này');
+        $user->roles()->attach([$request->role]);
+        return redirect()->back()->with('status', 'đã cấp quyền cho admin thành công');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -62,14 +84,12 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        return 123;
     }
 
     public function search()
     {
-        return 123;
     }
-    
+
     public function logout()
     {
         Session::flush();

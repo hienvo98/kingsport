@@ -170,6 +170,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-end">
+                        <button class="btn btn-primary-light m-1">Add Product<i
+                                class="bi bi-plus-lg ms-2"></i></button>
+                        <button class="btn btn-success-light m-1">Save Product<i
+                                class="bi bi-download ms-2"></i></button>
+                    </div>
                 </div>
                 <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-end">
                     <button class="btn btn-primary-light m-1">Add Product<i class="bi bi-plus-lg ms-2"></i></button>
