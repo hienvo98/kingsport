@@ -43,6 +43,13 @@
                                             <label for="product-subcategory-add" class="form-label">Danh mục thuộc tính</label>
                                             <select class="form-control" data-trigger name="product-subcategory-add" id="product-subcategory-create">
                                                 <option value="">Select</option>
+                                                @foreach($cate as $category)
+                                                    <optgroup label="{{$category->name}}">
+                                                        @foreach($category->subCategory as $subcategory)
+                                                            <option value="{{$subcategory->id}}">-- {{$subcategory->name}}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-xl-6">

@@ -160,7 +160,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'POST',
-            url: '/admin/sub-category/create',
+            url: '/admin/category/sub-category/create',
             data: requestData,
             success: function (response) {
                 $('#successAlertContainer').removeClass('d-none');
