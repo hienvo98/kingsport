@@ -9,21 +9,17 @@ $(document).ready(function() {
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    var selectBox = $("#product-subcategory-create");
-                    selectBox.empty(); // Xóa tất cả các option cũ
-    
-                    // Thêm một tùy chọn mặc định
-                    selectBox.append($('<option>', {
-                        value: '',
-                        text: 'Select'
-                    }));
-
-                    $.each(response, function(subIndex, subcategory) {
-                        selectBox.append($('<option>', {
-                            value: subcategory.id,
-                            text: subcategory.name
-                        }));
+                    // var selectBox = $("#product-subcategory-create");
+                    var subcategories = response;
+                    var $subcategorySelect = $("#product-subcategory-create");
+                    $subcategorySelect.empty();
+                    
+                    var optionsHTML = '<option value="">Select</option>';
+                    $.each(subcategories, function (key, value) {
+                        console.log(value.name);
+                        optionsHTML += '<option value="' + key + '">' + value.name + '</option>';
                     });
+                    $subcategorySelect[0].innerHTML = optionsHTML;
                 },
                 error: function() {
                     // Xử lý lỗi nếu cần
