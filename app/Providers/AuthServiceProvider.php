@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -25,5 +26,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('Super Admin', function (User $user) {
             return $user->isSuperAdmin();
         });
+        $permissions = Permission::all();
+        foreach($permissions as $per){
+            Gate::define($per->name, function (User $user) use ($per) {
+                return $user->checkPermission($per->name);
+            });
+        }
     }
 }

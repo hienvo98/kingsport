@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -17,6 +18,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
+
         $roles = Role::where('name', '<>', 'Super Admin')->get();
         $users = User::where('id', '<>', Auth::id())->get();
         return view('admin.roles.index',compact('roles','users'));
@@ -27,9 +32,13 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $permissions = Permission::all()->groupBy(function ($per) {
             return explode('.', $per->name)[1];
         });
+        // return $permissions;
         return view('admin.roles.create', compact('permissions'));
     }
 
@@ -38,6 +47,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $request->validate(
             [
                 'name' => 'required|unique:roles,name',
@@ -59,6 +71,9 @@ class RoleController extends Controller
      */
     public function show()
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $roles = Role::where('name','<>','Super Admin')->get();
         return view('admin.roles.show',compact('roles'));
     }
@@ -68,6 +83,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $role = Role::find($id);
         if(!$role) return view('auth.404');
         $permissions = Permission::all()->groupBy(function($per){
@@ -82,6 +100,9 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $role = Role::find($request->role);
         $role->update(['name'=>$request->name]);
         $role->permissions()->sync($request->permission);
@@ -93,6 +114,9 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        if (! Gate::allows('Super Admin')) {
+            abort(403);
+        }
         $role = Role::find($id)->delete();
         return response()->json([
             'code'=>200,

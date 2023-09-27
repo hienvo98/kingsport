@@ -49,7 +49,7 @@
                         </div>
                         <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-end">
                             <button style="margin-right:3%;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button id="btnAddSubCate" class="btn btn-primary">Thêm<i class="bi bi-plus-lg ms-2"></i></button>
+                            <button id="btnAddSubCate" class="btn btn-primary btnAddSubCate">Thêm<i class="bi bi-plus-lg ms-2"></i></button>
                         </div>
                     </div>
                     </form>                 

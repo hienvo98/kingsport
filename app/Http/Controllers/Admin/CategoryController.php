@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SubCategory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
@@ -19,6 +20,9 @@ class CategoryController extends Controller
     // }
     public function index()
     {
+        if (! Gate::allows('admin.category.index')) {
+            abort(403);
+        }
         $cate = Category::with('subCategory')->orderBy('ordinal_number', 'desc')->paginate(5);
         return view('admin.category.index')->with('category', $cate);
     }
@@ -28,6 +32,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('admin.category.store')) {
+            abort(403);
+        }
         return view('admin.category.create');
     }
 
@@ -36,6 +43,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('admin.category.store')) {
+            abort(403);
+        }
         $cate = new Category();
         $name = $request->input('category_name');
         $status = $request->input('status') ? 1 : 0;
@@ -64,6 +74,9 @@ class CategoryController extends Controller
      */
     public function edit($categoryId)
     {
+        if (! Gate::allows('admin.category.store')) {
+            abort(403);
+        }
         $category = Category::find($categoryId);
 
         // Kiểm tra xem danh mục có tồn tại không
@@ -81,6 +94,9 @@ class CategoryController extends Controller
     public function update(Request $request, $categoryId)
     {
         //dd($request->all());
+        if (! Gate::allows('admin.category.update')) {
+            abort(403);
+        }
         $category = Category::find($categoryId);
         if (!$category) {
             return response()->json(['message' => 'Danh mục không tồn tại'], 404);
@@ -104,6 +120,9 @@ class CategoryController extends Controller
      */
     public function destroy($categoryId)
     {
+        if (! Gate::allows('admin.category.destroy')) {
+            abort(403);
+        }
         $category = Category::find($categoryId);
         if (!$category) {
             return response()->json([

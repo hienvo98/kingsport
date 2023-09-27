@@ -34,33 +34,32 @@ class HomeController extends Controller
 
     public function test()
     {
-        // $role = Role::find(1)->permissions->pluck('name')->toArray();
-        // dd($role);
-        // return Auth::user() -> isSuperAdmin();
-        // return User::find(3)->isSuperAdmin();
-        // $user = User::find(3);
-        // return $user->roles()->attach([1]);
-        // return view('admin.roles.index');
+        
+        // //destroy permission demo
+        // $listPermissionId = Permission::pluck('id')->toArray();
+        // Permission::destroy($listPermissionId);
+
+        // //query Permissions
         // $routes = Route::getRoutes();
         // foreach ($routes as $route) {
         //     if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
         //         $listRouteName[] = $route->getname();
         //     }
         // }
-        // dd($listRouteName);
         // $listPermissions = Permission::pluck('name')->toArray();
-        // Permission::destroy($listPermissions);
-        // dd($listPermissions);
         // foreach($listRouteName as $route){
         //     if(!in_array($route,$listPermissions)) Permission::create(['name'=>$route]);
         // }
-        // return 'đã thêm các quyền thành công';
-        // dd($listRouteName);
-        // $groupedRoutes =  collect($listRouteName)->groupBy(function ($route) {
-        //     return explode('.', $route)[1];
-        // });
-        // dd($groupedRoutes);
+        
+        // create role Super Admin
+        // $roleSuperAdmin = Role::create(['name'=>'Super Admin']);
+        // $allPermissionId = Permission::pluck('id')->toArray();
+        
+        // $user = User::find();
+        
+        
     }
+
     public function test2(Request $request)
     {
         dd($request->all());
