@@ -3,9 +3,10 @@ $(document).ready(function () {
 
     let deleteModalCategory = function () {
         var categoryId = $(this).data('category-id');
-        $('button#deleteCategory').attr('data-id', categoryId);
-        $("#deleteModalCategory").modal("show");
+        $('button#delete').attr('data-id', categoryId);
+        $("#deleteModal").modal("show");
     }
+
     let editModalCategory = function () {
         var categoryId = $(this).data('category-id');
         $.ajax({
@@ -63,7 +64,7 @@ $(document).ready(function () {
 
     $("a.deleteModalCategoryOpen").click(deleteModalCategory);
 
-    $('button#deleteCategory').click(function () {
+    $('button#delete').click(function () {
         var categoryId = $(this).attr('data-id');
         $.ajax({
             url: '/admin/category/delete/' + categoryId,

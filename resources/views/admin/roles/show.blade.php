@@ -6,7 +6,7 @@
         <nav>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+                <li class="breadcrumb-item active" aria-current="page">Danh Sách Quyền</li>
             </ol>
         </nav>
     </div>
@@ -21,7 +21,7 @@
                     <div class="header-element header-search">
                         <!-- Start::header-link -->
                         <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
-                            <i class="bx bx-search-alt-2 header-link-icon"></i>
+                            {{-- <i class="bx bx-search-alt-2 header-link-icon"></i> --}}
                         </a>
                         <!-- End::header-link -->
                     </div>
@@ -38,7 +38,7 @@
                             <tbody>
                                 @if (!empty($roles))
                                     @foreach ($roles as $role)
-                                    <tr class="product-list">
+                                    <tr class="product-list" id="role-{{ $role->id }}">
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="fw-semibold">
@@ -49,7 +49,7 @@
                                         <td>
                                             <div class="hstack gap-2 fs-15 justify-content-center">
                                                 <a style="font-size: " href="{{ route('admin.role.edit',['id'=>$role->id]) }}" class="btn btn-icon btn-sm btn-info-light"><i class="ri-edit-line"></i></a>
-                                                <a href="{{ route('admin.role.destroy',['id'=>$role->id]) }}" class="btn btn-icon btn-sm btn-danger-light product-btn"><i class="ri-delete-bin-line"></i></a>
+                                                <a href="javascript:void(0)" data-id = "{{ $role->id }}" class="btn btn-icon btn-sm btn-danger-light product-btn openDeleteModal"><i class="ri-delete-bin-line"></i></a>
                                             </div>
                                         </td>
                                     </tr>  
@@ -62,4 +62,6 @@
             </div>
         </div>
     </div>
+    @include('admin.components.delete')
+    <script src="{{ asset('assets/js/role.js') }}"></script>
 @endsection

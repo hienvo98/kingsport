@@ -10,18 +10,19 @@
         </div>
     @endif
     @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
     @endif
-    <form action="{{ route('admin.role.store') }}" method="post">
+    <form action="{{ route('admin.role.update') }}" method="post">
         @csrf
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default" style="height: 100%">Tên Quyền</span>
             </div>
-            <input type="text" class="form-control" name="name" aria-label="Default" value="{{ old('name') }}"
+            <input type="text" class="form-control" name="name" aria-label="Default" value="{{ $role->name }}"
                 aria-describedby="inputGroup-sizing-default">
+            <input type="hidden" name="role" value="{{ $role->id }}">
         </div>
         @foreach ($permissions as $perParent => $listPerChild)
             <div class="form-check">
@@ -41,9 +42,9 @@
                                         <div class="me-2">
                                             <span>
                                                 <div class="form-check-inline">
-                                                    <input type="checkbox" data-type="{{ $perParent }}"
-                                                        class="form-check-input" id="option1" name="permission[]"
-                                                        value="{{ $per->id }}">
+                                                    <input type="checkbox" <?php echo in_array($per->id, $listPerRole) ? 'checked' : ''; ?>
+                                                        data-type="{{ $perParent }}" class="form-check-input"
+                                                        id="option1" name="permission[]" value="{{ $per->id }}">
                                                 </div>
                                             </span>
                                         </div>
@@ -68,7 +69,7 @@
                 </div>
             </div>
         @endforeach
-        <button type="submit" class="btn btn-primary">Tạo Quyền</button>
+        <button type="submit" class="btn btn-primary">Cập Nhật</button>
     </form>
     {{-- <script>
         $(document).ready(function() {

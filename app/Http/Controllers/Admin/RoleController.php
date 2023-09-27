@@ -68,22 +68,35 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        return $id;
+        $role = Role::find($id);
+        if(!$role) return view('auth.404');
+        $permissions = Permission::all()->groupBy(function($per){
+            return explode('.',$per)[1];
+        });
+        $listPerRole = $role->permissions->pluck('id')->toArray();
+        return view('admin.roles.edit',compact('role','permissions','listPerRole'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $role = Role::find($request->role);
+        $role->update(['name'=>$request->name]);
+        $role->permissions()->sync($request->permission);
+        return redirect() -> back() -> with('status','Đã Cập Nhật Quyền Thành Công');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $role = Role::find($id)->delete();
+        return response()->json([
+            'code'=>200,
+            'data'=>'ok'
+        ]);
     }
 }
