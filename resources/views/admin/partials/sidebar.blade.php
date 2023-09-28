@@ -114,8 +114,21 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="slide has-sub">
+                                <a href="javascript:void(0);" class="side-menu__item"> Quản Lý ADMIN
+                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                                <ul class="slide-menu child2">
+                                    <li class="slide">
+                                        <a href="{{ url('/admin/show') }}" class="side-menu__item">Danh Sách</a>
+                                    </li>
+                                    <li class="slide">
+                                        <a href="{{ url('/admin/create') }}" class="side-menu__item">Tạo Admin</a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
+                    
                 @endcan
 
                 <!-- Start::slide -->

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin'
     ];
 
     /**
@@ -52,6 +53,7 @@ class User extends Authenticatable
     {
         return in_array('Super Admin', $this->roles->pluck('name')->toArray())  ? true : false;
     }
+    
     public function checkPermission($per)
     {
         $listRole = $this->roles;

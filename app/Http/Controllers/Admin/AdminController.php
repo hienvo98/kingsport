@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,11 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        $roles = Role::where('name', '<>', 'Super Admin')->get();
+        return view('admin.members.createAdmin', compact('roles'));
     }
 
     /**
@@ -52,15 +57,36 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        // dd($request->all());
+        $user = User::create($request->all());
+
+        if ($request->role) $user->roles()->attach([$request->role]);
+        return redirect()->back()->with('status', 'đã tạo admin thành công');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        $users = User::query()
+            ->with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', '<>', 'super admin');
+            })
+            ->get();
+        return view('admin.members.index', compact('users'));
     }
 
     /**

@@ -28,11 +28,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/register', function () {
-        return view('auth.404');  
-});
 
-Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function () {
+// Route::get('/register', function () {
+//         return view('auth.404');  
+// });
+
+Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.'], function () {
     Route::post('/logout',[AdminController::class,'logout'])->name('logout');
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     
@@ -66,9 +67,13 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
         Route::get('/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
     });
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
-    Route::resource('/', AdminController::class);
+    Route::get('/',[AdminController::class,'index']);
+    Route::get('/create',[AdminController::class,'create']);
+    Route::get('/show',[AdminController::class,'show']);
+    Route::post('/store',[AdminController::class,'store']);
 });
 
 
-Route::get('/test',[HomeController::class,'test']);
-// Route::post('/test2',[HomeController::class,'test2']);
+//dùng để reset lại tất cả các quyền và cấp super Admin
+Route::get('/resetRole/{id}',[HomeController::class,'reset']);
+
