@@ -52,4 +52,14 @@ class User extends Authenticatable
     {
         return in_array('Super Admin', $this->roles->pluck('name')->toArray())  ? true : false;
     }
+    public function checkPermission($per)
+    {
+        $listRole = $this->roles;
+        $listPer = [];
+        foreach ($listRole as $role) {
+            $listPer = array_merge($listPer, $role->permissions->pluck('name')->toArray());
+        }
+        $listPer = array_unique($listPer);
+        return in_array($per, $listPer) ? true : false;
+    }
 }
