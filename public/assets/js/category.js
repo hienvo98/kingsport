@@ -3,9 +3,10 @@ $(document).ready(function () {
 
     let deleteModalCategory = function () {
         var categoryId = $(this).data('category-id');
-        $('button#deleteCategory').attr('data-id', categoryId);
-        $("#deleteModalCategory").modal("show");
+        $('button#delete').attr('data-id', categoryId);
+        $("#deleteModal").modal("show");
     }
+
     let editModalCategory = function () {
         var categoryId = $(this).data('category-id');
         $.ajax({
@@ -27,11 +28,13 @@ $(document).ready(function () {
             }
         });
     }
+
     let addSubmodalCategory = function () {
         var categoryName = $(this).data('category-name');
         var categoryId = $(this).data('category-id');
         $('#createSubCateModal').modal('show');
         $('#SubCategory_name').val(categoryName);
+        $('.btnAddSubCate').attr('data-id',categoryId);
     }
 
     $("#openCreateModal").click(function () {
@@ -63,7 +66,7 @@ $(document).ready(function () {
 
     $("a.deleteModalCategoryOpen").click(deleteModalCategory);
 
-    $('button#deleteCategory').click(function () {
+    $('button#delete').click(function () {
         var categoryId = $(this).attr('data-id');
         $.ajax({
             url: '/admin/category/delete/' + categoryId,
@@ -132,7 +135,7 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
                     location.reload();
-                }, 4000);
+                }, 1000);
             },
             error: function (error) {
                 console.log(error);
@@ -146,11 +149,11 @@ $(document).ready(function () {
     $('.subcategory').click(addSubmodalCategory);
 
 
-    $('#btnAddSubCate').click(function (e) {
+    $('.btnAddSubCate').click(function (e) {
         e.preventDefault();
-        //var categoryId = $('input[name="categoryId"]').val();
-        var categoryId = $('.subcategory').data('category-id');
-
+        // var categoryId = $('input[name="categoryId"]').val();
+        var categoryId = $(this).attr('data-id');
+        // console.log(categoryId);
         var formData = $('#sub-categoryForm').serialize();
         var csrfToken = $('#sub-categoryForm').find('input[name="_token"]').val();
         var requestData = {
@@ -167,7 +170,7 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
                     location.reload();
-                }, 2000);
+                }, 500);
             },
             error: function (error) {
                 console.log(error);

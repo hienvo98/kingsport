@@ -26,8 +26,8 @@
                         {{-- <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                                 <i class="bx bx-search-alt-2 header-link-icon"></i>
                             </a> --}}
-                        <input type="search" data-type-name="Category" style="background-color: #F0F1F7" name="category" class="form-control border-0 px-2 " placeholder="Tìm Kiếm" aria-label="Username">
-                        
+                        <input type="search" data-type-name="Category" style="background-color: #F0F1F7" name="category"
+                            class="form-control border-0 px-2 " placeholder="Tìm Kiếm" aria-label="Username">
                         <!-- End::header-link -->
                     </div>
                 </div>
@@ -36,7 +36,6 @@
                         <table class="table text-nowrap table-bordered">
                             <thead>
                                 <tr>
-
                                     <th scope="col">Danh Mục</th>
                                     <th scope="col">Danh Mục Thuộc Tính</th>
                                     <th scope="col">Thứ tự</th>
@@ -88,9 +87,10 @@
                                                     data-category-id="{{ $cate->id }}"><i class="ri-edit-line"></i></a>
 
                                                 <a href="javascript:void(0);"
-                                                    class="btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen {{ $cate->status==0?'disable-link':'' }}"
-                                                    data-category-id="{{ $cate->id }}" id="cat-{{ $cate->id }}" ><i class="ri-delete-bin-line"
-                                                        data-toggle="modal" data-target="#exampleModalCenter"></i></a>
+                                                    class="btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen {{ $cate->status == 0 ? 'disable-link' : '' }}"
+                                                    data-category-id="{{ $cate->id }}" id="cat-{{ $cate->id }}"><i
+                                                        class="ri-delete-bin-line" data-toggle="modal"
+                                                        data-target="#exampleModalCenter"></i></a>
 
                                                 <button id="subcategory"
                                                     class="btn btn-icon btn-secondary-light ms-2 subcategory"
@@ -153,4 +153,5 @@
         </div>
     </div>
     @include('admin.components.delete')
+    <script src="{{ asset('/assets/js/category.js') }}"></script>
 @endsection

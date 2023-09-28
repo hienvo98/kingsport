@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
         Route::get('/search',[CategoryController::class,'search']);
         Route::get('/get-subcategories/{categoryId}', [CategoryController::class, 'getSubCategory']);
     });
+
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
@@ -54,6 +55,7 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','as'=>'admin.'], function
         // Route::post('/update',[ProductController::class,'update'])->name('product.update');
         // Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
     });
+
     Route::prefix('/role')->group(function(){
         Route::get('/show',[RoleController::class,'show'])->name('role.show');
         Route::get('/index',[RoleController::class,'index'])->name('role.index');
