@@ -144,56 +144,22 @@
                                 </ul>
                             </li>
                         @endcanany
-                        @canany(['admin.product.index', 'admin.product.store', 'admin.product.update',
+                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
                             'admin.product.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Sản Phẩm
+                            <li class="slide has-sub active">
+                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
+                                <ul class="slide-menu child2 active" style="display: block;">
                                     <li class="slide">
-                                        <a href="{{ route('admin.product.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
+                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
+                                    </li>
+                                    <li class="slide active">
+                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
+                                            sản phẩm </a>
                                     </li>
                                 </ul>
                             </li>
                         @endcanany
-                        <li class="slide has-sub active">
-                            <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                            <ul class="slide-menu child2 active" style="display: block;">
-                                <li class="slide active">
-                                    <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                        sản phẩm </a>
-                                </li>
-                                <li class="slide">
-                                    <a href="cart.html" class="side-menu__item">Cart</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="checkout.html" class="side-menu__item">Checkout</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="edit-products.html" class="side-menu__item">Edit Products</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="order-details.html" class="side-menu__item">Order Details</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="orders.html" class="side-menu__item">Orders</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="products.html" class="side-menu__item">Products</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="product-details.html" class="side-menu__item">Product Details</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="products-list.html" class="side-menu__item">Products List</a>
-                                </li>
-                                <li class="slide">
-                                    <a href="wishlist.html" class="side-menu__item">Wishlist</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                 </li>
                 <!-- End::slide -->

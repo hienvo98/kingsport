@@ -22,14 +22,11 @@ $(document).ready(function() {
                     $subcategorySelect[0].innerHTML = optionsHTML;
                 },
                 error: function() {
-                    // Xử lý lỗi nếu cần
                 }
             });
         } else {
-            // Nếu không có danh mục được chọn, bạn có thể xử lý nó tại đây.
-            // Ví dụ: xóa tất cả các tùy chọn và hiển thị thông báo.
             var selectBox = $("#product-subcategory-create");
-            selectBox.empty(); // Xóa tất cả các option cũ
+            selectBox.empty();
             selectBox.append($('<option>', {
                 value: '',
                 text: 'Select a category first'
@@ -60,7 +57,6 @@ $(document).ready(function() {
         $('.close').click(function () {
             $('#imageModal').css('display', 'none');
         });
-        // Đóng modal khi người dùng nhấn ngoài khung modal
         $('#imageModal').click(function (e) {
             if (e.target === this) {
                 $(this).css('display', 'none');
@@ -70,31 +66,9 @@ $(document).ready(function() {
     
     var imageIndex = 1;
 
-    // Sự kiện khi người dùng nhấn nút "Thêm hình ảnh"
-    $("#add-image-button").click(function() {
-        // Tạo một div để chứa cả trường nhập liệu và trường file input
-        var imageDiv = $("<div></div>");
+    $("#notification").fadeIn();
 
-        // Trường nhập liệu cho tên màu sắc
-        var colorNameInput = $("<input type='text' name='color_name[" + imageIndex + "]' placeholder='Nhập tên màu sắc'>");
-
-        // Trường file input cho hình ảnh
-        var imageInput = $("<input type='file' name='image_color[" + imageIndex + "]' class='product-Images'>");
-        imageInput.attr({
-            "multiple": true,
-            "data-allow-reorder": true,
-            "data-max-file-size": "3MB",
-            "data-max-files": 6
-        });
-
-        // Thêm cả trường nhập liệu và trường file input vào div chứa hình ảnh
-        imageDiv.append(colorNameInput);
-        imageDiv.append(imageInput);
-
-        // Thêm div chứa hình ảnh vào container
-        $("#image-container").append(imageDiv);
-
-        // Tăng chỉ mục của trường hình ảnh cho lần tiếp theo
-        imageIndex++;
-    });
+    setTimeout(function() {
+        $("#notification").fadeOut();
+    }, 5000);
 });

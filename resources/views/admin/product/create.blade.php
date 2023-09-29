@@ -13,6 +13,11 @@
             </nav>
         </div>
     </div>
+    @if(session('message'))
+        <div id="notification" class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
 <div class="row">
@@ -29,7 +34,7 @@
                                     <div class="row gy-3">
                                         <div class="col-xl-12">
                                             <label for="product-name-add" class="form-label">Tên sản phẩm</label>
-                                            <input type="text" name="product_name" class="form-control" id="product-name-add" placeholder="Name">
+                                            <input type="text" name="name" class="form-control" id="product-name-add" placeholder="Name">
                                             <label for="product-name-add" class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Product Name should not exceed 30 characters</label>
                                         </div>
                                         <div class="col-xl-6">
@@ -61,12 +66,12 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <label for="product-cost-add" class="form-label">Số Lượng</label>
-                                            <input type="text" name="quantity" class="form-control" id="product-cost-add" placeholder="to be continued" readonly>
+                                            <input type="number" name="quantity" class="form-control" id="product-cost-add" placeholder="to be continued">
                                             <label for="product-cost-add" class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Mention final price of the product</label>
                                         </div>
                                         <div class="col-xl-12">
                                             <label for="product-description-add" class="form-label">Mô tả</label>
-                                            <textarea class="form-control" name="desciption" id="product-description-add" rows="2"></textarea>
+                                            <textarea class="form-control" name="description" id="product-description-add" rows="2"></textarea>
                                             <label for="product-description-add" class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description should not exceed 500 letters</label>
                                         </div>
                                     </div>
@@ -79,11 +84,11 @@
                                     <div class="row gy-4">       
                                         <div class="col-xl-4">
                                             <label for="product-dealer-price" class="form-label">Giá Chưa sale</label>
-                                            <input type="text" name="regular-price" class="form-control" id="product-dealer-price" placeholder="Dealer Price">
+                                            <input type="text" name="regular_price" class="form-control" id="product-dealer-price" placeholder="Dealer Price">
                                         </div>
                                         <div class="col-xl-4">
                                             <label for="product-actual-price" class="form-label">Giá cuối</label>
-                                            <input type="text" name="sale-price" class="form-control" id="product-actual-price" placeholder="Actual Price">
+                                            <input type="text" name="sale_price" class="form-control" id="product-actual-price" placeholder="Actual Price">
                                         </div>
                                         <div class="col-xl-4">
                                             <label for="product-discount" class="form-label">Discount</label>
@@ -107,24 +112,23 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <label for="product-status-add" class="form-label">Trạng Thái Hiển Thị</label>
-                                            <select class="form-control" data-trigger name="product-status" id="product-status-add">
+                                            <select class="form-control" data-trigger name="status" id="product-status-add">
                                                 <option value="">Select</option>
-                                                <option value="on">Bật</option>
-                                                <option value="off">Ẩn</option>
+                                                <option value="1">Bật</option>
+                                                <option value="0">Ẩn</option>
                                             </select>
                                         </div>
-
                                         <div class="col-xl-6">
                                             <label for="product-status-add" class="form-label">Trạng Thái Kho</label>
-                                            <select class="form-control" data-trigger name="product-status-stock" id="product-status-add">
+                                            <select class="form-control" data-trigger name="status_stock" id="product-status-add">
                                                 <option value="">Select</option>
-                                                <option value="instock">Còn Hàng</option>
-                                                <option value="out-stock">Hết Hàng</option>
+                                                <option value="1">Còn Hàng</option>
+                                                <option value="0">Hết Hàng</option>
                                             </select>
                                         </div>
                                         <div class="col-xl-6">
                                             <label for="product-cost-add" class="form-label">Thứ tự</label>
-                                            <input type="sort" name="quantity" class="form-control" id="product-cost-add" placeholder="thứ tự hiển thị">
+                                            <input type="number" name="sorting" class="form-control" id="product-cost-add" placeholder="thứ tự hiển thị">
                                             <label for="product-cost-add" class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Mention final price of the product</label>
                                         </div>
                                         <div class="col-xl-6">
@@ -132,33 +136,33 @@
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-check form-switch">
-                                                        <input name="on-outstanding" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
+                                                        <input name="on_outstanding" class="form-check-input" type="checkbox"  value="1" role="switch" id="flexSwitchCheckDefault1">
                                                         <label class="form-check-label" for="flexSwitchCheckDefault1">Sản Phẩm nổi bật</label>
                                                     </div>
                                                     <div class="form-check form-switch">
-                                                        <input name="on-hot" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
+                                                        <input name="on_hot" class="form-check-input" type="checkbox"  value="1" role="switch" id="flexSwitchCheckDefault2">
                                                         <label class="form-check-label" for="flexSwitchCheckDefault2">Sản Phẩm Hot</label>
                                                     </div>
                                                     <div class="form-check form-switch">
-                                                        <input name="on-sale" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault3">
+                                                        <input name="on_sale" class="form-check-input" type="checkbox"  value="1" role="switch" id="flexSwitchCheckDefault3">
                                                         <label class="form-check-label" for="flexSwitchCheckDefault3">Sản Phẩm giá tốt</label>
                                                     </div>
                                                     <div class="form-check form-switch">
-                                                        <input name="on-installment" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1" checked="">
+                                                        <input name="on_installment" class="form-check-input" type="checkbox"  value="1" role="switch" id="flexSwitchCheckChecked1" >
                                                         <label class="form-check-label" for="flexSwitchCheckChecked1">Sản phẩm trả góp</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-check form-switch">
-                                                        <input name="on-new" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked2" checked="">
+                                                        <input name="on_new" class="form-check-input" type="checkbox"  value="1" role="switch" id="flexSwitchCheckChecked2">
                                                         <label class="form-check-label" for="flexSwitchCheckChecked2">Sản phẩm mới về</label>
                                                     </div>
                                                     <div class="form-check form-switch">
-                                                        <input name="on-comming" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked3" checked="">
+                                                        <input name="on_comming" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked3"  value="1">
                                                         <label class="form-check-label" for="flexSwitchCheckChecked3">Sản phẩm sắp về</label>
                                                     </div>
                                                     <div class="form-check form-switch">
-                                                        <input name="on-gift" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked4" checked="">
+                                                        <input name="on_gift" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked4"  value="1">
                                                         <label class="form-check-label" for="flexSwitchCheckChecked4">Sản phẩm có quà tặng</label>
                                                     </div>
                                                 </div>
