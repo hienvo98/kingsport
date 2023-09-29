@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 
@@ -65,9 +66,7 @@ class AdminController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        // dd($request->all());
         $user = User::create($request->all());
-
         if ($request->role) $user->roles()->attach([$request->role]);
         return redirect()->back()->with('status', 'đã tạo admin thành công');
     }
@@ -77,16 +76,22 @@ class AdminController extends Controller
      */
     public function show(Request $request)
     {
+
         if (!Gate::allows('Super Admin')) {
             abort(403);
         }
-        $users = User::query()
+
+        $usersWithoutRoles = User::whereDoesntHave('roles')->where('is_admin', '=', '1')->withTrashed()->get();
+        $usersWithoutSuperAdmin = User::withTrashed()
             ->with('roles')
             ->whereHas('roles', function ($query) {
                 $query->where('name', '<>', 'super admin');
             })
-            ->get();
+            ->where('is_admin', '=', '1')->get();
+        
+        $users = $usersWithoutRoles->merge($usersWithoutSuperAdmin);;
         return view('admin.members.index', compact('users'));
+        
     }
 
     /**
@@ -94,24 +99,59 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
     }
 
+    public function editRole(string $id)
+    {
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        $user = User::find($id);
+        $roles = Role::whereNotIn('name', ['Super Admin'])->get();
+        return view('admin.members.editRole', compact('user', 'roles'));
+    }
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
     }
 
+    public function updateRole(Request $request)
+    {
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        dd($request->all());
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        User::find($id)->delete();
+        return response()->json([
+            'code' => 200,
+            'data' => 'ok'
+        ]);
     }
-
+    public function restore($id)
+    {
+        if (!Gate::allows('Super Admin')) {
+            abort(403);
+        }
+        User::onlyTrashed()->find($id)->restore();
+        return response()->json([
+            'code' => 200,
+            'data' => 'ok'
+        ]);
+    }
     public function search()
     {
     }

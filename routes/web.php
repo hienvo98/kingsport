@@ -67,9 +67,14 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
     });
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
+    Route::get('/authorize/edit/{id}',[AdminController::class,'editRole']);
+    Route::post('/authorize/update',[AdminController::class,'updateRole']);
     Route::get('/',[AdminController::class,'index']);
     Route::get('/create',[AdminController::class,'create']);
     Route::get('/show',[AdminController::class,'show']);
+    Route::get('/delete/{id}',[AdminController::class,'destroy']);
+    Route::get('/restore/{id}',[AdminController::class,'restore']);
+    
     Route::post('/store',[AdminController::class,'store']);
 });
 

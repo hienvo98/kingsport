@@ -1,5 +1,6 @@
 @extends('layouts.appAdmin')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/libs/prismjs/themes/prism-coy.min.css') }}">
     <div class="container">
         <div class="row justify-content-center">
             @if (session('status'))
@@ -10,7 +11,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Register') }}</div>
-                    {{-- <h1>okok</h1> --}}
                     <div class="card-body">
                         <form method="POST" action="{{ url('/admin/store') }}">
                             @csrf
@@ -83,14 +83,13 @@
                                     </div>
                                 @enderror
                                 <div class="col-md-6">
-                                    <select class="form-control" data-trigger name="role" id="product-gender-add">
-                                        <option value="">Chọn Quyền</option>
+                                    <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
+                                        multiple>
+                                        {{-- <option value="" disabled>Select your option</option> --}}
                                         @if (!empty($roles))
                                             @foreach ($roles as $role)
                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                                             @endforeach
-                                        @else
-                                            <option value="All">Chưa có quyền nào được tạo</option>
                                         @endif
                                     </select>
                                 </div>
@@ -98,7 +97,7 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <input type="hidden" name="is_admin" value="true">
+                                    <input type="hidden" name="is_admin" value="1">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}
                                     </button>
@@ -110,4 +109,7 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+    <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
+    <script src="{{ asset('assets/js/choices.js') }} "></script>
 @endsection
