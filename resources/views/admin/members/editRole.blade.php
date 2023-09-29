@@ -1,5 +1,6 @@
 @extends('layouts.appAdmin')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/libs/prismjs/themes/prism-coy.min.css') }}">
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
         <h1 class="page-title fw-semibold fs-18 mb-0">Quyền</h1>
         <div class="ms-md-1 ms-0">
@@ -39,8 +40,8 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        <h4 class="text-info">Cấp Quyền Cho Admin</h4>
-                        <form action="{{ url('/admin/authorizeUser') }}" method="post">
+                        <h4 class="text-info">Chỉnh Sửa Quyền Cho Admin</h4>
+                        <form action="{{ url('/admin/authorize/update') }}" method="post">
                             @csrf
                             <div class="col-xl-6 my-3">
                                 <label for="product-gender-add" class="form-label">Admin</label>
@@ -49,16 +50,8 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <select class="form-control" data-trigger name="user" id="product-gender-add">
-                                    <option value="">Chọn Admin Cần Cấp Quyền</option>
-                                    @if (!empty($users))
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endforeach
-                                    @else
-                                        <option value="">Không có admin nào</option>
-                                    @endif
-                                </select>
+                                <input id="price_to" class="form-control" value="{{ $user->name }}" disabled="disabled">
+                                <input type="hidden" name="user" value="{{ $user->id }}">
                             </div>
                             <div class="col-xl-6 my-3">
                                 <label for="product-gender-add" class="form-label">Quyền</label>
@@ -67,22 +60,24 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <select class="form-control" data-trigger name="role" id="product-gender-add">
-                                    <option value="">Chọn Quyền</option>
+                                <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
+                                    multiple>
                                     @if (!empty($roles))
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            <option {{ in_array($role->id,$user->roles->pluck('id')->toArray())  ? 'selected' : '' }}
+                                                value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
-                                    @else
-                                        <option value="All">Chưa có quyền nào được tạo</option>
                                     @endif
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-outline-info">Cấp Quyền</button>
+                            <button type="submit" class="btn btn-outline-info">Cập Nhật</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+    <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
+    <script src="{{ asset('assets/js/choices.js') }} "></script>
 @endsection
