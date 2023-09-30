@@ -85,7 +85,6 @@
                                 <div class="col-md-6">
                                     <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
                                         multiple>
-                                        {{-- <option value="" disabled>Select your option</option> --}}
                                         @if (!empty($roles))
                                             @foreach ($roles as $role)
                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>

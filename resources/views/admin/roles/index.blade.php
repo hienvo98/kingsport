@@ -1,5 +1,6 @@
 @extends('layouts.appAdmin')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/libs/prismjs/themes/prism-coy.min.css') }}">
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
         <h1 class="page-title fw-semibold fs-18 mb-0">Quyền</h1>
         <div class="ms-md-1 ms-0">
@@ -67,14 +68,12 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <select class="form-control" data-trigger name="role" id="product-gender-add">
-                                    <option value="">Chọn Quyền</option>
+                                <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
+                                    multiple>
                                     @if (!empty($roles))
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
-                                    @else
-                                        <option value="All">Chưa có quyền nào được tạo</option>
                                     @endif
                                 </select>
                             </div>
@@ -85,4 +84,8 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/role.js') }}"></script>
+    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+    <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
+    <script src="{{ asset('assets/js/choices.js') }} "></script>
 @endsection

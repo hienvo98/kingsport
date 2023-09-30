@@ -31,13 +31,8 @@
                 <div class="card-body">
                     <div class="container">
                         @if (session('status'))
-                            <div class="alert alert-success" role="alert">
+                            <div class="alert alert-success text-capitalize" role="alert">
                                 {{ session('status') }}
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('error') }}
                             </div>
                         @endif
                         <h4 class="text-info">Chỉnh Sửa Quyền Cho Admin</h4>
@@ -45,21 +40,11 @@
                             @csrf
                             <div class="col-xl-6 my-3">
                                 <label for="product-gender-add" class="form-label">Admin</label>
-                                @error('user')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                                 <input id="price_to" class="form-control" value="{{ $user->name }}" disabled="disabled">
                                 <input type="hidden" name="user" value="{{ $user->id }}">
                             </div>
                             <div class="col-xl-6 my-3">
                                 <label for="product-gender-add" class="form-label">Quyền</label>
-                                @error('role')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                                 <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
                                     multiple>
                                     @if (!empty($roles))
