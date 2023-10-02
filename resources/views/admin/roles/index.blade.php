@@ -61,21 +61,64 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="col-xl-6 my-3">
+                            <div class="col-xl-12 my-3">
                                 <label for="product-gender-add" class="form-label">Quyền</label>
-                                @error('role')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
+                                <div class="container">
+                                    <div class="row">
+                                        @if ($roles->count() > 0)
+                                            @foreach ($roles as $role)
+                                                <div class="col-xl-3 col-xxl-3 col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="card custom-card">
+                                                        <div class="card-header d-block">
+                                                            <div class="d-sm-flex d-block align-items-center">
+                                                                <div class="me-2">
+                                                                    <span>
+                                                                        <div class="form-check-inline">
+                                                                            <input type="checkbox" data-type=""
+                                                                                class="form-check-input"
+                                                                                id="role-{{ $role->id }}"
+                                                                                name="role[]"
+                                                                                value="{{ $role->id }}">
+                                                                        </div>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="flex-fill">
+                                                                    <a href="javascript:void(0)">
+                                                                        <label for="role-{{ $role->id }}"
+                                                                            class="fs-14 fw-semibold text-center">{{ $role->name }}</label>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="card custom-card">
+                                                <div class="card-header d-block">
+                                                    <div class="d-sm-flex d-block align-items-center">
+                                                        {{-- <div class="me-2">
+                                                            <span>
+                                                                <div class="form-check-inline">
+                                                                    <input type="checkbox" data-type=""
+                                                                        class="form-check-input" id="per}}"
+                                                                        name="permission[]" value="tesst">
+                                                                </div>
+                                                            </span>
+                                                        </div> --}}
+                                                        <div class="flex-fill">
+                                                            <a href="javascript:void(0)">
+                                                                <label for="per"
+                                                                    class="fs-14 fw-semibold text-center">Chưa Có Quyền
+                                                                    Nào Được Tạo</label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
-                                @enderror
-                                <select class="form-control" data-trigger name="role[]" id="choices-multiple-default"
-                                    multiple>
-                                    @if (!empty($roles))
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-outline-info">Cấp Quyền</button>
                         </form>

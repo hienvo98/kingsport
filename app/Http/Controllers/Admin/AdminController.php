@@ -29,19 +29,15 @@ class AdminController extends Controller
         $request->validate(
             [
                 'user' => 'required',
-                'role' => 'required'
             ],
             [
                 'user.required' => 'Vui lòng chọn admin cần cấp quyền',
-                'role.required' => 'Vui lòng chọn quyền cần cấp'
             ]
         );
-        dd($request->all());
+        // dd($request->all());
         $user = User::find($request->user);
-        if (in_array($request->role, $user->roles->pluck('id')->toArray())) return redirect()->back()->with('error', 'admin đã được cấp quyền này');
-
-        $user->roles()->attach($request->role);
-        return redirect()->back()->with('status', 'đã cấp quyền cho admin thành công');
+        $user->roles()->sync($request->role);
+        return redirect()->back()->with('status', 'đã cập nhật quyền cho admin thành công');
     }
     /**
      * Show the form for creating a new resource.
@@ -68,7 +64,6 @@ class AdminController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        // return $request->role;
         $user = User::create($request->all());
         if (!empty($request->role)) $user->roles()->attach($request->role);
         return redirect()->back()->with('status', 'đã tạo admin thành công');
@@ -91,10 +86,9 @@ class AdminController extends Controller
                 $query->where('name', '<>', 'super admin');
             })
             ->where('is_admin', '=', '1')->get();
-        
+
         $users = $usersWithoutRoles->merge($usersWithoutSuperAdmin);;
         return view('admin.members.index', compact('users'));
-        
     }
 
     /**
@@ -129,7 +123,7 @@ class AdminController extends Controller
             abort(403);
         }
         User::find($request->user)->roles()->sync($request->role);
-        return redirect()->back()->with('status','đã cập nhật thành công');
+        return redirect()->back()->with('status', 'đã cập nhật thành công');
     }
     /**
      * Remove the specified resource from storage.
@@ -163,8 +157,8 @@ class AdminController extends Controller
         // });
         $roles = User::find($id)->roles->pluck('id');
         return response()->json([
-            'code'=>200,
-            'data'=>$roles
+            'code' => 200,
+            'data' => $roles
         ]);
     }
 

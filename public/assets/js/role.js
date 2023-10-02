@@ -60,7 +60,10 @@ $(document).ready(function () {
             type: 'get',
             url: '/admin/roleUser/search/' + id,
             success: function (data) {
-               
+                $(`input[type=checkbox]`).prop('checked', false);
+                $.each(data.data, function (index, value) {
+                    $(`input#role-${value}`).prop('checked', true);
+                });
             },
             error: function (error) {
                 console.log(error);
