@@ -29,9 +29,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::get('/register', function () {
-//         return view('auth.404');  
-// });
+Route::get('/register', function () {
+        return view('auth.404');  
+});
 
 Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.'], function () {
     Route::post('/logout',[AdminController::class,'logout'])->name('logout');
@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     Route::get('/show',[AdminController::class,'show']);
     Route::get('/delete/{id}',[AdminController::class,'destroy']);
     Route::get('/restore/{id}',[AdminController::class,'restore']);
-    
+    Route::get('/roleUser/search/{id}',[AdminController::class,'search']);
     Route::post('/store',[AdminController::class,'store']);
 });
 

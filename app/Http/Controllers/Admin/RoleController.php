@@ -91,8 +91,8 @@ class RoleController extends Controller
         $permissions = Permission::all()->groupBy(function($per){
             return explode('.',$per)[1];
         });
-
         $listPerRole = $role->permissions->pluck('id')->toArray();
+        
         return view('admin.roles.edit',compact('role','permissions','listPerRole'));
     }
 
