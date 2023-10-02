@@ -63,11 +63,17 @@
                                     <td>
                                         <span class="badge bg-light text-default">{{$pro->category->name}}</span>
                                     </td>
-                                    <td>{{$pro->subCategory->name}}</td>
+                                    <td><span class="badge bg-light text-default">{{$pro->subCategory->name}}</span></td>
                                     <td>{{$pro->sale_price}}</td>
                                     <td>{{$pro->quantity}}</td>
                                     <td>{{$pro->description}}</td>
-                                    <td>{{($pro->status)==0?"TẮT":"BẬT"}}</td>
+                                    <td>
+                                        @if($pro->status == 0)
+                                            <span class="badge bg-danger-transparent">Tắt</span>
+                                        @else
+                                            <span class="badge bg-success-transparent">Bật</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="hstack gap-2 fs-15">
                                             <a href="edit-products.html" class="btn btn-icon btn-sm btn-info-light"><i class="ri-edit-line"></i></a>
