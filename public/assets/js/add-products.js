@@ -1,39 +1,34 @@
-$(document).ready(function() {
-    $("#product-category-add").change(function() {
+$(document).ready(function () {
+    $("#product-category-add").change(function () {
         var selectedCategory = $(this).val();
         if (selectedCategory) {
             var url = "/admin/category/get-subcategories/" + selectedCategory;
-    
+
             $.ajax({
                 url: url,
                 type: 'GET',
                 dataType: 'json',
-                success: function(response) {
-                    // var selectBox = $("#product-subcategory-create");
-                    var subcategories = response;
-                    var $subcategorySelect = $("#product-subcategory-create");
-                    $subcategorySelect.empty();
-                    
-                    var optionsHTML = '<option value="">Select</option>';
-                    $.each(subcategories, function (key, value) {
-                        console.log(value.name);
-                        optionsHTML += '<option value="' + key + '">' + value.name + '</option>';
+                success: function (response) {
+                    $('div.options-list').empty();
+                    $('div.options-list').append(`<div class="option" data-value="">Chọn Danh Mục Thuộc Tính</div>`)
+                    $.each(response, function (index, value) {
+                        $('div.options-list').append(`<div class="option" data-value="${value.id}">${value.name}</div>`)
                     });
-                    $subcategorySelect[0].innerHTML = optionsHTML;
+                    // console.log(response);
                 },
-                error: function() {
+                error: function () {
                 }
             });
         } else {
-            var selectBox = $("#product-subcategory-create");
+            var selectBox = $("div.options-list");
             selectBox.empty();
-            selectBox.append($('<option>', {
+            selectBox.append($('p', {
                 value: '',
                 text: 'Select a category first'
             }));
         }
     });
-    
+
     $('input[type="file"]').change(function () {
         var imageList = $('#imageList');
         imageList.empty();
@@ -41,7 +36,7 @@ $(document).ready(function() {
         for (var i = 0; i < this.files.length; i++) {
             var image = $('<img>');
             image.attr('src', URL.createObjectURL(this.files[i]));
-            image.attr('width', 100); 
+            image.attr('width', 100);
             image.addClass('thumbnail');
             imageList.append(image);
         }
@@ -63,12 +58,17 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     var imageIndex = 1;
 
     $("#notification").fadeIn();
 
-    setTimeout(function() {
+    setTimeout(function () {
         $("#notification").fadeOut();
     }, 5000);
+
+
+
+    
 });
+

@@ -25,7 +25,6 @@ class ProductController extends Controller
     public function create()
     {
         $cate = Category::with('subCategory')->get();
-        
         return view('admin.product.create')->with('cate',$cate);
     }
 
@@ -38,8 +37,8 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $data = $request->validated();
-        
+        // $data = $request->validated();
+        // return 'okok';
         $name = $request->name;
         $category_id = $request->category_id;
         $subcategory_id = $request->subcategory_id;
@@ -59,31 +58,37 @@ class ProductController extends Controller
         $on_comming = $request->on_comming;
         $on_gift = $request->on_gift;
 
-        $product = new Product();
-        $product->name = $name;
-        $product->category_id = $category_id;
-        $product->subcategory_id = $subcategory_id;
-        $product->quantity = $quantity;
-        $product->description = $description;
-        $product->regular_price = $regular_price;
-        $product->sale_price = $sale_price;
-        $product->discount = $discount;
-        $product->status = $status;
-        $product->status_stock = $status_stock;
-        $product->on_outstanding = $on_outstanding==1?"on":"off";
-        $product->on_hot = $on_hot==1?"on":"off";
-        $product->on_sale = $on_sale==1?"on":"off";
-        $product->on_installment = $on_installment==1?"on":"off";
-        $product->on_new = $on_new==1?"on":"off";
-        $product->on_comming = $on_comming==1?"on":"off";
-        $product->on_gift = $on_gift==1?"on":"off";
-        $product->sorting = $sorting;
+        dd($request->all());
+
+        // $product = new Product();
+        // $product->name = $name;
+        // $product->category_id = $category_id;
+        // $product->subcategory_id = $subcategory_id;
+        // $product->quantity = $quantity;
+        // $product->description = $description;
+        // $product->regular_price = $regular_price;
+        // $product->sale_price = $sale_price;
+        // $product->discount = $discount;
+        // $product->status = $status;
+        // $product->status_stock = $status_stock;
+        // $product->on_outstanding = $on_outstanding==1?"on":"off";
+        // $product->on_hot = $on_hot==1?"on":"off";
+        // $product->on_sale = $on_sale==1?"on":"off";
+        // $product->on_installment = $on_installment==1?"on":"off";
+        // $product->on_new = $on_new==1?"on":"off";
+        // $product->on_comming = $on_comming==1?"on":"off";
+        // $product->on_gift = $on_gift==1?"on":"off";
+        // $product->sorting = $sorting;
         
-        if($product->save()){
-            return redirect()->back()->with('message', 'Thêm sản phẩm thành công')->header('Refresh', '2');
-        }
+        // if($product->save()){
+        //     return redirect()->back()->with('message', 'Thêm sản phẩm thành công')->header('Refresh', '2');
+        // }
     }
 
+    public function validateForm(){
+
+    }
+    
     /**
      * Display the specified resource.
      */
