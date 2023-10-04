@@ -32,7 +32,7 @@ class ProductRequest extends FormRequest
             //'image_color' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'discount' => 'integer|between:1,50',
             // 'status' => 'required',
-            'sorting' => 'required|integer|regex:/^[0-9]+$/',
+            // 'sorting' => 'required|integer|regex:/^[0-9]+$/',
             'quantity' => 'required|integer|regex:/^[0-9]+$/',
         ];
     }
@@ -45,8 +45,8 @@ class ProductRequest extends FormRequest
             'regular_price.required' => 'Giá chưa sale chưa được nhập',
             //'image_color.required' => 'Chưa chọn hình cho sản phẩm',
             'sale_price.integer'=>'Giá tiền sản phẩm phải ở dạng số',
-            'sorting.regex' => 'Nhập số thứ tự bậy bạ',
-            'sorting.required' => 'chưa nhập số thứ tự',
+            // 'sorting.regex' => 'Nhập số thứ tự bậy bạ',
+            // 'sorting.required' => 'chưa nhập số thứ tự',
             'description.required' => 'Chưa nhập mô tả',
             'status.required' => 'Chưa chọn trạng thái',
             'quantity.regex' => 'admin cố tình nhập bậy, đã ghi log để xử phạt',

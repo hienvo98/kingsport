@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class color_version extends Model
 {
     use HasFactory;
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
+
+    public function images(){
+        return $this->hasMany(image_service::class);
+    }
+    
 }

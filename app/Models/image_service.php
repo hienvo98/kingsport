@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class image_service extends Model
 {
     use HasFactory;
+    public function color(){
+        return $this->belongsTo(color_version::class);
+    }
 }

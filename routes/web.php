@@ -80,5 +80,5 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
 
 
 //dùng để reset lại tất cả các quyền và cấp super Admin
-Route::get('/resetRole/{id}',[HomeController::class,'reset']);
+Route::get('/reset',[HomeController::class,'reset']);
 

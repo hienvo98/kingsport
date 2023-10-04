@@ -20,11 +20,11 @@
         </div>
     @endif
 
-    {{-- @foreach ($errors->all() as $error)
+    @foreach ($errors->all() as $error)
         <div class="alert alert-danger">
             <p>{{ $error }}</p>
         </div>
-    @endforeach --}}
+    @endforeach
 
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
@@ -132,8 +132,7 @@
                                                     <input type="text" name="regular_price" class="form-control"
                                                         id="product-dealer-price" placeholder="Regular Price">
                                                     <label for="product-description-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
-                                                        should not exceed 500 letters</label>
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                 </div>
                                                 <div class="col-xl-4">
                                                     @error('discount')
@@ -145,8 +144,7 @@
                                                     <input type="text" name="discount" class="form-control"
                                                         id="product-discount" placeholder="Discount in %" disabled>
                                                     <label for="product-description-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
-                                                        should not exceed 500 letters</label>
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">Từ 1-50</label>
                                                 </div>
 
 
@@ -160,11 +158,10 @@
                                                     <input type="text" name="sale_price" class="form-control"
                                                         id="product-actual-price" placeholder="Actual Price" disabled>
                                                     <label for="product-description-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
-                                                        should not exceed 500 letters</label>
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                 </div>
 
-                                                <div class="col-xl-4">
+                                                <div class="col-xl-6">
                                                     @error('quantity')
                                                         <div class="alert alert-danger text-capitalize">
                                                             {{ $message }}
@@ -173,6 +170,13 @@
                                                     <label for="product-cost-add" class="form-label">Số Lượng</label>
                                                     <input type="number" name="quantity" class="form-control"
                                                         id="product-cost-add" placeholder="to be continued">
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <label for="product-cost-add" class="form-label">Thứ tự</label>
+                                                    <input type="hidden" name="sorting" value="{{ $sorting }}">
+                                                    <input type="numper" name="sorting"
+                                                        placeholder="Sản Phẩm Thứ {{ $sorting }}"
+                                                        class="form-control" id="product-cost-add" disabled>
                                                 </div>
 
                                                 <div class="col-xl-12">
@@ -195,19 +199,6 @@
                                     <div class="card custom-card shadow-none mb-0 border-0">
                                         <div class="card-body p-0">
                                             <div class="row gy-4">
-                                                <div class="col-xl-12 product-documents-container">
-                                                    <p class="fw-semibold mb-2 fs-14">Product Images :</p>
-                                                    <input type="file" name="image_color[][]" class="product-Images"
-                                                        name="filepond" multiple data-allow-reorder="true"
-                                                        data-max-file-size="3MB" data-max-files="6">
-                                                </div>
-                                                <div class="col-xl-12 product-documents-container">
-                                                    <p class="fw-semibold mb-2 fs-14">Product Images :</p>
-                                                    <div id="image-container">
-                                                        <!-- Các trường hình ảnh sẽ được thêm vào đây -->
-                                                    </div>
-                                                    <label id="add-image-button">Thêm hình ảnh</label>
-                                                </div>
                                                 <div class="col-xl-12" id="imageList"></div>
                                                 <div id="imageModal" class="modal">
                                                     <span class="close" id="closeModal">&times;</span>
@@ -238,13 +229,8 @@
                                                         <option value="off">Hết Hàng</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <label for="product-cost-add" class="form-label">Thứ tự</label>
-                                                    <input type="number" name="sorting" class="form-control"
-                                                        id="product-cost-add"
-                                                        placeholder="Sản Phẩm Thứ {{ $sorting }}" disabled>
-                                                </div>
-                                                <div class="col-xl-6">
+
+                                                <div class="col-xl-12">
                                                     <label for="product-status-add" class="form-label">Tùy chọn hiển
                                                         thị</label>
                                                     <div class="row">
@@ -304,6 +290,124 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                {{-- <div class="color-group">
+                                                    <div class="col-xl-6">
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected>Chọn Màu Sản Phẩm</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="image mt-1">
+                                                        <div class="form-check d-none">
+                                                            <div class="card custom-card mb-1">
+                                                                <div class="card-header d-block">
+                                                                    <div class="d-sm-flex d-block align-items-center">
+                                                                        <div class="me-2">
+                                                                            <span>
+                                                                                <div class="form-check-inline">
+                                                                                    <input type="checkbox" data-type=""
+                                                                                        class="form-check-input check-color"
+                                                                                        id="" name="color[]"
+                                                                                        value="red">
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <a href="javascript:void(0)">
+                                                                                <label for=""
+                                                                                    class="fs-14 fw-semibold text-center">Màu
+                                                                                    đỏ</label>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="image-box-red mt-1">
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
+                                                                <input type="file" name="image_color['red'][]"
+                                                                    class="product-Images form-control" name="filepond"
+                                                                    multiple data-allow-reorder="true"
+                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                            </div>
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Danh sách ảnh:</p>
+                                                                <div id="image-container">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+
+                                                {{-- <div class="color-group">
+                                                    <div class="col-xl-6">
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected>Chọn Màu Sản Phẩm</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="image mt-1">
+                                                        <div class="form-check d-none">
+                                                            <div class="card custom-card mb-1">
+                                                                <div class="card-header d-block">
+                                                                    <div class="d-sm-flex d-block align-items-center">
+                                                                        <div class="me-2">
+                                                                            <span>
+                                                                                <div class="form-check-inline">
+                                                                                    <input type="checkbox" data-type=""
+                                                                                        class="form-check-input check-color"
+                                                                                        id="" name="color[]"
+                                                                                        value="black">
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <a href="javascript:void(0)">
+                                                                                <label for=""
+                                                                                    class="fs-14 fw-semibold text-center">Màu
+                                                                                    đỏ</label>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="image-box-red mt-1">
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
+                                                                <input type="file" name="image_color['red'][]"
+                                                                    class="product-Images form-control" name="filepond"
+                                                                    multiple data-allow-reorder="true"
+                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                            </div>
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Danh sách ảnh:</p>
+                                                                <div id="image-container">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+                                                
+
+                                                <div class="col-xl-4" id="addImage" >
+                                                    <span class="btn btn-outline-primary">Ảnh Sản Phẩm<i
+                                                            class="bi bi-plus-lg ms-2"></i></span>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">Tối đa 3
+                                                        màu</label>
+                                                </div>
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -319,11 +423,8 @@
             </div>
         </div>
     </div>
-
     <script>
-        $(document).ready(function() {
-            $(".choices__group ").css('display', 'none');
-        })
+        $('input.check-color').prop('checked', true);
     </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script> --}}
 @endsection

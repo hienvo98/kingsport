@@ -37,12 +37,12 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
         }
-        // dd($request->all());
+        dd($request->all());
         return Product::create($request->all());
 
         // $product = new Product();
