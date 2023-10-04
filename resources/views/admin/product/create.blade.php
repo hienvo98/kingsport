@@ -46,7 +46,8 @@
                                                             {{ $message }}
                                                         </div>
                                                     @enderror
-                                                    <label for="product-name-add" class="form-label">Tên sản phẩm</label>
+                                                    <label for="product-name-add" class="form-label text-capitalize">Tên sản
+                                                        phẩm</label>
                                                     <input type="text" name="name" class="form-control"
                                                         id="product-name-add" placeholder="Name">
                                                     <label for="product-name-add"
@@ -59,9 +60,10 @@
                                                             {{ $message }}
                                                         </div>
                                                     @enderror
-                                                    <label for="product-category-add" class="form-label">Danh mục</label>
+                                                    <label for="product-category-add"
+                                                        class="form-label text-capitalize">Danh mục</label>
 
-                                                    <select class="form-control" style="color: #8f8585c9" name="category_id"
+                                                    <select class="form-control" name="category_id"
                                                         id="product-category-add">
                                                         <option value="">Chọn Danh Mục</option>
                                                         @foreach ($cate as $category)
@@ -71,50 +73,98 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-xl-12">
-                                                    @error('subcategory_id')
+                                                <div class="col-xl-12" id="subcategory_box">
+                                                    {{-- @error('subcategory_id')
+                                                        <div class="alert alert-danger text-capitalize">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror --}}
+                                                    <label for="product-subcategory-add"
+                                                        class="form-label text-capitalize">Danh mục thuộc
+                                                        tính</label>
+
+                                                    @if ($cate->count() > 0)
+                                                        @foreach ($cate as $category)
+                                                            @foreach ($category->subCategory as $sub)
+                                                                <div data-parent-id="{{ $category->id }}"
+                                                                    class="card custom-card d-none">
+                                                                    <div class="card-header d-block">
+                                                                        <div class="d-sm-flex d-block align-items-center">
+                                                                            <div class="me-2">
+                                                                                <span>
+                                                                                    <div class="form-check-inline">
+                                                                                        <input type="checkbox"
+                                                                                            data-type=""
+                                                                                            class="form-check-input"
+                                                                                            id="sub-{{ $sub->id }}"
+                                                                                            name="subCat[]"
+                                                                                            value="{{ $sub->id }}">
+                                                                                    </div>
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="flex-fill">
+                                                                                <a href="javascript:void(0)">
+                                                                                    <label for="sub-{{ $sub->id }}"
+                                                                                        class="fs-14 fw-semibold text-center">{{ $sub->name }}</label>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+
+                                                {{-- <div class="col-xl-6">
+                                                    <label for="product-type" class="form-label">Màu Sắc</label>
+                                                    <input type="text" name="color" class="form-control"
+                                                        id="product-type" placeholder="Color">
+                                                </div> --}}
+                                                <div class="col-xl-4">
+                                                    @error('regular_price')
                                                         <div class="alert alert-danger text-capitalize">
                                                             {{ $message }}
                                                         </div>
                                                     @enderror
-                                                    <label for="product-subcategory-add" class="form-label">Danh mục thuộc
-                                                        tính</label>
-
-                                                    <select class="form-control" name="subcategory_id" data-trigger
-                                                        id="product-subcategory-create">
-                                                        <option value="">chọn danh mục</option>
-                                                        @foreach ($cate as $category)
-                                                            <optgroup label="{{ $category->name }}">
-                                                                @foreach ($category->subCategory as $subcategory)
-                                                                    <option style="display: none;" value="{{ $subcategory->id }}">--
-                                                                        {{ $subcategory->name }}</option>
-                                                                @endforeach
-                                                            </optgroup>
-                                                        @endforeach
-                                                    </select>
-
-                                                    {{-- <div class="form-group">
-                                                        <div class="selected-options">
-                                                            <input id="selectedOptions" type="text" class="form-control"
-                                                                name="demo" placeholder="Chọn các mục" readonly>
-                                                           
-                                                            <div class="options-list">
-                                                                <div class="option" data-value="1">Mục 1</div>
-                                                                <div class="option" data-value="2">Mục 2</div>
-                                                                <div class="option" data-value="3">Mục 3</div>
-                                                                <div class="option" data-value="4">Mục 4</div>
-                                                                <div class="option" data-value="5">Mục 5</div>
-                                                            </div>
+                                                    <label for="product-dealer-price" class="form-label">Giá Chưa
+                                                        sale</label>
+                                                    <input type="text" name="regular_price" class="form-control"
+                                                        id="product-dealer-price" placeholder="Regular Price">
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
+                                                        should not exceed 500 letters</label>
+                                                </div>
+                                                <div class="col-xl-4">
+                                                    @error('discount')
+                                                        <div class="alert alert-danger text-capitalize">
+                                                            {{ $message }}
                                                         </div>
-                                                    </div> --}}
+                                                    @enderror
+                                                    <label for="product-discount" class="form-label">Discount</label>
+                                                    <input type="text" name="discount" class="form-control"
+                                                        id="product-discount" placeholder="Discount in %" disabled>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
+                                                        should not exceed 500 letters</label>
+                                                </div>
 
+
+                                                <div class="col-xl-4">
+                                                    @error('sale_price')
+                                                        <div class="alert alert-danger text-capitalize">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                    <label for="product-actual-price" class="form-label">Giá cuối</label>
+                                                    <input type="text" name="sale_price" class="form-control"
+                                                        id="product-actual-price" placeholder="Actual Price" disabled>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
+                                                        should not exceed 500 letters</label>
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <label for="product-type" class="form-label">Màu Sắc</label>
-                                                    <input type="text" name="color" class="form-control"
-                                                        id="product-type" placeholder="Color">
-                                                </div>
-                                                <div class="col-xl-6">
+
+                                                <div class="col-xl-4">
                                                     @error('quantity')
                                                         <div class="alert alert-danger text-capitalize">
                                                             {{ $message }}
@@ -123,10 +173,8 @@
                                                     <label for="product-cost-add" class="form-label">Số Lượng</label>
                                                     <input type="number" name="quantity" class="form-control"
                                                         id="product-cost-add" placeholder="to be continued">
-                                                    <label for="product-cost-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Mention final
-                                                        price of the product</label>
                                                 </div>
+
                                                 <div class="col-xl-12">
                                                     @error('description')
                                                         <div class="alert alert-danger text-capitalize">
@@ -147,32 +195,6 @@
                                     <div class="card custom-card shadow-none mb-0 border-0">
                                         <div class="card-body p-0">
                                             <div class="row gy-4">
-                                                <div class="col-xl-4">
-                                                    @error('regular_price')
-                                                        <div class="alert alert-danger text-capitalize">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                    <label for="product-dealer-price" class="form-label">Giá Chưa
-                                                        sale</label>
-                                                    <input type="text" name="regular_price" class="form-control"
-                                                        id="product-dealer-price" placeholder="Dealer Price">
-                                                </div>
-                                                <div class="col-xl-4">
-                                                    <label for="product-discount" class="form-label">Discount</label>
-                                                    <input type="text" name="discount" class="form-control"
-                                                        id="product-discount" placeholder="Discount in %">
-                                                </div>
-                                                <div class="col-xl-4">
-                                                    @error('sale_price')
-                                                        <div class="alert alert-danger text-capitalize">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                    <label for="product-actual-price" class="form-label">Giá cuối</label>
-                                                    <input type="text" name="sale_price" class="form-control"
-                                                        id="product-actual-price" placeholder="Actual Price">
-                                                </div>
                                                 <div class="col-xl-12 product-documents-container">
                                                     <p class="fw-semibold mb-2 fs-14">Product Images :</p>
                                                     <input type="file" name="image_color[][]" class="product-Images"
@@ -202,8 +224,8 @@
                                                     <select class="form-control" data-trigger name="status"
                                                         id="product-status-add">
                                                         <option value="">Select</option>
-                                                        <option value="1">Bật</option>
-                                                        <option value="0">Ẩn</option>
+                                                        <option value="on">Bật</option>
+                                                        <option value="off">Ẩn</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-xl-6">
@@ -212,22 +234,15 @@
                                                     <select class="form-control" data-trigger name="status_stock"
                                                         id="product-status-add">
                                                         <option value="">Select</option>
-                                                        <option value="1">Còn Hàng</option>
-                                                        <option value="0">Hết Hàng</option>
+                                                        <option value="on">Còn Hàng</option>
+                                                        <option value="off">Hết Hàng</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-xl-6">
-                                                    @error('sorting')
-                                                        <div class="alert alert-danger text-capitalize">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
                                                     <label for="product-cost-add" class="form-label">Thứ tự</label>
                                                     <input type="number" name="sorting" class="form-control"
-                                                        id="product-cost-add" placeholder="thứ tự hiển thị">
-                                                    <label for="product-cost-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Mention final
-                                                        price of the product</label>
+                                                        id="product-cost-add"
+                                                        placeholder="Sản Phẩm Thứ {{ $sorting }}" disabled>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <label for="product-status-add" class="form-label">Tùy chọn hiển
@@ -236,28 +251,28 @@
                                                         <div class="col-xl-6">
                                                             <div class="form-check form-switch">
                                                                 <input name="on_outstanding" class="form-check-input"
-                                                                    type="checkbox" value="1" role="switch"
+                                                                    type="checkbox" value="on" role="switch"
                                                                     id="flexSwitchCheckDefault1">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckDefault1">Sản Phẩm nổi bật</label>
                                                             </div>
                                                             <div class="form-check form-switch">
                                                                 <input name="on_hot" class="form-check-input"
-                                                                    type="checkbox" value="1" role="switch"
+                                                                    type="checkbox" value="on" role="switch"
                                                                     id="flexSwitchCheckDefault2">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckDefault2">Sản Phẩm Hot</label>
                                                             </div>
                                                             <div class="form-check form-switch">
                                                                 <input name="on_sale" class="form-check-input"
-                                                                    type="checkbox" value="1" role="switch"
+                                                                    type="checkbox" value="on" role="switch"
                                                                     id="flexSwitchCheckDefault3">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckDefault3">Sản Phẩm giá tốt</label>
                                                             </div>
                                                             <div class="form-check form-switch">
                                                                 <input name="on_installment" class="form-check-input"
-                                                                    type="checkbox" value="1" role="switch"
+                                                                    type="checkbox" value="on" role="switch"
                                                                     id="flexSwitchCheckChecked1">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckChecked1">Sản phẩm trả góp</label>
@@ -266,7 +281,7 @@
                                                         <div class="col-xl-6">
                                                             <div class="form-check form-switch">
                                                                 <input name="on_new" class="form-check-input"
-                                                                    type="checkbox" value="1" role="switch"
+                                                                    type="checkbox" value="on" role="switch"
                                                                     id="flexSwitchCheckChecked2">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckChecked2">Sản phẩm mới về</label>
@@ -274,14 +289,14 @@
                                                             <div class="form-check form-switch">
                                                                 <input name="on_comming" class="form-check-input"
                                                                     type="checkbox" role="switch"
-                                                                    id="flexSwitchCheckChecked3" value="1">
+                                                                    id="flexSwitchCheckChecked3" value="on">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckChecked3">Sản phẩm sắp về</label>
                                                             </div>
                                                             <div class="form-check form-switch">
                                                                 <input name="on_gift" class="form-check-input"
                                                                     type="checkbox" role="switch"
-                                                                    id="flexSwitchCheckChecked4" value="1">
+                                                                    id="flexSwitchCheckChecked4" value="on">
                                                                 <label class="form-check-label"
                                                                     for="flexSwitchCheckChecked4">Sản phẩm có quà
                                                                     tặng</label>
@@ -306,8 +321,8 @@
     </div>
 
     <script>
-        $(document).ready(function(){
-            $(".choices__group ").css('display','none');
+        $(document).ready(function() {
+            $(".choices__group ").css('display', 'none');
         })
     </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script> --}}
