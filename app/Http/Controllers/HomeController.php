@@ -30,7 +30,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('admin.dashboard');
     }
 
     public function reset(Request $request)
@@ -60,7 +60,7 @@ class HomeController extends Controller
         // //destroy all Role
         // $listRole = Role::pluck('id')->toArray();
         // Role::destroy($listRole);
-
+        Role::find(1) -> permissions()->sync(Permission::pluck('id')->toArray());
         // // create role Super Admin
         // $roleSuperAdmin = Role::create(['name'=>'Super Admin']);
         // $allPermissionId = Permission::pluck('id')->toArray();

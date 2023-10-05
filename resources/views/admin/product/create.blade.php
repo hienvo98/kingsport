@@ -74,6 +74,7 @@
                                             <textarea class="form-control" name="description" id="product-description-add" rows="2"></textarea>
                                             <label for="product-description-add" class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description should not exceed 500 letters</label>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>

@@ -90,8 +90,7 @@
                     <li class="slide has-sub">
                         <a href="javascript:void(0);" class="side-menu__item">
                             <i class="bx bx-file-blank side-menu__icon"></i>
-                            <span class="side-menu__label">Quản Lý Hệ Thống<span
-                                    class="badge bg-secondary-transparent ms-2">New</span></span>
+                            <span class="side-menu__label">Quản Lý Hệ Thống</span>
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
 
@@ -135,8 +134,7 @@
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Pages<span
-                                class="badge bg-secondary-transparent ms-2">New</span></span>
+                        <span class="side-menu__label">Pages</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
 
@@ -175,6 +173,34 @@
                         @endcanany
                     </ul>
                 </li>
+                @canany(['admin.post.index', 'admin.post.create' ,'admin.post.store', 'admin.post.update',
+                            'admin.post.destroy'])
+                    <li class="slide has-sub">
+                            <a href="javascript:void(0);" class="side-menu__item">
+                                <i class='bx bxl-blogger side-menu__icon'></i>
+                                <span class="side-menu__label">Bài Viết</span>
+                                <i class="fe fe-chevron-right side-menu__angle"></i>
+                            </a>
+
+                            <ul class="slide-menu child1">
+                                <li class="slide side-menu__label1">
+                                    <a href="javascript:void(0)">Bài Viết</a>
+                                </li>
+                                <li class="slide has-sub">
+                                    <a href="javascript:void(0);" class="side-menu__item">Về Sản Phẩm
+                                        <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                                    <ul class="slide-menu child2">
+                                        <li class="slide">
+                                            <a href="{{ route('admin.post.show') }}" class="side-menu__item">Danh Sách</a>
+                                        </li>
+                                        <li class="slide">
+                                            <a href="{{ route('admin.post.create') }}" class="side-menu__item">Tạo Bài Viết</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                    </li>
+                @endcanany
                 <!-- End::slide -->
 
             </ul>

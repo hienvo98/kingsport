@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
-use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'auth.login');
 
 Auth::routes();
 
@@ -66,6 +65,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::post('/update',[RoleController::class,'update'])->name('role.update');
         Route::get('/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
     });
+
+    Route::prefix('/post')->group(function(){
+        Route::get('/index',[ArticleController::class,'index'])->name('post.show');
+        Route::get('/create',[ArticleController::class,'create'])->name('post.create');
+        Route::post('/store',[ArticleController::class,'store'])->name('post.store');
+        Route::get('/edit/{id}',[ArticleController::class,'edit'])->name('post.edit');
+        Route::post('/update',[ArticleController::class,'update'])->name('post.update');
+        Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
+    });
+
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
     Route::get('/authorize/edit/{id}',[AdminController::class,'editRole']);
     Route::post('/authorize/update',[AdminController::class,'updateRole']);
@@ -80,5 +89,5 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
 
 
 //dùng để reset lại tất cả các quyền và cấp super Admin
-Route::get('/resetRole/{id}',[HomeController::class,'reset']);
+Route::get('/reset',[HomeController::class,'reset']);
 
