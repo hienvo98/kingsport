@@ -60,4 +60,5 @@
     <!-- Date & Time Picker CSS -->
     <link rel="stylesheet" href="{{asset('assets/libs/flatpickr/flatpickr.min.css')}}">
     <!-- end add-products -->
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
