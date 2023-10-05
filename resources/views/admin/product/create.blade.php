@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="{{ asset('assets/css/add-product.css') }}">
+
+
 @extends('layouts.appAdmin')
 @section('content')
+
     <!-- Page Header -->
 
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -291,123 +294,13 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- <div class="color-group">
-                                                    <div class="col-xl-6">
-                                                        <select class="form-select" aria-label="Default select example">
-                                                            <option selected>Chọn Màu Sản Phẩm</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="image mt-1">
-                                                        <div class="form-check d-none">
-                                                            <div class="card custom-card mb-1">
-                                                                <div class="card-header d-block">
-                                                                    <div class="d-sm-flex d-block align-items-center">
-                                                                        <div class="me-2">
-                                                                            <span>
-                                                                                <div class="form-check-inline">
-                                                                                    <input type="checkbox" data-type=""
-                                                                                        class="form-check-input check-color"
-                                                                                        id="" name="color[]"
-                                                                                        value="red">
-                                                                                </div>
-                                                                            </span>
-                                                                        </div>
-                                                                        <div class="flex-fill">
-                                                                            <a href="javascript:void(0)">
-                                                                                <label for=""
-                                                                                    class="fs-14 fw-semibold text-center">Màu
-                                                                                    đỏ</label>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="image-box-red mt-1">
-                                                            <div class="col-xl-12 product-documents-container p-2">
-                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
-                                                                <input type="file" name="image_color['red'][]"
-                                                                    class="product-Images form-control" name="filepond"
-                                                                    multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
-                                                            </div>
-                                                            <div class="col-xl-12 product-documents-container p-2">
-                                                                <p class="fw-semibold mb-2 fs-14">Danh sách ảnh:</p>
-                                                                <div id="image-container">
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
-
-                                                {{-- <div class="color-group">
-                                                    <div class="col-xl-6">
-                                                        <select class="form-select" aria-label="Default select example">
-                                                            <option selected>Chọn Màu Sản Phẩm</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="image mt-1">
-                                                        <div class="form-check d-none">
-                                                            <div class="card custom-card mb-1">
-                                                                <div class="card-header d-block">
-                                                                    <div class="d-sm-flex d-block align-items-center">
-                                                                        <div class="me-2">
-                                                                            <span>
-                                                                                <div class="form-check-inline">
-                                                                                    <input type="checkbox" data-type=""
-                                                                                        class="form-check-input check-color"
-                                                                                        id="" name="color[]"
-                                                                                        value="black">
-                                                                                </div>
-                                                                            </span>
-                                                                        </div>
-                                                                        <div class="flex-fill">
-                                                                            <a href="javascript:void(0)">
-                                                                                <label for=""
-                                                                                    class="fs-14 fw-semibold text-center">Màu
-                                                                                    đỏ</label>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="image-box-red mt-1">
-                                                            <div class="col-xl-12 product-documents-container p-2">
-                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
-                                                                <input type="file" name="image_color['red'][]"
-                                                                    class="product-Images form-control" name="filepond"
-                                                                    multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
-                                                            </div>
-                                                            <div class="col-xl-12 product-documents-container p-2">
-                                                                <p class="fw-semibold mb-2 fs-14">Danh sách ảnh:</p>
-                                                                <div id="image-container">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
-                                                
-
-                                                <div class="col-xl-4" id="addImage" >
+                                                <div class="col-xl-4" id="addImage">
                                                     <span class="btn btn-outline-primary">Ảnh Sản Phẩm<i
                                                             class="bi bi-plus-lg ms-2"></i></span>
                                                     <label for="product-description-add"
                                                         class="form-label mt-1 fs-12 op-5 text-muted mb-0">Tối đa 3
                                                         màu</label>
                                                 </div>
-
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -423,8 +316,12 @@
             </div>
         </div>
     </div>
+
+    {{-- <script src="{{ asset('assets/js/swiper.js') }}"></script> --}}
+    
+
     <script>
-        $('input.check-color').prop('checked', true);
+        
     </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script> --}}
 @endsection
