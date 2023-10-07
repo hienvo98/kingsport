@@ -1,6 +1,4 @@
 <link rel="stylesheet" href="{{ asset('assets/css/add-product.css') }}">
-
-
 @extends('layouts.appAdmin')
 @section('content')
 
@@ -124,6 +122,7 @@
                                                     <input type="text" name="color" class="form-control"
                                                         id="product-type" placeholder="Color">
                                                 </div> --}}
+
                                                 <div class="col-xl-4">
                                                     @error('regular_price')
                                                         <div class="alert alert-danger text-capitalize">
@@ -294,7 +293,260 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-xl-4" id="addImage">
+
+
+
+                                                <div class="color-group" data-group-color="color-1" style="display:none">
+                                                    <div class="col-xl-6">
+                                                        <select class="form-select select-color"
+                                                            data-number-color="color-1" data-select-color="color-1"
+                                                            aria-label="Default select example">
+                                                            <option selected>Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red">red</option>
+                                                            <option data-color="black">black</option>
+                                                            <option data-color="gray">gray</option>
+                                                            <option data-color="white">white</option>
+                                                            <option data-color="beige">beige</option>
+                                                            <option data-color="brown">brown</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="image mt-1" style="border-bottom:1px solid blueviolet">
+                                                        <div class="form-check d-none">
+                                                            <div class="card custom-card mb-1">
+                                                                <div class="card-header d-block">
+                                                                    <div class="d-sm-flex d-block align-items-center">
+                                                                        <div class="me-2">
+                                                                            <span>
+                                                                                <div class="form-check-inline">
+                                                                                    <input type="checkbox" data-type=""
+                                                                                        class="form-check-input check-color"
+                                                                                        id="color-1" name="color[]"
+                                                                                        value="">
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <a href="javascript:void(0)">
+                                                                                <label for=""
+                                                                                    class="fs-14 fw-semibold text-center"></label>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
+                                                                <input type="file" data-color="color-1"
+                                                                    id="file-color-1" name=""
+                                                                    class="product-Images form-control" name="filepond"
+                                                                    multiple data-allow-reorder="true"
+                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                            </div>
+                                                            <div class="col-xl-12">
+                                                                <div class="card custom-card">
+                                                                    <div class="card-header">
+                                                                        <div class="card-title">
+                                                                            Danh Sách Ảnh
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="swiper swiper-overflow">
+                                                                            <div class="swiper-wrapper"
+                                                                                data-slide="color-1">
+                                                                            </div>
+                                                                            <div class="swiper-pagination"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="color-group" data-group-color="color-2" style="display:none">
+                                                    <div class="col-xl-6">
+                                                        <select class="form-select select-color"
+                                                            data-number-color="color-2" data-select-color="color-2"
+                                                            aria-label="Default select example">
+                                                            <option selected>Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red">red</option>
+                                                            <option data-color="black">black</option>
+                                                            <option data-color="gray">gray</option>
+                                                            <option data-color="white">white</option>
+                                                            <option data-color="beige">beige</option>
+                                                            <option data-color="brown">brown</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="image mt-1" style="border-bottom:1px solid blueviolet">
+                                                        <div class="form-check d-none">
+                                                            <div class="card custom-card mb-1">
+                                                                <div class="card-header d-block">
+                                                                    <div class="d-sm-flex d-block align-items-center">
+                                                                        <div class="me-2">
+                                                                            <span>
+                                                                                <div class="form-check-inline">
+                                                                                    <input type="checkbox" data-type=""
+                                                                                        class="form-check-input check-color"
+                                                                                        id="color-2" name="color[]"
+                                                                                        value="">
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <a href="javascript:void(0)">
+                                                                                <label for=""
+                                                                                    class="fs-14 fw-semibold text-center"></label>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
+                                                                <input type="file" data-color="color-2"
+                                                                    id="file-color-2" name=""
+                                                                    class="product-Images form-control" name="filepond"
+                                                                    multiple data-allow-reorder="true"
+                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                            </div>
+                                                            <div class="col-xl-12">
+                                                                <div class="card custom-card">
+                                                                    <div class="card-header">
+                                                                        <div class="card-title">
+                                                                            Danh Sách Ảnh
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="swiper swiper-overflow">
+                                                                            <div class="swiper-wrapper"
+                                                                                data-slide="color-2">
+
+                                                                            </div>
+                                                                            <div class="swiper-pagination"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="color-group" data-group-color="color-3" style="display:none">
+                                                    <div class="col-xl-6">
+                                                        <select class="form-select select-color"
+                                                            data-number-color="color-3" data-select-color="color-3"
+                                                            aria-label="Default select example">
+                                                            <option selected>Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red">red</option>
+                                                            <option data-color="black">black</option>
+                                                            <option data-color="gray">gray</option>
+                                                            <option data-color="white">white</option>
+                                                            <option data-color="beige">beige</option>
+                                                            <option data-color="brown">brown</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="image mt-1" style="border-bottom:1px solid blueviolet">
+                                                        <div class="form-check d-none">
+                                                            <div class="card custom-card mb-1">
+                                                                <div class="card-header d-block">
+                                                                    <div class="d-sm-flex d-block align-items-center">
+                                                                        <div class="me-2">
+                                                                            <span>
+                                                                                <div class="form-check-inline">
+                                                                                    <input type="checkbox" data-type=""
+                                                                                        class="form-check-input check-color"
+                                                                                        id="color-3" name="color[]"
+                                                                                        value="">
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <a href="javascript:void(0)">
+                                                                                <label for=""
+                                                                                    class="fs-14 fw-semibold text-center"></label>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <div class="col-xl-12 product-documents-container p-2">
+                                                                <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
+                                                                <input type="file" data-color="color-3"
+                                                                    id="file-color-3" name=""
+                                                                    class="product-Images form-control" name="filepond"
+                                                                    multiple data-allow-reorder="true"
+                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                            </div>
+                                                            <div class="col-xl-12">
+                                                                <div class="card custom-card">
+                                                                    <div class="card-header">
+                                                                        <div class="card-title">
+                                                                            Danh Sách Ảnh
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="swiper swiper-overflow">
+                                                                            <div class="swiper-wrapper"
+                                                                                data-slide="color-3">
+
+                                                                            </div>
+                                                                            <div class="swiper-pagination"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                {{-- <div class="col-xl-12 slide-1">
+                                                    <div class="card custom-card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                Effect Coverflow
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="swiper swiper-overflow">
+                                                                <div class="swiper-wrapper" id="slide-1">
+                                                                    
+                                                                </div>
+                                                                <div class="swiper-pagination"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+
+                                                {{-- <div class="col-xl-12 slide-2">
+                                                    <div class="card custom-card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                Effect Coverflow
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="swiper swiper-overflow">
+                                                                <div class="swiper-wrapper" id="slide-2">
+                                                                    
+                                                                </div>
+                                                                <div class="swiper-pagination"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+
+
+
+                                                <div class="col-xl-4" id="addImage" data-asset="{{ asset('') }}">
                                                     <span class="btn btn-outline-primary">Ảnh Sản Phẩm<i
                                                             class="bi bi-plus-lg ms-2"></i></span>
                                                     <label for="product-description-add"
@@ -303,7 +555,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -317,12 +569,4 @@
             </div>
         </div>
     </div>
-
-    {{-- <script src="{{ asset('assets/js/swiper.js') }}"></script> --}}
-    
-
-    <script>
-        
-    </script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script> --}}
 @endsection

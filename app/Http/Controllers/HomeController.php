@@ -61,12 +61,12 @@ class HomeController extends Controller
         // //destroy all Role
         // $listRole = Role::pluck('id')->toArray();
         // Role::destroy($listRole);
-        Role::find(1) -> permissions()->sync(Permission::pluck('id')->toArray());
+        // Role::find(1) -> permissions()->sync(Permission::pluck('id')->toArray());
         // // create role Super Admin
         // $roleSuperAdmin = Role::create(['name'=>'Super Admin']);
         // $allPermissionId = Permission::pluck('id')->toArray();
             // dd(Role::find(1)->permissions()->attach);
-
+            // Role::find(1)->permissions()->sync(Permission::pluck('id')->toArray());
         // $user = $user->roles()->attach([$roleSuperAdmin->id]);
     }
 
