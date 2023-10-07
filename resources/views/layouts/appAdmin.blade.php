@@ -54,4 +54,6 @@
 
 <!-- Internal Add Products JS -->
 <script src="{{asset('assets/js/add-products.js')}}"></script>
+<!-- Internal Create Blog JS -->
+<script src="{{asset('assets/js/blog-create.js')}}"></script>
 </body>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('seo_title')->nullable();
             $table->text('seo_description')->nullable();
             $table->text('seo_keywords')->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->text('thumbnail')->nullable();
             $table->longText('content');
             $table->string('product_id')->nullable();
             $table->enum('on_form',['off' , 'on'])->default('off');
