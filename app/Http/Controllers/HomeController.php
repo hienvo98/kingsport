@@ -46,6 +46,7 @@ class HomeController extends Controller
         // Permission::destroy($listPermissionId);
 
         // //create  all Permissions
+
         // $routes = Route::getRoutes();
         // foreach ($routes as $route) {
         //     if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
@@ -60,11 +61,12 @@ class HomeController extends Controller
         // //destroy all Role
         // $listRole = Role::pluck('id')->toArray();
         // Role::destroy($listRole);
-        Role::find(1) -> permissions()->sync(Permission::pluck('id')->toArray());
+        // Role::find(1) -> permissions()->sync(Permission::pluck('id')->toArray());
         // // create role Super Admin
         // $roleSuperAdmin = Role::create(['name'=>'Super Admin']);
         // $allPermissionId = Permission::pluck('id')->toArray();
-        
+            // dd(Role::find(1)->permissions()->attach);
+            // Role::find(1)->permissions()->sync(Permission::pluck('id')->toArray());
         // $user = $user->roles()->attach([$roleSuperAdmin->id]);
     }
 

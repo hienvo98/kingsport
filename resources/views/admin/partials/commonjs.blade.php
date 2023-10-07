@@ -27,3 +27,8 @@
 
 <!-- Color Picker JS -->
 <script src="{{asset('assets/libs/@simonwep/pickr/pickr.es5.min.js')}}"></script>
+
+<script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }} "></script>
+
+<!-- Internal Swiper JS -->
+<script src="{{ asset('assets/js/swiper.js') }} "></script>
