@@ -40,4 +40,9 @@ class Product extends Model
     {
         return $this->belongsTo(SubCategory::class, 'subcategory_id');
     }
+
+    public function colors(){
+        return $this->hasMany(color_version::class);
+    }
+
 }

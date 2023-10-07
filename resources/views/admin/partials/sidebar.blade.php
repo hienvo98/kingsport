@@ -191,7 +191,7 @@
                                         <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                     <ul class="slide-menu child2">
                                         <li class="slide">
-                                            <a href="{{ route('admin.post.show') }}" class="side-menu__item">Danh Sách</a>
+                                            <a href="{{ route('admin.post.index') }}" class="side-menu__item">Danh Sách</a>
                                         </li>
                                         <li class="slide">
                                             <a href="{{ route('admin.post.create') }}" class="side-menu__item">Tạo Bài Viết</a>
