@@ -29,8 +29,9 @@ class ProductRequest extends FormRequest
             'description' => 'required|string|max:255',
             'regular_price' => 'required|integer|regex:/^[0-9]+$/',
             'sale_price' => 'integer|regex:/^[0-9]+$/',
-            //'image_color' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_color.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'discount' => 'integer|between:1,50',
+            'color' => 'required',
             // 'status' => 'required',
             // 'sorting' => 'required|integer|regex:/^[0-9]+$/',
             'quantity' => 'required|integer|regex:/^[0-9]+$/',
@@ -43,10 +44,12 @@ class ProductRequest extends FormRequest
             'category_id.required' => 'Danh mục sản phẩm chưa được chọn',
             // 'subcategory_id.required' => 'Danh mục thuộc tính chưa được chọn',
             'regular_price.required' => 'Giá chưa sale chưa được nhập',
-            //'image_color.required' => 'Chưa chọn hình cho sản phẩm',
+            'image_color.required' => 'Chưa chọn hình cho sản phẩm',
             'sale_price.integer'=>'Giá tiền sản phẩm phải ở dạng số',
             // 'sorting.regex' => 'Nhập số thứ tự bậy bạ',
             // 'sorting.required' => 'chưa nhập số thứ tự',
+            'image_color.mines' => 'Ảnh có dạng jpeg,png,jpg,gif,web',
+            'color.required' => 'Vui lòng chọn màu cho sản phẩm',
             'description.required' => 'Chưa nhập mô tả',
             'status.required' => 'Chưa chọn trạng thái',
             'quantity.regex' => 'admin cố tình nhập bậy, đã ghi log để xử phạt',
@@ -55,4 +58,6 @@ class ProductRequest extends FormRequest
             'discount.between'=>'giá trị discount nằm trong khoảng 1-50'
         ];
     }
+
+
 }

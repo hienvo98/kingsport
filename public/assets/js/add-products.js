@@ -84,8 +84,8 @@ $(document).ready(function () {
     // });
 
     $(`div#addImage`).click(function () {
-        let num = $("div.color_group_display").length;  
-        let color_number = `color-${num+1}`;
+        let num = $("div.color_group_display").length;
+        let color_number = `color-${num + 1}`;
         $(`div[data-group-color=${color_number}]`).addClass('color_group_display');
         $(`div[data-group-color=${color_number}]`).slideToggle();
         // //xử lý khi chọn màu
@@ -94,24 +94,22 @@ $(document).ready(function () {
         if (num + 1 == 3) $(this).slideToggle();
     })
 
-
     $('input[type="file"]').change(function () {
         var imageList = $(`div#image-container-${$(this).attr('data-color')}`);
-
         let slide = ``;
         for (var i = 0; i < this.files.length; i++) {
+            // image_color_1.push(this.files[i]);
             slide += `<div class="swiper-slide" style="position:relative">
                 <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
                 <i class="bx bx-x delete-image-product" data-num="${$(this).attr('data-color')}-${i}"></i>
             </div>`;
         };
-
+        $(`div[data-slide=${$(this).attr('data-color')}]`).empty();
         $(`div[data-slide=${$(this).attr('data-color')}]`).append(slide); // Thêm slide mới vào cấu trúc DOM
-
+    
         //xử lý xoá ảnh 
-        $(`i.delete-image-product`).click(function(){
+        $(`i.delete-image-product`).click(function () {
             let data_num = $(this).attr('data-num');
-            alert(data_num);
             
         })
 
@@ -134,12 +132,13 @@ $(document).ready(function () {
         });
     });
 
-    
+
 
     let selectColorEvent = function () {
         let color_number = $(this).attr('data-number-color');
         let value = $(this).val()
         $(`input#${color_number}`).val(value);
+        $(`input#${color_number}`).prop('checked', true);
         $(`input#file-${color_number}`).attr('name', `image_color[${value}][]`);
         let currentColor = [];
         $.each($(`input.check-color`), function (index, value) {
@@ -161,5 +160,33 @@ $(document).ready(function () {
             $(item).find(`option[data-color=${selected_color[1]}]`).remove();
         })
     }
+
+    $(`button[type=submit]`).click(function (event) {
+        // event.preventDefault();
+        // let oldForm = $('form#form-product');
+        // let form = document.getElementById("form-product");
+        // let formData = new FormData();
+        // formData.append('files[]', 'okokokokok');
+        // formData.append('files[]', 'hehehehe');
+        // $.ajax({
+        //     url: '/admin/product/store',
+        //     method: 'post',
+        //     data: formData,
+        //     processData: false,
+        //     contentType: false,
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function (data) {
+        //         console.log(data);
+        //     },
+        //     error: function (error) {
+        //         console.log(error);
+        //     }
+        // })
+        // console.log(formData.get('files[]'));
+        // console.log(test);
+
+    })
 });
 

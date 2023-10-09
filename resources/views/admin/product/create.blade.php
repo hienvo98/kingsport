@@ -33,7 +33,7 @@
         <div class="col-xl-12">
             <div class="card custom-card">
                 <div class="card-body add-products p-0">
-                    <form method="POST" enctype="multipart/form-data" action="{{ route('admin.product.store') }}">
+                    <form method="POST" id="form-product" enctype="multipart/form-data" action="{{ route('admin.product.store') }}">
                         @csrf()
                         <div class="p-4">
                             <div class="row gx-5">
@@ -296,7 +296,7 @@
 
 
 
-                                                <div class="color-group" data-group-color="color-1" style="display:none">
+                                                <div class="color-group" data-group-color="color-1" style="display: none">
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-1" data-select-color="color-1"
@@ -343,6 +343,7 @@
                                                                     class="product-Images form-control" name="filepond"
                                                                     multiple data-allow-reorder="true"
                                                                     data-max-file-size="3MB" data-max-files="6">
+                                                                    <input type="hidden" name="list_color_1" value="">
                                                             </div>
                                                             <div class="col-xl-12">
                                                                 <div class="card custom-card">
@@ -365,7 +366,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="color-group" data-group-color="color-2" style="display:none">
+                                                <div class="color-group" data-group-color="color-2" style="display: none">
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-2" data-select-color="color-2"
@@ -436,7 +437,7 @@
                                                 </div>
 
 
-                                                <div class="color-group" data-group-color="color-3" style="display:none">
+                                                <div class="color-group" data-group-color="color-3" style="display: none">
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-3" data-select-color="color-3"
@@ -506,46 +507,6 @@
                                                     </div>
                                                 </div>
 
-
-
-                                                {{-- <div class="col-xl-12 slide-1">
-                                                    <div class="card custom-card">
-                                                        <div class="card-header">
-                                                            <div class="card-title">
-                                                                Effect Coverflow
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="swiper swiper-overflow">
-                                                                <div class="swiper-wrapper" id="slide-1">
-                                                                    
-                                                                </div>
-                                                                <div class="swiper-pagination"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
-
-                                                {{-- <div class="col-xl-12 slide-2">
-                                                    <div class="card custom-card">
-                                                        <div class="card-header">
-                                                            <div class="card-title">
-                                                                Effect Coverflow
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="swiper swiper-overflow">
-                                                                <div class="swiper-wrapper" id="slide-2">
-                                                                    
-                                                                </div>
-                                                                <div class="swiper-pagination"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
-
-
-
                                                 <div class="col-xl-4" id="addImage" data-asset="{{ asset('') }}">
                                                     <span class="btn btn-outline-primary">Ảnh Sản Phẩm<i
                                                             class="bi bi-plus-lg ms-2"></i></span>
@@ -560,8 +521,9 @@
                                 </div>
                             </div>
                         </div>
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                         <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary-light m-1">Add Product<i
+                            <button id="submit" type="submit" class="btn btn-primary-light m-1">Add Product<i
                                     class="bi bi-plus-lg ms-2"></i></button>
                         </div>
                     </form>

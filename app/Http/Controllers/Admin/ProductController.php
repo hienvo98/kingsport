@@ -7,7 +7,11 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+// use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\DB;
+use Exception;
+use Illuminate\Validation\ValidationException;
+
 
 class ProductController extends Controller
 {
@@ -42,29 +46,19 @@ class ProductController extends Controller
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
         }
-        dd($request->all());
-        return Product::create($request->all());
 
-        // $product = new Product();
-        // $product->name = $name;
-        // $product->category_id = $category_id;
-        // $product->subcategory_id = $subcategory_id;
-        // $product->quantity = $quantity;
-        // $product->description = $description;
-        // $product->regular_price = $regular_price;
-        // $product->sale_price = $sale_price;
-        // $product->discount = $discount;
-        // $product->status = $status;
-        // $product->status_stock = $status_stock;
-        // $product->on_outstanding = $on_outstanding==1?"on":"off";
-        // $product->on_hot = $on_hot==1?"on":"off";
-        // $product->on_sale = $on_sale==1?"on":"off";
-        // $product->on_installment = $on_installment==1?"on":"off";
-        // $product->on_new = $on_new==1?"on":"off";
-        // $product->on_comming = $on_comming==1?"on":"off";
-        // $product->on_gift = $on_gift==1?"on":"off";
-        // $product->sorting = $sorting;
-
+        // dd($request->all());
+        $list_color_image = $request->file();
+        // dd($list_color_image);
+        $name = [];
+        foreach($list_color_image['image_color'] as $color => $list_image){
+            foreach($list_image as $image){
+                $name[]= $image->getClientOriginalName();
+            }
+        }
+        dd($name);
+        // return Product::create($request->all());
+        
         // if($product->save()){
         //     return redirect()->back()->with('message', 'Thêm sản phẩm thành công')->header('Refresh', '2');
         // }
