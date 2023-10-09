@@ -7,11 +7,12 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-// use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Validation\ValidationException;
-
+use App\Libraries\ImageStorageLibrary;
+use App\Models\color_version;
+use App\Models\image_service;
 
 class ProductController extends Controller
 {
@@ -43,20 +44,47 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+         dd($request->all('image_color'));
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
         }
-
-        // dd($request->all());
+        // $product = Product::create($request->all());
+        
+        $listColor = [
+            'red' => '#FF0000',
+            'gray' => '#808080',
+            'white' => '#FFFFFF',
+            'beige' => '#F5F5DC',
+            'black' => '#000000',
+            'brown' => '#A52A2A'
+        ];
+        //lấy danh sách ảnh sản phẩm
         $list_color_image = $request->file();
-        // dd($list_color_image);
-        $name = [];
-        foreach($list_color_image['image_color'] as $color => $list_image){
-            foreach($list_image as $image){
-                $name[]= $image->getClientOriginalName();
+        dd($list_color_image);
+        $count = 0;
+        if($list_color_image){
+            foreach($list_color_image['image_color'] as $color => $list_image){
+                //tạo các phiên bản màu của sản phẩm
+                $ver_color = color_version::create([
+                    'product_id' => $product->id,
+                    'name' => $color ,
+                    'code_color' => $listColor[$color]
+                ]);
+                $url = [];
+                foreach($list_image as $k => $image){
+                    //lưu ảnh vào sota
+                    dd($k);
+                    $imagePath = ImageStorageLibrary::storeImage($image,"products/{$request->name}/{$color}");
+                    $url[] = basename($imagePath);
+                }
+                image_service::create([
+                    'color_ver_id'=> $ver_color->id,
+                    'url' => serialize($url)
+                ]);
             }
         }
-        dd($name);
+        
+        return 'đã tạo sản phẩm';
         // return Product::create($request->all());
         
         // if($product->save()){

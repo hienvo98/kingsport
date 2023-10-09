@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class image_service extends Model
 {
     use HasFactory;
+    protected $table = 'image_services';
+    protected $fillable = ['url','color_ver_id'];
     public function color(){
         return $this->belongsTo(color_version::class);
     }

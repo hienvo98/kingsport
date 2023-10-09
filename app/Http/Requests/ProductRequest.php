@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             'description' => 'required|string|max:255',
             'regular_price' => 'required|integer|regex:/^[0-9]+$/',
             'sale_price' => 'integer|regex:/^[0-9]+$/',
-            'image_color.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image_color.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'discount' => 'integer|between:1,50',
             'color' => 'required',
             // 'status' => 'required',

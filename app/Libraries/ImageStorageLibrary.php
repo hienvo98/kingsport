@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageStorageLibrary
 {
-    public function storeImage($imageFile, $title)
+    public static function storeImage($imageFile, $title)
     {
         $imageName = uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
 
