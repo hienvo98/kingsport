@@ -135,7 +135,7 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
                     location.reload();
-                }, 1000);
+                }, 2000);
             },
             error: function (error) {
                 console.log(error);

@@ -22,6 +22,7 @@ class ArticleController extends Controller
 
     public function index()
     {
+        $_category = Category::where('status', 'on')->get();
         return view('admin.article.index');
     }
 
@@ -61,11 +62,11 @@ class ArticleController extends Controller
         $blog->seo_keywords = $request->input('seo_key');
         $thumbnail = $request->file('thumbnail');
         
-        if( ($request->hasFile('thumbnail')) ){
+        if($thumbnail){
             if (!MimeChecker::isImage($thumbnail->getPathname())) {
                 return response()->json(['message' => 'Tệp không hợp lệ. Chỉ cho phép tải lên hình ảnh dưới 3MB.'], 400);
             }else{           
-                $imagePath = $this->imageStorage->storeImage($thumbnail, 'post/thumbnail');
+                $imagePath = $this->imageStorage->storeImage($thumbnail, 'blog_images/'.$request->input('title').'/'.'thumbnail');
                 $fileName = basename($imagePath);
                 $blog->thumbnail = $fileName;
             }

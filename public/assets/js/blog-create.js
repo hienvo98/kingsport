@@ -87,7 +87,12 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log(response);
+                window.scrollTo(0, 0);
+                $('#successAlertContainer').removeClass('d-none');
+                setTimeout(function () {
+                    $('#successAlertContainer').addClass('d-none');
+                    location.reload();
+                }, 3000);
             },
             error: function(error) {
                 console.error(error);
