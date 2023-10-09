@@ -8,13 +8,18 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
+use App\Libraries\ImageStorageLibrary;
+use App\Libraries\MimeChecker;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $imageStorage;
+
+    public function __construct(ImageStorageLibrary $imageStorage)
+    {
+        $this->imageStorage = $imageStorage;
+    }
+
     public function index()
     {
         return view('admin.article.index');
@@ -54,13 +59,18 @@ class ArticleController extends Controller
         $blog->seo_title = $request->input('seo_title');
         $blog->seo_description = $request->input('seo_description');
         $blog->seo_keywords = $request->input('seo_key');
-
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail');
-            $thumbnailName = $thumbnail->getClientOriginalName(); 
-            $thumbnail->store('uploads/blog_images/' . $request->input('title') . '/thumbnails', 'public');
-            $blog->thumbnail = $thumbnailName;
+        $thumbnail = $request->file('thumbnail');
+        
+        if( ($request->hasFile('thumbnail')) ){
+            if (!MimeChecker::isImage($thumbnail->getPathname())) {
+                return response()->json(['message' => 'Tệp không hợp lệ. Chỉ cho phép tải lên hình ảnh dưới 3MB.'], 400);
+            }else{           
+                $imagePath = $this->imageStorage->storeImage($thumbnail, 'post/thumbnail');
+                $fileName = basename($imagePath);
+                $blog->thumbnail = $fileName;
+            }
         }
+        
 
         $blog->on_form = $request->input('form_status');
         //$blog->publish_date = $request->input('publish_date');
