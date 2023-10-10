@@ -13,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 use App\Libraries\ImageStorageLibrary;
 use App\Models\color_version;
 use App\Models\image_service;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -44,11 +45,21 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-         dd($request->all('image_color'));
+        // phpinfo();`
+        // dd($request->file());
+        
+        // $request->validate([
+        //     'color'=>'required'
+        // ]);
+        // dd($request->color);
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
         }
-        // $product = Product::create($request->all());
+        return response()->json([
+            'code'=>200,
+            'message'=>$request->all()
+        ]);
+        $product = Product::create($request->all());
         
         $listColor = [
             'red' => '#FF0000',
@@ -60,8 +71,8 @@ class ProductController extends Controller
         ];
         //lấy danh sách ảnh sản phẩm
         $list_color_image = $request->file();
-        dd($list_color_image);
-        $count = 0;
+        // dd($list_color_image);
+        // $count = 0;
         if($list_color_image){
             foreach($list_color_image['image_color'] as $color => $list_image){
                 //tạo các phiên bản màu của sản phẩm
@@ -73,7 +84,7 @@ class ProductController extends Controller
                 $url = [];
                 foreach($list_image as $k => $image){
                     //lưu ảnh vào sota
-                    dd($k);
+                    // dd($k);
                     $imagePath = ImageStorageLibrary::storeImage($image,"products/{$request->name}/{$color}");
                     $url[] = basename($imagePath);
                 }

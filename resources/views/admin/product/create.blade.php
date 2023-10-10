@@ -86,6 +86,9 @@
                                                         tính</label>
 
                                                     @if ($cate->count() > 0)
+                                                        @php
+                                                            $stt = 0;
+                                                        @endphp
                                                         @foreach ($cate as $category)
                                                             @foreach ($category->subCategory as $sub)
                                                                 <div data-parent-id="{{ $category->id }}"
@@ -96,7 +99,8 @@
                                                                                 <span>
                                                                                     <div class="form-check-inline">
                                                                                         <input type="checkbox"
-                                                                                            data-type=""
+                                                                                            data-type="subCat"
+                                                                                            data-stt="sub-{{ $stt }}"
                                                                                             class="form-check-input"
                                                                                             id="sub-{{ $sub->id }}"
                                                                                             name="subCat[]"
@@ -104,6 +108,9 @@
                                                                                     </div>
                                                                                 </span>
                                                                             </div>
+                                                                            @php
+                                                                                $stt++;
+                                                                            @endphp
                                                                             <div class="flex-fill">
                                                                                 <a href="javascript:void(0)">
                                                                                     <label for="sub-{{ $sub->id }}"
@@ -342,7 +349,7 @@
                                                         <div class="mt-1">
                                                             <div class="col-xl-12 product-documents-container p-2">
                                                                 <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
-                                                                <input type="file" data-color="color-1"
+                                                                <input type="file" data-ver-color="" data-color="color-1"
                                                                     id="file-color-1" name=""
                                                                     class="product-Images form-control" name="filepond"
                                                                     multiple data-allow-reorder="true"
