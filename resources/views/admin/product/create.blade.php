@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="{{ asset('assets/css/add-product.css') }}">
 @extends('layouts.appAdmin')
 @section('content')
-
     <!-- Page Header -->
 
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -51,7 +50,7 @@
                                                     <label for="product-name-add" class="form-label text-capitalize">Tên sản
                                                         phẩm</label>
                                                     <input type="text" name="name" class="form-control"
-                                                        id="product-name-add" placeholder="Name">
+                                                        id="product-name-add" placeholder="Name" required autocomplete="name" autofocus>
                                                     <label for="product-name-add"
                                                         class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Product Name
                                                         should not exceed 30 characters</label>
@@ -153,7 +152,8 @@
                                                     @enderror
                                                     <label for="product-discount" class="form-label">Discount</label>
                                                     <input type="text" name="discount" class="form-control"
-                                                        id="product-discount" placeholder="Discount in %" disabled>
+                                                        id="product-discount" value="" placeholder="Discount in %"
+                                                        disabled>
                                                     <label for="product-description-add"
                                                         class="form-label mt-1 fs-12 op-5 text-muted mb-0">Từ 1-50</label>
                                                 </div>
@@ -215,6 +215,7 @@
                                                 <div id="imageModal" class="modal">
                                                     <span class="close" id="closeModal">&times;</span>
                                                     <img class="modal-content" id="modalImage">
+
                                                 </div>
                                                 <div class="col-xl-6">
                                                     @error('status')
@@ -321,6 +322,9 @@
                                                             <option data-color="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -349,8 +353,8 @@
                                                         <div class="mt-1">
                                                             <div class="col-xl-12 product-documents-container p-2">
                                                                 <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
-                                                                <input type="file" data-ver-color="" data-color="color-1"
-                                                                    id="file-color-1" name=""
+                                                                <input type="file" data-ver-color=""
+                                                                    data-color="color-1" id="file-color-1" name=""
                                                                     class="product-Images form-control" name="filepond"
                                                                     multiple data-allow-reorder="true"
                                                                     data-max-file-size="3MB" data-max-files="6">
@@ -379,6 +383,7 @@
 
                                                 <div class="color-group" data-group-color="color-2"
                                                     style="display: none">
+
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-2" data-select-color="color-2"
@@ -392,6 +397,9 @@
                                                             <option data-color="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -464,6 +472,9 @@
                                                             <option data-color="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -496,7 +507,7 @@
                                                                     id="file-color-3" name=""
                                                                     class="product-Images form-control" name="filepond"
                                                                     multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                                    data-max-file-size="3MB" data-max-files="6" required>
                                                             </div>
                                                             <div class="col-xl-12">
                                                                 <div class="card custom-card">
@@ -544,4 +555,6 @@
             </div>
         </div>
     </div>
+
+
 @endsection

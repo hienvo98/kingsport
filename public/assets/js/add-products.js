@@ -161,7 +161,7 @@ $(document).ready(function () {
         let formData = new FormData()
         formData.append('name', $(`input#product-name-add`).val());
         formData.append('category_id', $('select#product-category-add').val());
-        console.log($(`input[data-type='subCat']`));
+        // console.log($(`input[data-type='subCat']`));
         let listSubCat = $(`input[data-type='subCat']`);
         for (var i = 0; i < listSubCat.length; i++) {
             var checkbox = $(`input[data-stt=sub-${i}]`);
@@ -174,12 +174,16 @@ $(document).ready(function () {
         for (let i = 1; i <= 3; i++) {
             // Lấy danh sách các tệp tin từ input file
             let files = $("input#file-color-" + i).prop("files");
-            let color = $("input#file-color-" + i).attr('data-color');
+            let color = $("input#file-color-" + i).attr('data-ver-color');
             // Thêm từng tệp tin vào đối tượng FormData
             for (let j = 0; j < files.length; j++) {
                 formData.append(`image_color[${color}][]`, files[j]);
                 // console.log(files[j]);
             }
+        }
+        let listColor = $(`input.check-color`);
+        for (let i = 1; i <= listColor.length; i++) {
+            if ($(`input#color-${i}`).val()) formData.append('color[]', $(`input#color-${i}`).val());
         }
         formData.append('regular_price', $(`input[name=regular_price]`).val());
         formData.append('discount', $(`input[name=discount]`).val());
@@ -194,15 +198,8 @@ $(document).ready(function () {
         $(`input[name=on_new]`).is(':checked') ? formData.append('on_new', $(`input[name=on_new]`).val()) : '';
         $(`input[name=on_comming]`).is(':checked') ? formData.append('on_comming', $(`input[name=on_comming]`).val()) : '';
         $(`input[name=on_gift]`).is(':checked') ? formData.append('on_gift', $(`input[name=on_gift]`).val()) : '';
-        formData.append('status',$(`select[name=status]`).val());
-        formData.append('status_stock',$(`select[name=status_stock]`).val());
-
-        // console.log(formData.get('subCat'));
-        // console.log(formData.get('name'));
-        // console.log(formData.get('category_id'));
-
-        
-
+        formData.append('status', $(`select[name=status]`).val());
+        formData.append('status_stock', $(`select[name=status_stock]`).val());
 
         $.ajax({
             url: '/admin/product/store',
@@ -214,7 +211,12 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
-                console.log(data);
+                if (data.messages) {
+                    $("div#subcategory_box").hide()
+                    $('div.swiper-wrapper').empty();
+                    document.getElementById('form-product').reset();
+                    $('#success').click();
+                }
             },
             error: function (error) {
 
@@ -225,9 +227,6 @@ $(document).ready(function () {
                 }
             }
         })
-        // console.log(formData.get('files[]'));
-        // console.log(test);
-
     })
 });
 

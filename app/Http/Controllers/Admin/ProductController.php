@@ -43,22 +43,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // phpinfo();`
-        // dd($request->file());
-        
-        // $request->validate([
-        //     'color'=>'required'
-        // ]);
-        // dd($request->color);
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
         }
-        return response()->json([
-            'code'=>200,
-            'message'=>$request->all()
-        ]);
         $product = Product::create($request->all());
         
         $listColor = [
@@ -72,7 +61,7 @@ class ProductController extends Controller
         //lấy danh sách ảnh sản phẩm
         $list_color_image = $request->file();
         // dd($list_color_image);
-        // $count = 0;
+        $count = 0;
         if($list_color_image){
             foreach($list_color_image['image_color'] as $color => $list_image){
                 //tạo các phiên bản màu của sản phẩm
@@ -87,6 +76,7 @@ class ProductController extends Controller
                     // dd($k);
                     $imagePath = ImageStorageLibrary::storeImage($image,"products/{$request->name}/{$color}");
                     $url[] = basename($imagePath);
+                    $count++;
                 }
                 image_service::create([
                     'color_ver_id'=> $ver_color->id,
@@ -95,7 +85,11 @@ class ProductController extends Controller
             }
         }
         
-        return 'đã tạo sản phẩm';
+        if($count>0) return response() -> json([
+            'code' => 200,
+            'messages' => 'Đã thêm sản phẩm thành công'
+        ]);
+        
         // return Product::create($request->all());
         
         // if($product->save()){
