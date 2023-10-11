@@ -83,6 +83,8 @@ $(document).ready(function () {
         $(`div[data-group-color=${color_number}]`).addClass('color_group_display');
         $(`div[data-group-color=${color_number}]`).slideToggle();
         // //xử lý khi chọn màu
+        $(`select[data-select-color=${color_number}]`).prop('required', true);
+        $(`input#file-${color_number}`).prop('required', true);
         $(`select.select-color`).change(selectColorEvent);
 
         if (num + 1 == 3) $(this).slideToggle();
@@ -92,10 +94,8 @@ $(document).ready(function () {
         var imageList = $(`div#image-container-${$(this).attr('data-color')}`);
         let slide = ``;
         for (var i = 0; i < this.files.length; i++) {
-            // image_color_1.push(this.files[i]);
             slide += `<div class="swiper-slide" style="position:relative">
                 <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
-                <i class="bx bx-x delete-image-product" data-num="${$(this).attr('data-color')}-${i}"></i>
             </div>`;
         };
         $(`div[data-slide=${$(this).attr('data-color')}]`).empty();
@@ -127,10 +127,10 @@ $(document).ready(function () {
     });
 
 
-
+    // xử lý click chọn màu
     let selectColorEvent = function () {
         let color_number = $(this).attr('data-number-color');
-        let value = $(this).val()
+        let value = $(this).val();
         $(`input#${color_number}`).val(value);
         $(`input#${color_number}`).prop('checked', true);
         $(`input#file-${color_number}`).attr('name', `image_color[${value}][]`);
@@ -156,8 +156,11 @@ $(document).ready(function () {
         })
     }
 
-    $(`button[type=submit]`).click(function (event) {
-        event.preventDefault();
+    // xử lý dữ liệu trước khi submit form bằng ajax lên server
+    $(`form#form-product`).submit(function (e) {
+        e.preventDefault();
+        // document.getElementById('form-product').reset();    
+        $(`div#errors`).empty();
         let formData = new FormData()
         formData.append('name', $(`input#product-name-add`).val());
         formData.append('category_id', $('select#product-category-add').val());
@@ -176,9 +179,10 @@ $(document).ready(function () {
             let files = $("input#file-color-" + i).prop("files");
             let color = $("input#file-color-" + i).attr('data-ver-color');
             // Thêm từng tệp tin vào đối tượng FormData
-            for (let j = 0; j < files.length; j++) {
-                formData.append(`image_color[${color}][]`, files[j]);
-                // console.log(files[j]);
+            if ($("input#file-color-" + i).attr('name')) {
+                for (let j = 0; j < files.length; j++) {
+                    formData.append(`image_color[${color}][]`, files[j]);
+                }
             }
         }
         let listColor = $(`input.check-color`);
@@ -190,7 +194,7 @@ $(document).ready(function () {
         formData.append('sale_price', $(`input[name=sale_price]`).val());
         formData.append('quantity', $(`input[name=quantity]`).val());
         formData.append('sorting', $(`input[name=sorting]`).val());
-        formData.append('description', $(`input[name=description]`).val());
+        // formData.append('description', $(`input[name=description]`).val());
         $(`input[name=on_outstanding]`).is(':checked') ? formData.append('on_outstanding', $(`input[name=on_outstanding]`).val()) : '';
         $(`input[name=on_hot]`).is(':checked') ? formData.append('on_hot', $(`input[name=on_hot]`).val()) : '';
         $(`input[name=on_sale]`).is(':checked') ? formData.append('on_sale', $(`input[name=on_sale]`).val()) : '';
@@ -201,6 +205,12 @@ $(document).ready(function () {
         formData.append('status', $(`select[name=status]`).val());
         formData.append('status_stock', $(`select[name=status_stock]`).val());
 
+        const quill = new Quill('#blog-content', {
+            theme: 'snow'
+        });
+        const quillContent = quill.root.innerHTML;
+        formData.append('desc', quillContent);
+        
         $.ajax({
             url: '/admin/product/store',
             method: 'post',
@@ -211,19 +221,42 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
+                console.log(data);
                 if (data.messages) {
-                    $("div#subcategory_box").hide()
-                    $('div.swiper-wrapper').empty();
-                    document.getElementById('form-product').reset();
+                    // $('html, body').animate({scrollTop: 0}, 'fast');
+                    // $("div#subcategory_box").hide()
+                    // $('div.swiper-wrapper').empty();
+                    // document.getElementById('form-product').reset();
+                    // $(`div.color-group`).removeClass('color_group_display');
+                    // $(`select.select-color`).prop('required',false);
+                    // $(`input.product-Images`).prop('required',false);
+                    // $(`div.color-group`).hide();
+                    // $(`div#addImage`).show();
                     $('#success').click();
                 }
             },
             error: function (error) {
-
                 if (error.responseJSON && error.responseJSON.errors) {
                     var errors = error.responseJSON.errors;
                     console.log("Lỗi cụ thể:");
                     console.log(errors);
+                    var errorMessages = "";
+                    var typeError = 0;
+                    for (var key in errors) {
+                        if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
+                            for(var keyChild of errors[key]){
+                                errorMessages += `<div class="alert alert-danger text-capitalize">
+                                ${keyChild}
+                            </div>`;
+                            }
+                        } else {
+                            typeError++;
+                        }
+                    }
+                    if (typeError > 0) errorMessages += `<div class="alert alert-danger text-capitalize">
+                    Chọn sai định dạng ảnh, ảnh phải có đuôi .jpeg, .png, .webp, .gif hoặc kích thước ảnh quá lớn
+                </div>`
+                        $(`div#errors`).append(errorMessages);
                 }
             }
         })

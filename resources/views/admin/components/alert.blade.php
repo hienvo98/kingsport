@@ -52,6 +52,7 @@
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function() {
                     $('#successAlertContainer').addClass('d-none');
+                    location.reload();
                 }, 2000);
             }, 1500);
         })

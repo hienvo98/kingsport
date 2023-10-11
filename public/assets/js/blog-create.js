@@ -79,7 +79,7 @@ $(document).ready(function() {
         });
         const quillContent = quill.root.innerHTML;
         formData.append('blog_content', quillContent);
-
+        // console.log(quillContent);
         $.ajax({
             type: 'POST',
             url: '/admin/post/store', 
@@ -87,6 +87,7 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
+                // console.log(response);
                 window.scrollTo(0, 0);
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function () {
