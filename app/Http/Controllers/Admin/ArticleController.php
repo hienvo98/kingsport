@@ -22,8 +22,13 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $_category = Category::where('status', 'on')->get();
-        return view('admin.article.index');
+        $blog = Article::with('category')->get();
+        $_category = Category::get();
+        
+        return view('admin.article.index', [
+            'blog' => $blog,
+            'category' => $_category,
+        ]);
     }
 
     /**

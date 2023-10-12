@@ -54,7 +54,7 @@ class CategoryController extends Controller
         $cate->name = $name;
         $cate->status = $status;
         $cate->ordinal_number = $ordinal_number;
-        //dd($cate);
+        $cate->avatar = 'hinh1.jpg';
         $cate->save();
         return response()->json([
             'message' => 'Thêm thành công',
