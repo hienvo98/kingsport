@@ -130,6 +130,7 @@ $(document).ready(function () {
             url: '/admin/category/store',
             data: formData,
             success: function (response) {
+                console.log(response);
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');

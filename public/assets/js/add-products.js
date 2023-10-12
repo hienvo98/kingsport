@@ -76,12 +76,6 @@ $(document).ready(function () {
         $("#notification").fadeOut();
     }, 5000);
 
-    // const mySwiper = new Swiper(".swiper-container", {
-    //     direction: "horizontal", // Thiết lập swiper theo chiều ngang
-    //     slidesPerView: 1, // Chỉ hiển thị một slide cùng một lúc
-    //     autoplay: true, // Bật chế độ tự động phát swiper với thời gian trễ 3000 mili giây
-    //     mode: "fade", // Sử dụng chế độ fade
-    // });
 
     $(`div#addImage`).click(function () {
         let num = $("div.color_group_display").length;
@@ -89,6 +83,8 @@ $(document).ready(function () {
         $(`div[data-group-color=${color_number}]`).addClass('color_group_display');
         $(`div[data-group-color=${color_number}]`).slideToggle();
         // //xử lý khi chọn màu
+        $(`select[data-select-color=${color_number}]`).prop('required', true);
+        $(`input#file-${color_number}`).prop('required', true);
         $(`select.select-color`).change(selectColorEvent);
 
         if (num + 1 == 3) $(this).slideToggle();
@@ -98,19 +94,17 @@ $(document).ready(function () {
         var imageList = $(`div#image-container-${$(this).attr('data-color')}`);
         let slide = ``;
         for (var i = 0; i < this.files.length; i++) {
-            // image_color_1.push(this.files[i]);
             slide += `<div class="swiper-slide" style="position:relative">
                 <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
-                <i class="bx bx-x delete-image-product" data-num="${$(this).attr('data-color')}-${i}"></i>
             </div>`;
         };
         $(`div[data-slide=${$(this).attr('data-color')}]`).empty();
         $(`div[data-slide=${$(this).attr('data-color')}]`).append(slide); // Thêm slide mới vào cấu trúc DOM
-    
+
         //xử lý xoá ảnh 
         $(`i.delete-image-product`).click(function () {
             let data_num = $(this).attr('data-num');
-            
+
         })
 
 
@@ -133,13 +127,14 @@ $(document).ready(function () {
     });
 
 
-
+    // xử lý click chọn màu
     let selectColorEvent = function () {
         let color_number = $(this).attr('data-number-color');
-        let value = $(this).val()
+        let value = $(this).val();
         $(`input#${color_number}`).val(value);
         $(`input#${color_number}`).prop('checked', true);
         $(`input#file-${color_number}`).attr('name', `image_color[${value}][]`);
+        $(`input#file-${color_number}`).attr('data-ver-color', value);
         let currentColor = [];
         $.each($(`input.check-color`), function (index, value) {
             currentColor.push(value.value);
@@ -161,32 +156,110 @@ $(document).ready(function () {
         })
     }
 
-    $(`button[type=submit]`).click(function (event) {
-        // event.preventDefault();
-        // let oldForm = $('form#form-product');
-        // let form = document.getElementById("form-product");
-        // let formData = new FormData();
-        // formData.append('files[]', 'okokokokok');
-        // formData.append('files[]', 'hehehehe');
-        // $.ajax({
-        //     url: '/admin/product/store',
-        //     method: 'post',
-        //     data: formData,
-        //     processData: false,
-        //     contentType: false,
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     },
-        //     success: function (data) {
-        //         console.log(data);
-        //     },
-        //     error: function (error) {
-        //         console.log(error);
-        //     }
-        // })
-        // console.log(formData.get('files[]'));
-        // console.log(test);
+    // xử lý dữ liệu trước khi submit form bằng ajax lên server
+    $(`form#form-product`).submit(function (e) {
+        e.preventDefault();
+        // document.getElementById('form-product').reset();    
+        $(`div#errors`).empty();
+        let formData = new FormData()
+        formData.append('name', $(`input#product-name-add`).val());
+        formData.append('category_id', $('select#product-category-add').val());
+        // console.log($(`input[data-type='subCat']`));
+        let listSubCat = $(`input[data-type='subCat']`);
+        for (var i = 0; i < listSubCat.length; i++) {
+            var checkbox = $(`input[data-stt=sub-${i}]`);
+            // Kiểm tra xem checkbox có được checked không
+            if (checkbox.is(':checked')) {
+                // Nếu được checked, thêm giá trị của checkbox vào FormData object
+                formData.append('subCat[]', checkbox.val());
+            }
+        }
+        for (let i = 1; i <= 3; i++) {
+            // Lấy danh sách các tệp tin từ input file
+            let files = $("input#file-color-" + i).prop("files");
+            let color = $("input#file-color-" + i).attr('data-ver-color');
+            // Thêm từng tệp tin vào đối tượng FormData
+            if ($("input#file-color-" + i).attr('name')) {
+                for (let j = 0; j < files.length; j++) {
+                    formData.append(`image_color[${color}][]`, files[j]);
+                }
+            }
+        }
+        let listColor = $(`input.check-color`);
+        for (let i = 1; i <= listColor.length; i++) {
+            if ($(`input#color-${i}`).val()) formData.append('color[]', $(`input#color-${i}`).val());
+        }
+        formData.append('regular_price', $(`input[name=regular_price]`).val());
+        formData.append('discount', $(`input[name=discount]`).val());
+        formData.append('sale_price', $(`input[name=sale_price]`).val());
+        formData.append('quantity', $(`input[name=quantity]`).val());
+        formData.append('sorting', $(`input[name=sorting]`).val());
+        // formData.append('description', $(`input[name=description]`).val());
+        $(`input[name=on_outstanding]`).is(':checked') ? formData.append('on_outstanding', $(`input[name=on_outstanding]`).val()) : '';
+        $(`input[name=on_hot]`).is(':checked') ? formData.append('on_hot', $(`input[name=on_hot]`).val()) : '';
+        $(`input[name=on_sale]`).is(':checked') ? formData.append('on_sale', $(`input[name=on_sale]`).val()) : '';
+        $(`input[name=on_installment]`).is(':checked') ? formData.append('on_installment', $(`input[name=on_installment]`).val()) : '';
+        $(`input[name=on_new]`).is(':checked') ? formData.append('on_new', $(`input[name=on_new]`).val()) : '';
+        $(`input[name=on_comming]`).is(':checked') ? formData.append('on_comming', $(`input[name=on_comming]`).val()) : '';
+        $(`input[name=on_gift]`).is(':checked') ? formData.append('on_gift', $(`input[name=on_gift]`).val()) : '';
+        formData.append('status', $(`select[name=status]`).val());
+        formData.append('status_stock', $(`select[name=status_stock]`).val());
 
+        const quill = new Quill('#blog-content', {
+            theme: 'snow'
+        });
+        const quillContent = quill.root.innerHTML;
+        formData.append('desc', quillContent);
+        
+        $.ajax({
+            url: '/admin/product/store',
+            method: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.messages) {
+                    // $('html, body').animate({scrollTop: 0}, 'fast');
+                    // $("div#subcategory_box").hide()
+                    // $('div.swiper-wrapper').empty();
+                    // document.getElementById('form-product').reset();
+                    // $(`div.color-group`).removeClass('color_group_display');
+                    // $(`select.select-color`).prop('required',false);
+                    // $(`input.product-Images`).prop('required',false);
+                    // $(`div.color-group`).hide();
+                    // $(`div#addImage`).show();
+                    $('#success').click();
+                }
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.errors) {
+                    var errors = error.responseJSON.errors;
+                    console.log("Lỗi cụ thể:");
+                    console.log(errors);
+                    var errorMessages = "";
+                    var typeError = 0;
+                    for (var key in errors) {
+                        if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
+                            for(var keyChild of errors[key]){
+                                errorMessages += `<div class="alert alert-danger text-capitalize">
+                                ${keyChild}
+                            </div>`;
+                            }
+                        } else {
+                            typeError++;
+                        }
+                    }
+                    if (typeError > 0) errorMessages += `<div class="alert alert-danger text-capitalize">
+                    Chọn sai định dạng ảnh, ảnh phải có đuôi .jpeg, .png, .webp, .gif hoặc kích thước ảnh quá lớn
+                </div>`
+                        $(`div#errors`).append(errorMessages);
+                }
+            }
+        })
     })
 });
 

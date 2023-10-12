@@ -1,3 +1,4 @@
+
 const a = document.getElementById("liveAlertPlaceholder"),
 	s = document.getElementById("liveAlertBtn"),
 	r = (t, n) => {
@@ -13,3 +14,4 @@ s && s.addEventListener("click", () => {
 		e.preventDefault()
 	})
 });
+
