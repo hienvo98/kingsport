@@ -42,7 +42,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         if (isset($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
@@ -61,7 +61,12 @@ class ProductController extends Controller
             $desc = str_replace($imagePath, $imageName, $desc);
         }
         $request->merge(['description'=>$desc]);
-        
+        // dd($request->all());
+         return response() -> json([
+            'code'=>200,
+            'messages' => $request->all()
+        ]);
+
         $product = Product::create($request->all());
         
         $listColor = [
