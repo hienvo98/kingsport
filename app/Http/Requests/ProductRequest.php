@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
             'image_color.*' => 'required',
             'image_color.*.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'discount' => 'nullable|integer|between:0,50',
-            'color.*' => 'required',
+            'color' => 'required',
             'quantity' => 'required|integer|regex:/^[0-9]+$/',
         ];
     }
@@ -48,7 +48,7 @@ class ProductRequest extends FormRequest
             'image_color.required' => 'Chưa chọn hình cho sản phẩm',
             'sale_price.integer' => 'Giá tiền đã sale sản phẩm phải ở dạng số nguyên',
             'image_color.*.*.mines' => 'Ảnh có dạng jpeg,png,jpg,gif,webp',
-            'color.required' => 'Vui lòng chọn màu cho sản phẩm',
+            'color.required' => 'Vui lòng chọn màu và ảnh chi tiết cho sản phẩm',
             'description.required' => 'Chưa nhập mô tả',
             'status.required' => 'Chưa chọn trạng thái',
             'quantity.regex' => 'admin cố tình nhập bậy, đã ghi log để xử phạt',

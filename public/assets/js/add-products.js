@@ -156,15 +156,45 @@ $(document).ready(function () {
         })
     }
 
+    let slugUrl = function (str) {
+        // Chuyển hết sang chữ thường
+        str = str.toLowerCase();
+
+        // xóa dấu
+        str = str
+            .normalize('NFD') // chuyển chuỗi sang unicode tổ hợp
+            .replace(/[\u0300-\u036f]/g, ''); // xóa các ký tự dấu sau khi tách tổ hợp
+
+        // Thay ký tự đĐ
+        str = str.replace(/[đĐ]/g, 'd');
+
+        // Xóa ký tự đặc biệt
+        str = str.replace(/([^0-9a-z-\s])/g, '');
+
+        // Xóa khoảng trắng thay bằng ký tự -
+        str = str.replace(/(\s+)/g, '-');
+
+        // Xóa ký tự - liên tiếp
+        str = str.replace(/-+/g, '-');
+
+        // xóa phần dư - ở đầu & cuối
+        str = str.replace(/^-+|-+$/g, '');
+
+        // return
+        return str;
+    }
+
+    $(`input[name=name]`).keyup(function () {
+        $(`input[name=url]`).val(slugUrl($(this).val()));
+    })
+
+    $(`button#submit`).prop('disabled', true);
+    // console.log(quill.root.innerHTML);
     // xử lý dữ liệu trước khi submit form bằng ajax lên server
     $(`form#form-product`).submit(function (e) {
         e.preventDefault();
-        // document.getElementById('form-product').reset();    
         $(`div#errors`).empty();
         let formData = new FormData()
-        formData.append('name', $(`input#product-name-add`).val());
-        formData.append('category_id', $('select#product-category-add').val());
-        // console.log($(`input[data-type='subCat']`));
         let listSubCat = $(`input[data-type='subCat']`);
         for (var i = 0; i < listSubCat.length; i++) {
             var checkbox = $(`input[data-stt=sub-${i}]`);
@@ -189,12 +219,15 @@ $(document).ready(function () {
         for (let i = 1; i <= listColor.length; i++) {
             if ($(`input#color-${i}`).val()) formData.append('color[]', $(`input#color-${i}`).val());
         }
+        formData.append('avatar', $(`input[name=avatar]`).prop('files')[0]);
+        formData.append('name', $(`input#product-name-add`).val());
+        formData.append('url', $(`input[name=url]`).val())
+        formData.append('category_id', $('select#product-category-add').val());
         formData.append('regular_price', $(`input[name=regular_price]`).val());
         formData.append('discount', $(`input[name=discount]`).val());
         formData.append('sale_price', $(`input[name=sale_price]`).val());
         formData.append('quantity', $(`input[name=quantity]`).val());
         formData.append('sorting', $(`input[name=sorting]`).val());
-        // formData.append('description', $(`input[name=description]`).val());
         $(`input[name=on_outstanding]`).is(':checked') ? formData.append('on_outstanding', $(`input[name=on_outstanding]`).val()) : '';
         $(`input[name=on_hot]`).is(':checked') ? formData.append('on_hot', $(`input[name=on_hot]`).val()) : '';
         $(`input[name=on_sale]`).is(':checked') ? formData.append('on_sale', $(`input[name=on_sale]`).val()) : '';
@@ -210,7 +243,6 @@ $(document).ready(function () {
         });
         const quillContent = quill.root.innerHTML;
         formData.append('desc', quillContent);
-        
         $.ajax({
             url: '/admin/product/store',
             method: 'post',
@@ -221,22 +253,13 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
-                console.log(data);
                 if (data.messages) {
-                    // $('html, body').animate({scrollTop: 0}, 'fast');
-                    // $("div#subcategory_box").hide()
-                    // $('div.swiper-wrapper').empty();
-                    // document.getElementById('form-product').reset();
-                    // $(`div.color-group`).removeClass('color_group_display');
-                    // $(`select.select-color`).prop('required',false);
-                    // $(`input.product-Images`).prop('required',false);
-                    // $(`div.color-group`).hide();
-                    // $(`div#addImage`).show();
                     $('#success').click();
                 }
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {
+                    $("html, body").animate({ scrollTop: 0 }, 'fast')
                     var errors = error.responseJSON.errors;
                     console.log("Lỗi cụ thể:");
                     console.log(errors);
@@ -244,19 +267,19 @@ $(document).ready(function () {
                     var typeError = 0;
                     for (var key in errors) {
                         if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
-                            for(var keyChild of errors[key]){
+                            for (var keyChild of errors[key]) {
                                 errorMessages += `<div class="alert alert-danger text-capitalize">
-                                ${keyChild}
-                            </div>`;
+                                    ${keyChild}
+                                </div>`;
                             }
                         } else {
                             typeError++;
                         }
                     }
                     if (typeError > 0) errorMessages += `<div class="alert alert-danger text-capitalize">
-                    Chọn sai định dạng ảnh, ảnh phải có đuôi .jpeg, .png, .webp, .gif hoặc kích thước ảnh quá lớn
-                </div>`
-                        $(`div#errors`).append(errorMessages);
+                        Chọn sai định dạng ảnh, ảnh phải có đuôi .jpeg, .png, .webp, .gif hoặc kích thước ảnh quá lớn
+                    </div>`
+                    $(`div#errors`).append(errorMessages);
                 }
             }
         })

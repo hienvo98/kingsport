@@ -17,6 +17,7 @@
         ['image', 'video'],
         ['clean']                                         // remove formatting button
     ];
+
     var quill = new Quill('#blog-content', {
         modules: {
             toolbar: toolbarOptions
