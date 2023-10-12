@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="{{ asset('assets/css/add-product.css') }}">
 @extends('layouts.appAdmin')
 @section('content')
-
     <!-- Page Header -->
 
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -21,11 +20,9 @@
         </div>
     @endif
 
-    @foreach ($errors->all() as $error)
-        <div class="alert alert-danger">
-            <p>{{ $error }}</p>
-        </div>
-    @endforeach
+    <div id="errors">
+
+    </div>
 
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
@@ -51,7 +48,8 @@
                                                     <label for="product-name-add" class="form-label text-capitalize">Tên sản
                                                         phẩm</label>
                                                     <input type="text" name="name" class="form-control"
-                                                        id="product-name-add" placeholder="Name">
+                                                        id="product-name-add" placeholder="Name" required
+                                                        autocomplete="name" autofocus>
                                                     <label for="product-name-add"
                                                         class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Product Name
                                                         should not exceed 30 characters</label>
@@ -66,7 +64,7 @@
                                                         class="form-label text-capitalize">Danh mục</label>
 
                                                     <select class="form-control" name="category_id"
-                                                        id="product-category-add">
+                                                        id="product-category-add" required>
                                                         <option value="">Chọn Danh Mục</option>
                                                         @foreach ($cate as $category)
                                                             <option value="{{ $category->id }}">{{ $category->name }}
@@ -153,7 +151,8 @@
                                                     @enderror
                                                     <label for="product-discount" class="form-label">Discount</label>
                                                     <input type="text" name="discount" class="form-control"
-                                                        id="product-discount" placeholder="Discount in %" disabled>
+                                                        id="product-discount" value="" placeholder="Discount in %"
+                                                        disabled>
                                                     <label for="product-description-add"
                                                         class="form-label mt-1 fs-12 op-5 text-muted mb-0">Từ 1-50</label>
                                                 </div>
@@ -181,7 +180,7 @@
                                                     @enderror
                                                     <label for="product-cost-add" class="form-label">Số Lượng</label>
                                                     <input type="number" name="quantity" class="form-control"
-                                                        id="product-cost-add" placeholder="to be continued">
+                                                        id="product-cost-add" placeholder="to be continued" required>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <label for="product-cost-add" class="form-label">Thứ tự</label>
@@ -189,19 +188,6 @@
                                                     <input type="numper" name="sorting"
                                                         placeholder="Sản Phẩm Thứ {{ $sorting }}"
                                                         class="form-control" id="product-cost-add" disabled>
-                                                </div>
-
-                                                <div class="col-xl-12">
-                                                    @error('description')
-                                                        <div class="alert alert-danger text-capitalize">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                    <label for="product-description-add" class="form-label">Mô tả</label>
-                                                    <textarea class="form-control" name="description" id="product-description-add" rows="2"></textarea>
-                                                    <label for="product-description-add"
-                                                        class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Description
-                                                        should not exceed 500 letters</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,6 +201,7 @@
                                                 <div id="imageModal" class="modal">
                                                     <span class="close" id="closeModal">&times;</span>
                                                     <img class="modal-content" id="modalImage">
+
                                                 </div>
                                                 <div class="col-xl-6">
                                                     @error('status')
@@ -224,9 +211,8 @@
                                                     @enderror
                                                     <label for="product-status-add" class="form-label">Trạng Thái Hiển
                                                         Thị</label>
-                                                    <select class="form-control" data-trigger name="status"
-                                                        id="product-status-add">
-                                                        <option value="">Select</option>
+                                                    <select class="form-control" name="status" required>
+                                                        <option value="">Chọn Trạng Thái Hiển Thị</option>
                                                         <option value="on">Bật</option>
                                                         <option value="off">Ẩn</option>
                                                     </select>
@@ -234,11 +220,11 @@
                                                 <div class="col-xl-6">
                                                     <label for="product-status-add" class="form-label">Trạng Thái
                                                         Kho</label>
-                                                    <select class="form-control" data-trigger name="status_stock"
-                                                        id="product-status-add">
-                                                        <option value="">Select</option>
-                                                        <option value="on">Còn Hàng</option>
-                                                        <option value="off">Hết Hàng</option>
+                                                    <select class="form-control" name="status_stock"
+                                                        id="product-status-add" required>
+                                                        <option value="">Chọn Trạng Thái Kho</option>
+                                                        <option value="on">Bật</option>
+                                                        <option value="off">Ẩn</option>
                                                     </select>
                                                 </div>
 
@@ -312,15 +298,18 @@
                                                         <select class="form-select select-color"
                                                             data-number-color="color-1" data-select-color="color-1"
                                                             aria-label="Default select example">
-                                                            <option selected>Chọn Màu Sản Phẩm</option>
-                                                            <option data-color="red">red</option>
-                                                            <option data-color="black">black</option>
-                                                            <option data-color="gray">gray</option>
-                                                            <option data-color="white">white</option>
-                                                            <option data-color="beige">beige</option>
-                                                            <option data-color="brown">brown</option>
+                                                            <option selected value="">Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red" value="red">red</option>
+                                                            <option data-color="black" value="black">black</option>
+                                                            <option data-color="gray" value="gray">gray</option>
+                                                            <option data-color="white" value="white">white</option>
+                                                            <option data-color="beige" value="beige">beige</option>
+                                                            <option data-color="brown" value="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -349,11 +338,10 @@
                                                         <div class="mt-1">
                                                             <div class="col-xl-12 product-documents-container p-2">
                                                                 <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
-                                                                <input type="file" data-ver-color="" data-color="color-1"
-                                                                    id="file-color-1" name=""
-                                                                    class="product-Images form-control" name="filepond"
-                                                                    multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                                <input type="file" data-ver-color=""
+                                                                    data-color="color-1" id="file-color-1" name=""
+                                                                    class="product-Images form-control " multiple
+                                                                    data-allow-reorder="true" data-max-file-size="3MB">
                                                                 <input type="hidden" name="list_color_1" value="">
                                                             </div>
                                                             <div class="col-xl-12">
@@ -379,19 +367,23 @@
 
                                                 <div class="color-group" data-group-color="color-2"
                                                     style="display: none">
+
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-2" data-select-color="color-2"
                                                             aria-label="Default select example">
-                                                            <option selected>Chọn Màu Sản Phẩm</option>
-                                                            <option data-color="red">red</option>
-                                                            <option data-color="black">black</option>
-                                                            <option data-color="gray">gray</option>
-                                                            <option data-color="white">white</option>
-                                                            <option data-color="beige">beige</option>
-                                                            <option data-color="brown">brown</option>
+                                                            <option selected value="">Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red" value="red">red</option>
+                                                            <option data-color="black" value="black">black</option>
+                                                            <option data-color="gray" value="gray">gray</option>
+                                                            <option data-color="white" value="white">white</option>
+                                                            <option data-color="beige" value="beige">beige</option>
+                                                            <option data-color="brown" value="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -421,10 +413,9 @@
                                                             <div class="col-xl-12 product-documents-container p-2">
                                                                 <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
                                                                 <input type="file" data-color="color-2"
-                                                                    id="file-color-2" name=""
-                                                                    class="product-Images form-control" name="filepond"
-                                                                    multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                                    id="file-color-2" multiple name=""
+                                                                    class="product-Images form-control">
+
                                                             </div>
                                                             <div class="col-xl-12">
                                                                 <div class="card custom-card">
@@ -448,22 +439,24 @@
                                                     </div>
                                                 </div>
 
-
                                                 <div class="color-group" data-group-color="color-3"
                                                     style="display: none">
                                                     <div class="col-xl-6">
                                                         <select class="form-select select-color"
                                                             data-number-color="color-3" data-select-color="color-3"
                                                             aria-label="Default select example">
-                                                            <option selected>Chọn Màu Sản Phẩm</option>
-                                                            <option data-color="red">red</option>
-                                                            <option data-color="black">black</option>
-                                                            <option data-color="gray">gray</option>
-                                                            <option data-color="white">white</option>
-                                                            <option data-color="beige">beige</option>
-                                                            <option data-color="brown">brown</option>
+                                                            <option selected value="">Chọn Màu Sản Phẩm</option>
+                                                            <option data-color="red" value="red">red</option>
+                                                            <option data-color="black" value="black">black</option>
+                                                            <option data-color="gray" value="gray">gray</option>
+                                                            <option data-color="white" value="white">white</option>
+                                                            <option data-color="beige" value="beige">beige</option>
+                                                            <option data-color="brown" value="brown">brown</option>
                                                         </select>
                                                     </div>
+                                                    <label for="product-description-add"
+                                                        class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu Trước Khi
+                                                        Upload Ảnh</label>
                                                     <div class="image mt-1" style="border-bottom:1px solid blueviolet">
                                                         <div class="form-check d-none">
                                                             <div class="card custom-card mb-1">
@@ -493,10 +486,8 @@
                                                             <div class="col-xl-12 product-documents-container p-2">
                                                                 <p class="fw-semibold mb-2 fs-14">Chọn file ảnh: </p>
                                                                 <input type="file" data-color="color-3"
-                                                                    id="file-color-3" name=""
-                                                                    class="product-Images form-control" name="filepond"
-                                                                    multiple data-allow-reorder="true"
-                                                                    data-max-file-size="3MB" data-max-files="6">
+                                                                    id="file-color-3" multiple name=""
+                                                                    class="product-Images form-control" name="filepond">
                                                             </div>
                                                             <div class="col-xl-12">
                                                                 <div class="card custom-card">
@@ -532,9 +523,16 @@
 
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                         <meta name="csrf-token" content="{{ csrf_token() }}">
+                        <div class="col-xl-12 p-4">
+                            <label for="product-description-add" class="form-label">Mô tả Sản Phẩm</label>
+                            {{-- <textarea class="form-control" name="description" id="product-description-add" rows="2" required></textarea> --}}
+                            <div id="blog-content"></div>
+                            
+                        </div>
                         <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-end">
                             <button id="submit" type="submit" class="btn btn-primary-light m-1">Add Product<i
                                     class="bi bi-plus-lg ms-2"></i></button>

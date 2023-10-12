@@ -43,6 +43,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
         if (! Gate::allows('admin.category.store')) {
             abort(403);
         }
@@ -54,7 +55,7 @@ class CategoryController extends Controller
         $cate->name = $name;
         $cate->status = $status;
         $cate->ordinal_number = $ordinal_number;
-        //dd($cate);
+        // dd($cate);
         $cate->save();
         return response()->json([
             'message' => 'Thêm thành công',
