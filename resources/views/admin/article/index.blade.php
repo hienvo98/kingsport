@@ -21,383 +21,232 @@
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
     <div class="row">
-        <div class="col-xl-12">
-            <div class="row">
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/ghe-massage.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Ghế Massage</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/xe-dap-tap.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Xe Đạp Tập</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/gian-ta.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Giàn Tạ</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/may-chay-bo.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Máy chạy bộ</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/mini.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Máy Massage mini</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                    <a href="javascript:void(0);">
-                        <div class="card custom-card bg-dark overlay-card text-fixed-white">
-                            <img src="{{ asset('storage/images/suc-khoe.jpg') }}" class="card-img" alt="...">
-                            <div class="card-img-overlay d-flex flex-column p-0 over-content-bottom">
-                                <div class="card-footer border-top-0">
-                                    <h6 class="fw-semibold mb-0 text-fixed-white">Mẹo sức khỏe</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-12">
-        <h1 class="page-title fw-semibold fs-18 mb-0">Theo dòng sự kiện</h1>
-            <div class="row">
-                <div class="col-xl-6 col-xxl-8 col-lg-12 col-md-12">
-                    <div class="row">
-                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
-                            <div class="card custom-card">
-                                <a href="javascript:void(0);">
-                                    <img src="{{ asset('storage/images/event3.webp') }}" class="card-img-top" alt="...">
-                                </a>
-                                <div class="card-body">
-                                    <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">BÁO HIẾU MẸ CHA - TRAO QUÀ SỨC KHỎE | ƯU ĐÃI X3</font></font></a>
-                                    <p class="card-text text-muted mb-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Báo hiếu mùa Vu Lan đã trở thành truyền thống quý báu của dân tộc, được lớp lớp thế hệ gia đình Việt kế thừa và phát huy...</font></font></p>
-                                    <a href="javascript:void(0);" class="btn btn-primary-light"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Đọc thêm</font></font></a>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm avatar-rounded me-2">
-                                                <img src="{{asset('assets/images/faces/11.jpg')}}" alt="">
+        <div class="col-xl-3">
+            <div class="card custom-card">
+                <div class="card-body p-0">
+                    <div class="p-3 d-grid border-bottom border-block-end-dashed">
+                        <button class="btn btn-primary d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addtask">
+                            <i class="ri-add-circle-line fs-16 align-middle me-1"></i>Tạo bài viết
+                        </button>
+                        <div class="modal fade" id="addtask" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title" id="mail-ComposeLabel">Create Task</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body px-4">
+                                        <div class="row gy-2">
+                                            <div class="col-xl-12">
+                                                <label for="task-name" class="form-label">Task Name</label>
+                                                <input type="text" class="form-control" id="task-name" placeholder="Task Name">
                                             </div>
-                                            <div>
-                                                <p class="mb-0 fw-semibold"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Alister Chuk</font></font></p>
-                                                <p class="text-muted fs-10 mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">18,Tháng 12 2022 - 12:25</font></font></p>
+                                            <div class="col-xl-12">
+                                                <label class="form-label">Assigned To</label>
+                                                <select class="form-control" name="choices-multiple-remove-button" id="choices-multiple-remove-button" multiple>
+                                                    <option value="Choice 1" selected>Angelina May</option>
+                                                    <option value="Choice 2">Kiara advain</option>
+                                                    <option value="Choice 3">Hercules Jhon</option>
+                                                    <option value="Choice 4">Mayor Kim</option>
+                                                </select>
                                             </div>
-                                        </div>
-                                        <div class="btn-list">
-                                            <button aria-label="cái nút" type="button" class="btn btn-icon btn-light btn-sm m-1"><i class="ri-thumb-up-line"></i></button>
-                                            <button aria-label="cái nút" type="button" class="btn btn-icon btn-light btn-sm m-1"><i class="ri-chat-2-line"></i></button>
+                                            <div class="col-xl-6">
+                                                <label class="form-label">Assigned Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
+                                                        <input type="text" class="form-control" id="addignedDate" placeholder="Choose date and time">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <label class="form-label">Target Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
+                                                        <input type="text" class="form-control" id="targetDate" placeholder="Choose date and time">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <label class="form-label">Priority</label>
+                                                <select class="form-control" data-trigger name="choices-single-default" id="choices-single-default">
+                                                    <option value="">Select</option>
+                                                    <option value="Critical">Critical</option>
+                                                    <option value="High">High</option>
+                                                    <option value="Medium">Medium</option>
+                                                    <option value="Low">Low</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
-                            <div class="card custom-card">
-                                <a href="javascript:void(0);">
-                                    <img src="{{ asset('storage/images/event2.webp') }}" class="card-img-top" alt="...">
-                                </a>
-                                <div class="card-body">
-                                    <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Bãi biển tuyệt đẹp vào một ngày nắng!</font></font></a>
-                                    <p class="card-text text-muted mb-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nguyên lý ảnh ba chiều, được lý thuyết là một tính chất của lực hấp dẫn lượng tử, đưa ra giả thuyết rằng sự mô tả.</font></font></p>
-                                    <a href="javascript:void(0);" class="btn btn-primary-light"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Đọc thêm</font></font></a>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm avatar-rounded me-2">
-                                                <img src="{{asset('assets/images/faces/3.jpg')}}" alt="">
-                                            </div>
-                                            <div>
-                                                <p class="mb-0 fw-semibold"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Samantha Nance</font></font></p>
-                                                <p class="text-muted fs-10 mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">25,Tháng 12 2022 - 04:25</font></font></p>
-                                            </div>
-                                        </div>
-                                        <div class="btn-list">
-                                            <button aria-label="cái nút" type="button" class="btn btn-icon btn-light btn-sm m-1"><i class="ri-thumb-up-line"></i></button>
-                                            <button aria-label="cái nút" type="button" class="btn btn-icon btn-light btn-sm m-1"><i class="ri-chat-2-line"></i></button>
-                                        </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Create</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-6 col-xxl-4 col-lg-12 col-md-12">
-                    <div class="card custom-card">
-                        <div class="card-header d-flex align-items-center justify-content-between">
-                            <div class="card-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                Blog nổi bật
-                            </font></font></div>
-                            <div>
-                                <span class="badge bg-primary-transparent"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">32 Blog</font></font></span>
-                            </div>
+                    <div class="p-3 border-bottom border-block-end-dashed">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here" aria-describedby="button-addon2">
+                            <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
                         </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                        <span class="avatar avatar-xl me-3">
-                                            <img src="{{ asset('storage/images/event1.webp') }}" class="img-fluid" alt="...">
+                    </div>
+                    <div class="p-3 task-navigation border-bottom border-block-end-dashed">
+                        <ul class="list-unstyled task-main-nav mb-0">
+                            <li class="px-0 pt-0">
+                                <span class="fs-11 text-muted op-7 fw-semibold">TASKS</span>
+                            </li>
+                            <li class="active">
+                                <a href="javascript:void(0);">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-task-line align-middle fs-14"></i>
                                         </span>
-                                        <div class="flex-fill">
-                                            <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Samantha Jack</font></font></a>
-                                            <p class="mb-1 popular-blog-content text-truncate"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                                Có rất nhiều biến thể của đoạn văn Lorem Ipsum có sẵn
-                                            </font></font></p>
-                                            <span class="text-muted fs-11"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">24,Tháng 11 2022 - 18:27</font></font></span>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-icon btn-light btn-sm rtl-rotate"><i class="ri-arrow-right-s-line"></i></button>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                        <span class="avatar avatar-xl me-3">
-                                            <img src="{{asset('assets/images/media/media-56.jpg')}}" class="img-fluid" alt="...">
+                                        <span class="flex-fill text-nowrap">
+                                            All Tasks
                                         </span>
-                                        <div class="flex-fill">
-                                            <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kirsten Sam</font></font></a>
-                                            <p class="mb-1 popular-blog-content text-truncate"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                                Từ Latin, kết hợp với một số câu mẫu
-                                            </font></font></p>
-                                            <span class="text-muted fs-11"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">28,Tháng 11 2022 - 10:45</font></font></span>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-icon btn-light btn-sm rtl-rotate"><i class="ri-arrow-right-s-line"></i></button>
-                                        </div>
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo(count($blog)) ;?></span>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                        <span class="avatar avatar-xl me-3">
-                                            <img src="{{asset('assets/images/media/media-54.jpg')}}" class="img-fluid" alt="...">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-star-line align-middle fs-14"></i>
                                         </span>
-                                        <div class="flex-fill">
-                                            <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Jessica bây giờ</font></font></a>
-                                            <p class="mb-1 popular-blog-content text-truncate"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                                Trái ngược với niềm tin phổ biến, Lorem Ipsum không chỉ đơn giản là ngẫu nhiên
-                                            </font></font></p>
-                                            <span class="text-muted fs-11"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">30,Tháng 11 2022 - 08:32</font></font></span>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-icon btn-light btn-sm rtl-rotate"><i class="ri-arrow-right-s-line"></i></button>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                        <span class="avatar avatar-xl me-3">
-                                            <img src="{{asset('assets/images/media/media-52.jpg')}}" class="img-fluid" alt="...">
+                                        <span class="flex-fill text-nowrap">
+                                            Starred
                                         </span>
-                                        <div class="flex-fill">
-                                            <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stuart rộng</font></font></a>
-                                            <p class="mb-1 popular-blog-content text-truncate"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                                Nó được phổ biến vào những năm 1960 với việc phát hành các tờ Letraset có chứa
-                                            </font></font></p>
-                                            <span class="text-muted fs-11"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3,Tháng 12 2022 - 12:56</font></font></span>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-icon btn-light btn-sm rtl-rotate"><i class="ri-arrow-right-s-line"></i></button>
-                                        </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item text-center">
-                                    <button class="btn btn-primary-light"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tải thêm</font></font></button>
-                                </li>
-                            </ul>
-                        </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-delete-bin-5-line align-middle fs-14"></i>
+                                        </span>
+                                        <span class="flex-fill text-nowrap">
+                                            Trash
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="px-0 pt-2">
+                                <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
+                            </li>
+                            @foreach ($category as $_category)
+                            <li>
+                                <a href="javascript:void(0);" class="category-item" data-category-id="{{ $_category->id }}">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
+                                        </span>
+                                        
+                                        <span class="flex-fill text-nowrap">
+                                            {{$_category->name}}
+                                        </span>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-12">
+        <div class="col-xl-9">
             <div class="row">
-                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="col-xl-12">
                     <div class="card custom-card">
-                        <a href="javascript:void(0);">
-                            <img src="{{ asset('storage/images/demo.jpg') }}" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1">Strawberry juice recipe.</a>
-                            <p class="card-text text-muted mb-3">Want to have something different but healthy to drink? Then look no further!! Strawberry Juice is rich in vitamin</p>
-                            <a href="javascript:void(0);" class="btn btn-primary-light">Read More</a>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm avatar-rounded me-2">
-                                        <img src="{{ asset('storage/images/demo.jpg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Maria Bose</p>
-                                        <p class="text-muted fs-10 mb-0">17,Dec 2022 - 12:32</p>
-                                    </div>
+                        <div class="card-body p-0">
+                            <div class="d-flex p-3 align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="fw-semibold mb-0">Bài viết</h6>
                                 </div>
-                                <div class="btn-list">
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-thumb-up-line"></i></button>
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-chat-2-line"></i></button>
+                                <div>
+                                    <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
+                                        <li class="nav-item m-1">
+                                            <a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+                                            href="#all-tasks" aria-selected="true">Tất Cả</a>
+                                        </li>
+                                        <li class="nav-item m-1">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                            href="#pending" aria-selected="true">Chưa xuất bản</a>
+                                        </li>
+                                        <li class="nav-item m-1">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                            href="#completed" aria-selected="true">Đã xuất bản</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ti ti-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="javascript:void(0);">Select All</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);">Share All</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);">Delete All</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card custom-card">
-                        <a href="javascript:void(0);">
-                            <img src="{{ asset('storage/images/demo.jpg') }}" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1">Night Sky is pleasent to watch.</a>
-                            <p class="card-text text-muted mb-3">Sky map showing the night sky tonight from any location. What planets are visible tonight? Where is Mars. </p>
-                            <a href="javascript:void(0);" class="btn btn-primary-light">Read More</a>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm avatar-rounded me-2">
-                                        <img src="{{ asset('storage/images/demo.jpg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Helsenky</p>
-                                        <p class="text-muted fs-10 mb-0">24,Dec 2022 - 14:21</p>
-                                    </div>
-                                </div>
-                                <div class="btn-list">
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-thumb-up-line"></i></button>
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-chat-2-line"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card custom-card">
-                        <a href="javascript:void(0);">
-                            <img src="{{ asset('storage/images/demo.jpg') }}" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1">Is fashion industry growing ?</a>
-                            <p class="card-text text-muted mb-3">The holographic principle, theorized to be a property of quantum gravity, postulates that the description.</p>
-                            <a href="javascript:void(0);" class="btn btn-primary-light">Read More</a>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm avatar-rounded me-2">
-                                        <img src="{{ asset('storage/images/demo.jpg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Jason Mama</p>
-                                        <p class="text-muted fs-10 mb-0">19,Dec 2022 - 15:48</p>
-                                    </div>
-                                </div>
-                                <div class="btn-list">
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-thumb-up-line"></i></button>
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-chat-2-line"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card custom-card">
-                        <a href="javascript:void(0);">
-                            <img src="{{ asset('storage/images/demo.jpg') }}" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <a href="blog-details.html" class="fw-semibold fs-14 text-dark mb-1">Raising sun is a blessing to watch ..</a>
-                            <p class="card-text text-muted mb-3">Rising Sun is a 1993 American buddy cop crime thriller film directed by Philip Kaufman.</p>
-                            <a href="javascript:void(0);" class="btn btn-primary-light">Read More</a>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm avatar-rounded me-2">
-                                        <img src="{{ asset('storage/images/demo.jpg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Stuart Hall</p>
-                                        <p class="text-muted fs-10 mb-0">13,Dec 2022 - 19:08</p>
-                                    </div>
-                                </div>
-                                <div class="btn-list">
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-thumb-up-line"></i></button>
-                                    <button aria-label="button" type="button" class="btn btn-icon btn-light btn-sm"><i class="ri-chat-2-line"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('admin.article.list-buy-category');        
+            </div>
+            <div class="d-flex pagination justify-content-end flex-wrap">
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        {{-- Nút "Previous" --}}
+                        @if ($blog->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->previousPageUrl() }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Danh sách các trang --}}
+                        @for ($i = 1; $i <= $blog->lastPage(); $i++)
+                            <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $blog->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        {{-- Nút "Next" --}}
+                        @if ($blog->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->nextPageUrl() }}" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <!-- Modal add -->
+                @include('admin/category/create')
             </div>
         </div>
     </div>
     <!--End::row-1 -->
-
-    <!-- Start: pagination -->
-    <div class="float-end mb-4">
-        <nav aria-label="Page navigation" class="">
-            <ul class="pagination mb-0">
-                <li class="page-item disabled">
-                    <a class="page-link" href="javascript:void(0);">
-                        Prev
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">
-                        <i class="bi bi-three-dots"></i>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0);">17</a></li>
-                <li class="page-item">
-                    <a class="page-link text-primary" href="javascript:void(0);">
-                        next
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <!-- End: pagination -->
     @endsection

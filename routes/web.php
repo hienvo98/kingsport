@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[ArticleController::class,'edit'])->name('post.edit');
         Route::post('/update',[ArticleController::class,'update'])->name('post.update');
         Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
+
     });
 
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);

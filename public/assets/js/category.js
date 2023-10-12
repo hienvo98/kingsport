@@ -123,7 +123,6 @@ $(document).ready(function () {
         });
     });
 
-
     $('#btnAddCategory').click(function () {
         var formData = $('#categoryForm').serialize();
         $.ajax({
@@ -143,7 +142,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
     //subcategory
 
