@@ -110,7 +110,7 @@
                                         <span class="flex-fill text-nowrap">
                                             All Tasks
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill">167</span>
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo(count($blog)) ;?></span>
                                     </div>
                                 </a>
                             </li>
@@ -143,7 +143,7 @@
                             </li>
                             @foreach ($category as $_category)
                             <li>
-                                <a href="javascript:void(0);">
+                                <a href="javascript:void(0);" class="category-item" data-category-id="{{ $_category->id }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
@@ -203,269 +203,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-content task-tabs-container">
-                    <div class="tab-pane show active p-0" id="all-tasks"role="tabpanel">                     
-                        <div class="row" id="tasks-container">
-                        @foreach ($blog as $blogAll)
-                            <div class="col-xl-4 task-card">
-                                <div class="card custom-card <?php if ($blogAll->status == 'off') { echo 'task-pending-card'; } else { echo 'task-completed-card'; } ?>">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>{{$blogAll->title}}</p>
-                                                <p class="mb-3">Ngày tạo : <span class="fs-12 mb-1 text-muted">{{$blogAll->created_at}}</span></p>
-                                                <p class="mb-3">Ngày xuất bản : <span class="fs-12 mb-1 text-muted">{{$blogAll->created_at}}</span></p>
-                                                <p class="mb-0">Người tạo :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/2.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-warning-transparent d-block">High</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                        </div>                        
-                    </div>
-                    <div class="tab-pane p-0" id="pending"
-                        role="tabpanel">
-                        <div class="row">
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-pending-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>New Project Blueprint</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">13,Nov 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">20,Nov 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/2.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/8.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/2.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/10.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-warning-transparent d-block">High</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-pending-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center">
-                                                    <a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 me-1 text-warning"></i></a>Updating Old Ui</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">30,Nov 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">05,Dec 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/14.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/13.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/21.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/16.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-warning-transparent d-block">High</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane p-0" id="completed"
-                        role="tabpanel">
-                        <div class="row">
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-completed-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>New Plugin Development</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">28,Oct 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">28,Nov 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/3.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/8.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/9.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-success-transparent d-block">Low</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-completed-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>Documentation For New Template</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">25,Nov 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">10,Dec 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/8.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/10.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/11.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-danger-transparent d-block">Critical</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-completed-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center">
-                                                    <a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>Developing New Events in Plugin</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">5,Dec 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">10,Dec 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/5.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/8.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/11.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-primary-transparent d-block">Medium</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4">
-                                <div class="card custom-card task-completed-card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div>
-                                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>Designing Of New Ecommerce Pages</p>
-                                                <p class="mb-3">Assigned On : <span class="fs-12 mb-1 text-muted">1,Dec 2022</span></p>
-                                                <p class="mb-3">Target Date : <span class="fs-12 mb-1 text-muted">15,Dec 2022</span></p>
-                                                <p class="mb-0">Assigned To :
-                                                    <span class="avatar-list-stacked ms-1">
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/1.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/3.jpg" alt="img">
-                                                        </span>
-                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                            <img src="../assets/images/faces/6.jpg" alt="img">
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <div class="btn-list">
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-primary-light"><i class="ri-edit-line"></i></button>
-                                                    <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0"><i class="ri-delete-bin-line"></i></button>
-                                                </div>
-                                                <span class="badge bg-success-transparent d-block">Low</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>    
-                    </div>
-                </div>        
+                @include('admin.article.list-buy-category');        
             </div>
-            <ul class="pagination justify-content-end">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">Next</a>
-                </li>
-            </ul>
+            <div class="d-flex pagination justify-content-end flex-wrap">
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        {{-- Nút "Previous" --}}
+                        @if ($blog->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->previousPageUrl() }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Danh sách các trang --}}
+                        @for ($i = 1; $i <= $blog->lastPage(); $i++)
+                            <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $blog->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        {{-- Nút "Next" --}}
+                        @if ($blog->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->nextPageUrl() }}" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <!-- Modal add -->
+                @include('admin/category/create')
+            </div>
         </div>
     </div>
     <!--End::row-1 -->
