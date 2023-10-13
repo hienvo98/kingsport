@@ -8,6 +8,7 @@
     @include('admin.partials.header')
     @include('admin.partials.sidebar')
     @include('admin.components.alert')
+    <script src="{{asset('assets/libs/quill/quill.min.js')}}"></script>
     <div class="main-content app-content">
         <div class="container-fluid">
             @yield('content')
@@ -37,7 +38,7 @@
 <script src="{{asset('assets/libs/flatpickr/flatpickr.min.js')}}"></script>
 
 <!-- Quill Editor JS -->
-<script src="{{asset('assets/libs/quill/quill.min.js')}}"></script>
+
 
 <!-- Filepond JS -->
 <script src="{{asset('assets/libs/filepond/filepond.min.js')}}"></script>
@@ -53,7 +54,8 @@
 <script src="{{asset('assets/libs/filepond-plugin-image-transform/filepond-plugin-image-transform.min.js')}}"></script>
 
 <!-- Internal Add Products JS -->
-<script src="{{asset('assets/js/add-products.js')}}"></script>
+{{-- <script src="{{asset('assets/js/add-products.js')}}"></script> --}}
 <!-- Internal Create Blog JS -->
-<script src="{{asset('assets/js/blog-create.js')}}"></script>
+{{-- <script src="{{asset('assets/js/blog-create.js')}}"></script> --}}
+<script src="{{ asset('assets/js/quill-editor.js') }}"></script>
 </body>

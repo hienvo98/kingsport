@@ -30,6 +30,9 @@ class Product extends Model
         'rate',
         'sorting',
         'status',
+        'avatar',
+        'sold',
+        'url',
     ];
     public function category()
     {

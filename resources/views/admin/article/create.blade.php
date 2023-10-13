@@ -105,4 +105,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('assets/js/blog-create.js')}}"></script>
 @endsection
