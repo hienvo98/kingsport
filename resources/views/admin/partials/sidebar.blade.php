@@ -127,14 +127,13 @@
                             </li>
                         </ul>
                     </li>
-                    
                 @endcan
 
                 <!-- Start::slide -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Pages</span>
+                        <span class="side-menu__label">Quản Lý Sản Phẩm</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
 
@@ -145,24 +144,25 @@
                         @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
                             'admin.category.destroy'])
                             <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
+                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục Sản Phẩm
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                 <ul class="slide-menu child2">
                                     <li class="slide">
                                         <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
+                                            Sách Sản Phẩm</a>
                                     </li>
                                 </ul>
                             </li>
                         @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
+                        @canany(['admin.product.index', 'admin.product.create', 'admin.product.store',
+                            'admin.product.update', 'admin.product.destroy'])
                             <li class="slide has-sub active">
                                 <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                 <ul class="slide-menu child2 active" style="display: block;">
                                     <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
+                                        <a href="{{ route('admin.product.index') }}" class="side-menu__item">Danh
+                                            Sách</a>
                                     </li>
                                     <li class="slide active">
                                         <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
@@ -173,32 +173,33 @@
                         @endcanany
                     </ul>
                 </li>
-                @canany(['admin.post.index', 'admin.post.create' ,'admin.post.store', 'admin.post.update',
-                            'admin.post.destroy'])
+                @canany(['admin.post.index', 'admin.post.create', 'admin.post.store', 'admin.post.update',
+                    'admin.post.destroy'])
                     <li class="slide has-sub">
-                            <a href="javascript:void(0);" class="side-menu__item">
-                                <i class='bx bxl-blogger side-menu__icon'></i>
-                                <span class="side-menu__label">Bài Viết</span>
-                                <i class="fe fe-chevron-right side-menu__angle"></i>
-                            </a>
+                        <a href="javascript:void(0);" class="side-menu__item">
+                            <i class='bx bxl-blogger side-menu__icon'></i>
+                            <span class="side-menu__label">Bài Viết</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
 
-                            <ul class="slide-menu child1">
-                                <li class="slide side-menu__label1">
-                                    <a href="javascript:void(0)">Bài Viết</a>
-                                </li>
-                                <li class="slide has-sub">
-                                    <a href="javascript:void(0);" class="side-menu__item">Về Sản Phẩm
-                                        <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                    <ul class="slide-menu child2">
-                                        <li class="slide">
-                                            <a href="{{ route('admin.post.index') }}" class="side-menu__item">Danh Sách</a>
-                                        </li>
-                                        <li class="slide">
-                                            <a href="{{ route('admin.post.create') }}" class="side-menu__item">Tạo Bài Viết</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <ul class="slide-menu child1">
+                            <li class="slide side-menu__label1">
+                                <a href="javascript:void(0)">Bài Viết</a>
+                            </li>
+                            <li class="slide has-sub">
+                                <a href="javascript:void(0);" class="side-menu__item">Về Sản Phẩm
+                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                                <ul class="slide-menu child2">
+                                    <li class="slide">
+                                        <a href="{{ route('admin.post.index') }}" class="side-menu__item">Danh Sách</a>
+                                    </li>
+                                    <li class="slide">
+                                        <a href="{{ route('admin.post.create') }}" class="side-menu__item">Tạo Bài
+                                            Viết</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                 @endcanany
                 <!-- showrooms -->

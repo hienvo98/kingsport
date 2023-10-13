@@ -115,8 +115,10 @@
                                                             <input type="text" name="url" class="form-control"
                                                                 id="product-url-add" placeholder="Url" required
                                                                 autocomplete="name" autofocus>
-                                                                <label for="product-name-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0 text-capitalize">URL sẽ được tự động sinh ra khi nhập tên sản phẩm, vui lòng không viết bậy bạ vào đây</label>
+                                                            <label for="product-name-add"
+                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0 text-capitalize">URL
+                                                                sẽ được tự động sinh ra khi nhập tên sản phẩm, vui lòng
+                                                                không viết bậy bạ vào đây</label>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             @error('category_id')
@@ -236,19 +238,14 @@
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                         </div>
 
-                                                        <div class="col-xl-6">
-                                                            @error('quantity')
-                                                                <div class="alert alert-danger text-capitalize">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
+                                                        <div class="col-xl-4">
                                                             <label for="product-cost-add" class="form-label">Số
                                                                 Lượng</label>
                                                             <input type="number" name="quantity" class="form-control"
                                                                 id="product-cost-add" placeholder="to be continued"
                                                                 required>
                                                         </div>
-                                                        <div class="col-xl-6">
+                                                        <div class="col-xl-4">
                                                             <label for="product-cost-add" class="form-label">Thứ
                                                                 tự</label>
                                                             <input type="hidden" name="sorting"
@@ -257,11 +254,15 @@
                                                                 placeholder="Sản Phẩm Thứ {{ $sorting }}"
                                                                 class="form-control" id="product-cost-add" disabled>
                                                         </div>
-                                                        <div class="col-xl-12" id="imageList"></div>
-                                                        <div id="imageModal" class="modal">
-                                                            <span class="close" id="closeModal">&times;</span>
-                                                            <img class="modal-content" id="modalImage">
+                                                        <div class="col-xl-4">
+                                                            <label for="product-cost-add" class="form-label">Số
+                                                                Lượng Đã Bán</label>
+                                                            <input type="number" name="sold" class="form-control"
+                                                                id="product-cost-add" placeholder="to be continued">
+                                                            <label for="product-name-add"
+                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0">Real or fake, it's up to you</label>
                                                         </div>
+                                                        <div class="col-xl-12" id="imageList"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -283,10 +284,8 @@
                                                     <div class="row gy-3 p-3">
                                                         <label for="product-description-add" class="form-label">Mô tả Sản
                                                             Phẩm</label>
-                                                        {{-- <textarea class="form-control" name="description" id="product-description-add" rows="2" required></textarea> --}}
                                                         <div id="blog-content"></div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -742,7 +741,31 @@
             </form>
         </div>
     </div>
-    </div>
-    <!--End::row-1 -->
-    <script src="{{asset('assets/js/add-products.js')}}"></script>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <script src="{{ asset('assets/js/add-products.js') }}"></script>
 @endsection

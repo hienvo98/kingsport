@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+
 
 class HomeController extends Controller
 {
@@ -47,17 +49,22 @@ class HomeController extends Controller
 
         // //create  all Permissions
 
-        $routes = Route::getRoutes();
-        foreach ($routes as $route) {
-            if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
-                $listRouteName[] = $route->getname();
-            }
-        }
-        $listPermissions = Permission::pluck('name')->toArray();
-        foreach($listRouteName as $route){
-            if(!in_array($route,$listPermissions)) Permission::create(['name'=>$route]);
-        }
-        
+        // $routes = Route::getRoutes();
+        // foreach ($routes as $route) {
+        //     if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
+        //         $listRouteName[] = $route->getname();
+        //     }
+        // }
+        // $listPermissions = Permission::pluck('name')->toArray();
+        // foreach($listRouteName as $route){
+        //     if(!in_array($route,$listPermissions)) Permission::create(['name'=>$route]);
+        // }
+
+        // $user = User::find(3);
+        // dd($user->checkPermission('admin'));
+
+        // return $user->checkPermission('admin');
+
         // //destroy all Role
         // $listRole = Role::pluck('id')->toArray();
         // Role::destroy($listRole);
@@ -72,6 +79,9 @@ class HomeController extends Controller
 
     public function test2(Request $request)
     {
-        dd($request->all());
+        if (! Gate::allows('admin.abc.index')) {
+            abort(403);
+        }
+        return 'okokko';
     }
 }

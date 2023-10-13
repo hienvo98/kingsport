@@ -100,33 +100,30 @@ $(document).ready(function () {
         };
         $(`div[data-slide=${$(this).attr('data-color')}]`).empty();
         $(`div[data-slide=${$(this).attr('data-color')}]`).append(slide); // Thêm slide mới vào cấu trúc DOM
-
-        //xử lý xoá ảnh 
-        $(`i.delete-image-product`).click(function () {
-            let data_num = $(this).attr('data-num');
-
-        })
-
+         
 
         $('img.thumbnail').click(function () {
-            var modal = $('#imageModal');
-            var modalImage = $('#modalImage');
-            modalImage.attr('src', $(this).attr('src'));
-            modal.css('display', 'block');
+            // var modal = $('div.modal');
+            // var modalImage = $('#modalImage');
+            // modalImage.attr('src', $(this).attr('src'));
+            // modal.css('display', 'block');
+            // modal.attr("style", "display: block !important;");
+            // console.log('okok');
         });
 
         $('.close').click(function () {
-            $('#imageModal').css('display', 'none');
+            $('div.modal').css('display', 'none');
         });
 
-        $('#imageModal').click(function (e) {
+        $('div.modal').click(function (e) {
             if (e.target === this) {
                 $(this).css('display', 'none');
             }
         });
+
     });
 
-
+    // $('div#imageModal').css('display','none');
     // xử lý click chọn màu
     let selectColorEvent = function () {
         let color_number = $(this).attr('data-number-color');
@@ -187,9 +184,8 @@ $(document).ready(function () {
     $(`input[name=name]`).keyup(function () {
         $(`input[name=url]`).val(slugUrl($(this).val()));
     })
-
-    $(`button#submit`).prop('disabled', true);
     // console.log(quill.root.innerHTML);
+    // $(`button#submit`).prop('disabled', true);
     // xử lý dữ liệu trước khi submit form bằng ajax lên server
     $(`form#form-product`).submit(function (e) {
         e.preventDefault();
@@ -219,7 +215,7 @@ $(document).ready(function () {
         for (let i = 1; i <= listColor.length; i++) {
             if ($(`input#color-${i}`).val()) formData.append('color[]', $(`input#color-${i}`).val());
         }
-        formData.append('avatar', $(`input[name=avatar]`).prop('files')[0]);
+        formData.append('avatarThumb', $(`input[name=avatar]`).prop('files')[0]);
         formData.append('name', $(`input#product-name-add`).val());
         formData.append('url', $(`input[name=url]`).val())
         formData.append('category_id', $('select#product-category-add').val());
@@ -227,6 +223,7 @@ $(document).ready(function () {
         formData.append('discount', $(`input[name=discount]`).val());
         formData.append('sale_price', $(`input[name=sale_price]`).val());
         formData.append('quantity', $(`input[name=quantity]`).val());
+        formData.append('sold', $(`input[name=sold]`).val());
         formData.append('sorting', $(`input[name=sorting]`).val());
         $(`input[name=on_outstanding]`).is(':checked') ? formData.append('on_outstanding', $(`input[name=on_outstanding]`).val()) : '';
         $(`input[name=on_hot]`).is(':checked') ? formData.append('on_hot', $(`input[name=on_hot]`).val()) : '';
@@ -238,9 +235,9 @@ $(document).ready(function () {
         formData.append('status', $(`select[name=status]`).val());
         formData.append('status_stock', $(`select[name=status_stock]`).val());
 
-        const quill = new Quill('#blog-content', {
-            theme: 'snow'
-        });
+        // const quill = new Quill('#blog-content', {
+        //     theme: 'snow'
+        // });
         const quillContent = quill.root.innerHTML;
         formData.append('desc', quillContent);
         $.ajax({
