@@ -47,16 +47,16 @@ class HomeController extends Controller
 
         // //create  all Permissions
 
-        // $routes = Route::getRoutes();
-        // foreach ($routes as $route) {
-        //     if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
-        //         $listRouteName[] = $route->getname();
-        //     }
-        // }
-        // $listPermissions = Permission::pluck('name')->toArray();
-        // foreach($listRouteName as $route){
-        //     if(!in_array($route,$listPermissions)) Permission::create(['name'=>$route]);
-        // }
+        $routes = Route::getRoutes();
+        foreach ($routes as $route) {
+            if (Str::contains($route->getName(), 'admin') && count(explode('.', $route->getName())) > 2 && !in_array(explode('.', $route->getName())[2], ['create', 'edit'])) {
+                $listRouteName[] = $route->getname();
+            }
+        }
+        $listPermissions = Permission::pluck('name')->toArray();
+        foreach($listRouteName as $route){
+            if(!in_array($route,$listPermissions)) Permission::create(['name'=>$route]);
+        }
         
         // //destroy all Role
         // $listRole = Role::pluck('id')->toArray();
@@ -66,7 +66,7 @@ class HomeController extends Controller
         // $roleSuperAdmin = Role::create(['name'=>'Super Admin']);
         // $allPermissionId = Permission::pluck('id')->toArray();
             // dd(Role::find(1)->permissions()->attach);
-            // Role::find(1)->permissions()->sync(Permission::pluck('id')->toArray());
+            Role::find(1)->permissions()->sync(Permission::pluck('id')->toArray());
         // $user = $user->roles()->attach([$roleSuperAdmin->id]);
     }
 

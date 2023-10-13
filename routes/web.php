@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
 
 /*
@@ -74,6 +75,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[ArticleController::class,'edit'])->name('post.edit');
         Route::post('/update',[ArticleController::class,'update'])->name('post.update');
         Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
+
+    });
+
+    Route::prefix('/showroom')->group(function(){
+        Route::get('/index',[ShowroomController::class,'index'])->name('showroom.index');
+        Route::get('/create',[ShowroomController::class,'create'])->name('showroom.create');
+        Route::post('/store',[ShowroomController::class,'store'])->name('showroom.store');
+        Route::get('/edit/{id}',[ShowroomController::class,'edit'])->name('showroom.edit');
+        Route::post('/update',[ShowroomController::class,'update'])->name('showroom.update');
+        Route::get('/delete/{id}',[ShowroomController::class,'destroy'])->name('showroom.destroy');
 
     });
 

@@ -201,219 +201,22 @@
                             </ul>
                     </li>
                 @endcanany
-
+                <!-- showrooms -->
+                
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Quản lý đơn hàng</span>
+                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <span class="side-menu__label">Showroom</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
 
                     <ul class="slide-menu child1">
-                        <li class="slide side-menu__label1">
-                            <a href="javascript:void(0)">Pages</a>
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.showroom.index') }}" class="side-menu__item">Danh Sách</a>
                         </li>
-                        @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
-                            'admin.category.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
-                                    <li class="slide">
-                                        <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
-                            <li class="slide has-sub active">
-                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2 active" style="display: block;">
-                                    <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                    </li>
-                                    <li class="slide active">
-                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                            sản phẩm </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                    </ul>
-                </li>
-
-                <li class="slide has-sub">
-                    <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Khuyến mãi</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
-
-                    <ul class="slide-menu child1">
-                        <li class="slide side-menu__label1">
-                            <a href="javascript:void(0)">Pages</a>
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.showroom.create') }}" class="side-menu__item">Tạo showroom</a>
                         </li>
-                        @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
-                            'admin.category.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
-                                    <li class="slide">
-                                        <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
-                            <li class="slide has-sub active">
-                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2 active" style="display: block;">
-                                    <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                    </li>
-                                    <li class="slide active">
-                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                            sản phẩm </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                    </ul>
-                </li>
-
-                <li class="slide has-sub">
-                    <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Quản trị người dùng</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
-
-                    <ul class="slide-menu child1">
-                        <li class="slide side-menu__label1">
-                            <a href="javascript:void(0)">Pages</a>
-                        </li>
-                        @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
-                            'admin.category.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
-                                    <li class="slide">
-                                        <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
-                            <li class="slide has-sub active">
-                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2 active" style="display: block;">
-                                    <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                    </li>
-                                    <li class="slide active">
-                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                            sản phẩm </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                    </ul>
-                </li>
-
-                <li class="slide has-sub">
-                    <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Chiến lược tiếp thị</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
-
-                    <ul class="slide-menu child1">
-                        <li class="slide side-menu__label1">
-                            <a href="javascript:void(0)">Pages</a>
-                        </li>
-                        @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
-                            'admin.category.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
-                                    <li class="slide">
-                                        <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
-                            <li class="slide has-sub active">
-                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2 active" style="display: block;">
-                                    <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                    </li>
-                                    <li class="slide active">
-                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                            sản phẩm </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                    </ul>
-                </li>
-
-                <li class="slide has-sub">
-                    <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">CSKH</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
-
-                    <ul class="slide-menu child1">
-                        <li class="slide side-menu__label1">
-                            <a href="javascript:void(0)">Pages</a>
-                        </li>
-                        @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
-                            'admin.category.destroy'])
-                            <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2">
-                                    <li class="slide">
-                                        <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        @canany(['admin.product.index', 'admin.product.create' ,'admin.product.store', 'admin.product.update',
-                            'admin.product.destroy'])
-                            <li class="slide has-sub active">
-                                <a href="javascript:void(0);" class="side-menu__item active">Sản Phẩm
-                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
-                                <ul class="slide-menu child2 active" style="display: block;">
-                                    <li class="slide">
-                                        <a href="{{route('admin.product.index')}}" class="side-menu__item">Danh Sách</a>
-                                    </li>
-                                    <li class="slide active">
-                                        <a href="{{ route('admin.product.create') }}" class="side-menu__item active">Thêm
-                                            sản phẩm </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
                     </ul>
                 </li>
                 <!-- End::slide -->
