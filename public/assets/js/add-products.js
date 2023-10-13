@@ -187,9 +187,8 @@ $(document).ready(function () {
     $(`input[name=name]`).keyup(function () {
         $(`input[name=url]`).val(slugUrl($(this).val()));
     })
-
-    $(`button#submit`).prop('disabled', true);
     // console.log(quill.root.innerHTML);
+    // $(`button#submit`).prop('disabled', true);
     // xử lý dữ liệu trước khi submit form bằng ajax lên server
     $(`form#form-product`).submit(function (e) {
         e.preventDefault();
@@ -238,9 +237,9 @@ $(document).ready(function () {
         formData.append('status', $(`select[name=status]`).val());
         formData.append('status_stock', $(`select[name=status_stock]`).val());
 
-        const quill = new Quill('#blog-content', {
-            theme: 'snow'
-        });
+        // const quill = new Quill('#blog-content', {
+        //     theme: 'snow'
+        // });
         const quillContent = quill.root.innerHTML;
         formData.append('desc', quillContent);
         $.ajax({
@@ -253,9 +252,10 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
-                if (data.messages) {
-                    $('#success').click();
-                }
+                console.log(data);  
+                // if (data.messages) {
+                //     $('#success').click();
+                // }
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {

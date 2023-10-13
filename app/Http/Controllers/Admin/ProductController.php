@@ -60,13 +60,9 @@ class ProductController extends Controller
             // Thay thế đường dẫn bằng tên tệp hình ảnh
             $desc = str_replace($imagePath, $imageName, $desc);
         }
+        
         $request->merge(['description'=>$desc]);
-        // dd($request->all());
-         return response() -> json([
-            'code'=>200,
-            'messages' => $request->all()
-        ]);
-
+    
         $product = Product::create($request->all());
         
         $listColor = [
@@ -107,6 +103,7 @@ class ProductController extends Controller
             'code' => 200,
             'messages' => 'Đã thêm sản phẩm thành công'
         ]);
+
     }
 
     public function validateForm()

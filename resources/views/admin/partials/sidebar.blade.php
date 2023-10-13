@@ -134,7 +134,7 @@
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class="bx bx-file-blank side-menu__icon"></i>
-                        <span class="side-menu__label">Pages</span>
+                        <span class="side-menu__label">Quản Lý Sản Phẩm</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
 
@@ -145,12 +145,12 @@
                         @canany(['admin.category.index', 'admin.category.store', 'admin.category.update',
                             'admin.category.destroy'])
                             <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục
+                                <a href="javascript:void(0);" class="side-menu__item">Danh Mục Sản Phẩm
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                 <ul class="slide-menu child2">
                                     <li class="slide">
                                         <a href="{{ route('admin.category.index') }}" class="side-menu__item">Danh
-                                            Sách</a>
+                                            Sách Sản Phẩm</a>
                                     </li>
                                 </ul>
                             </li>

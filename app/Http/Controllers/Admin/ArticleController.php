@@ -22,17 +22,8 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $blog = Article::with('category')->paginate(9);
-        $blogPendings = $blog->where('status', 'off');
-        $blogcompleteds = $blog->where('status', 'on');
-        $_category = Category::get();
-        
-        return view('admin.article.index', [
-            'blog' => $blog,
-            'category' => $_category,
-            'blogcompleteds' => $blogcompleteds,
-            'blogPendings' => $blogPendings,
-        ]);
+        $_category = Category::where('status', 'on')->get();
+        return view('admin.article.index');
     }
 
     /**

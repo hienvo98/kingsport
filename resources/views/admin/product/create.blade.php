@@ -115,8 +115,10 @@
                                                             <input type="text" name="url" class="form-control"
                                                                 id="product-url-add" placeholder="Url" required
                                                                 autocomplete="name" autofocus>
-                                                                <label for="product-name-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0 text-capitalize">URL sẽ được tự động sinh ra khi nhập tên sản phẩm, vui lòng không viết bậy bạ vào đây</label>
+                                                            <label for="product-name-add"
+                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0 text-capitalize">URL
+                                                                sẽ được tự động sinh ra khi nhập tên sản phẩm, vui lòng
+                                                                không viết bậy bạ vào đây</label>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             @error('category_id')
@@ -283,7 +285,6 @@
                                                     <div class="row gy-3 p-3">
                                                         <label for="product-description-add" class="form-label">Mô tả Sản
                                                             Phẩm</label>
-                                                        {{-- <textarea class="form-control" name="description" id="product-description-add" rows="2" required></textarea> --}}
                                                         <div id="blog-content"></div>
                                                     </div>
 
@@ -744,5 +745,5 @@
     </div>
     </div>
     <!--End::row-1 -->
-    <script src="{{asset('assets/js/add-products.js')}}"></script>
+    <script src="{{ asset('assets/js/add-products.js') }}"></script>
 @endsection
