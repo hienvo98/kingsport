@@ -77,6 +77,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
 
     });
 
+    Route::prefix('/showroom')->group(function(){
+        Route::get('/index',[ArticleController::class,'index'])->name('showroom.index');
+        Route::get('/create',[ArticleController::class,'create'])->name('showroom.create');
+        Route::post('/store',[ArticleController::class,'store'])->name('showroom.store');
+        Route::get('/edit/{id}',[ArticleController::class,'edit'])->name('showroom.edit');
+        Route::post('/update',[ArticleController::class,'update'])->name('showroom.update');
+        Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('showroom.destroy');
+
+    });
+
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
     Route::get('/authorize/edit/{id}',[AdminController::class,'editRole']);
     Route::post('/authorize/update',[AdminController::class,'updateRole']);
@@ -92,4 +102,6 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
 
 //dùng để reset lại tất cả các quyền và cấp super Admin
 Route::get('/reset',[HomeController::class,'reset']);
+Route::get('/test2',[HomeController::class,'test2']);
+
 

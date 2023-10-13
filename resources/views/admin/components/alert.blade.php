@@ -31,23 +31,29 @@
     </div>
 </div>
 
+
+
+<div class="modal" id="modal-loading" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="loading-spinner mb-2"></div>
+                <div>Loading....</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="success"></div>
+
 
 <script>
     $(document).ready(function() {
         $('#success').click(function() {
-            $('#imageModal').empty();
-            $('#imageModal').append(`<div class="spinner-border text-primary" role="status">
-            <span class="sr-only text-white">Loading...</span>
-          </div>`);
-            $('#imageModal').css({
-                'display': 'flex',
-                'justify-content': 'center',
-                'align-items': 'center'
-            });
+            $('#modal-loading').modal('show');
             setTimeout(function() {
-                $('#imageModal').css('display', 'none');
-                $('#imageModal').empty();
+                $('#modal-loading').modal('hide');
                 $('div#notify').text('Đã Tải Lên Thành Công');
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function() {
