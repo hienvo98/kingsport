@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('address')->nullable();
+            $table->string('url')->nullable();
             $table->integer('region_id');
             $table->integer('phone')->nullable();
             $table->enum('status', ['on', 'off'])->default('on');
-            $table->text('description')->nullable();
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
+            $table->text('seo_keywords')->nullable();
+            $table->text('content')->nullable();
             $table->text('images')->nullable();
+            $table->text('thumbnail')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamps();

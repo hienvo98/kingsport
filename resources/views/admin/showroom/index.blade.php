@@ -34,7 +34,8 @@
                         <ul class="list-unstyled task-main-nav mb-0">
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Vùng Miền</span>
-                            </li>                      
+                            </li>
+                            @if($regions)                      
                             @foreach ($regions as $region)
                             <li>
                                 <a href="javascript:void(0);" class="category-item">
@@ -50,7 +51,7 @@
                                 </a>
                             </li>
                             @endforeach
-                            
+                            @endif
                         </ul>
                     </div>
                 </div>

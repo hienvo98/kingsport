@@ -3,17 +3,17 @@
         <div class="row" id="tasks-container">
         
             <div class="col-xl-4 task-card">
+                @foreach($showrooms as $all)
                 <div class="card custom-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between flex-wrap gap-2">
                             <div>
-                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>showroom1</p>
-                                <p class="mb-3">Ngày tạo : <span class="fs-12 mb-1 text-muted">2023</span></p>
-                                <p class="mb-3">Ngày xuất bản : <span class="fs-12 mb-1 text-muted">2023</span></p>
-                                <p class="mb-0">gì đó
+                                <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>{{$all->name}}</p>
+                                <p class="mb-3">Địa chỉ : <span class="fs-12 mb-1 text-muted">{{$all->address}}</span></p>
+                                <p class="mb-3">Số điện thoại : <span class="fs-12 mb-1 text-muted">{{$all->phone}}</span></p>
+                                
                                 </p>
-                            </div>
-                            
+                            </div>                        
                         </div> 
                     </div>
                 </div>
