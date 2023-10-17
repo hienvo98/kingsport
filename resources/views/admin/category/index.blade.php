@@ -147,10 +147,6 @@
                             id="openCreateModal">Thêm Danh Mục</button>
                         <!-- Modal add -->
                         @include('admin/category/create')
-                        {{-- Modal edit --}}
-                        @include('admin/category/edit')
-                        {{-- Modal add Subcat --}}
-                        @include('admin/category/sub-category')
                     </div>
                 </div>
             </div>

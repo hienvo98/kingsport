@@ -4,6 +4,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createModalLabel">Tạo Thuộc Tính</h5>
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> --}}
                 <button style="margin-right:3%;" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -28,15 +31,6 @@
                                                     <input type="text" class="form-control" name="sub_category_name" placeholder="Name" required>
                                                 </div>
                                                 <div class="col-xl-12">
-                                                    <label for="" class="form-label">Ảnh Đại Diện Danh
-                                                        Mục</label>
-                                                    <input type="file" class="form-control" name="avatar"
-                                                        placeholder="Name">
-                                                    <img style="display: none" src="" id="imageCatEdit"
-                                                        alt="Image"
-                                                        class="img-fluid img-thumbnail rounded mt-2" />
-                                                </div>
-                                                <div class="col-xl-12">
                                                     <label for="product-status" class="form-label">Trạng Thái</label>
                                                     <select class="form-control" name="status" id="product-status">
                                                         <option value="true">Bật</option>
@@ -45,8 +39,7 @@
                                                 </div>
                                                 <div class="col-xl-12">
                                                     <label for="product-order" class="form-label">Số Thứ Tự</label>
-                                                    <input type="text" class="form-control" name="ordinal_number" id="sub_ordinal_number"/>
-                                                    <input type="hidden" name="sub_ordinal_number" value="">
+                                                    <input type="number" class="form-control" name="ordinal_number" required id="ordinal_number" />
                                                 </div>                                         
                                             </div>
                                         </div>
