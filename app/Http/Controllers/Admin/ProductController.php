@@ -13,7 +13,6 @@ use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use App\Models\color_version;
 use App\Models\image_service;
-use App\Models\SubCategory;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -50,12 +49,12 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         if (!empty($request->subCat)) {
             $request->merge(['subcategory_id' => serialize($request->subCat)]);
-        } else {
-            $request->merge(['subcategory_id' => 'null']);
+        }else{
+            $request->merge(['subcategory_id'=>'null']);
         }
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
@@ -63,8 +62,10 @@ class ProductController extends Controller
         $imagePaths = $matches[1];
         foreach ($imagePaths as $imagePath) {
             $newImagePath = $this->storeImage($imagePath, $request->input('name'));
+
             // Lấy tên tệp hình ảnh từ đường dẫn
             $imageName = pathinfo($newImagePath, PATHINFO_BASENAME);
+
             // Thay thế đường dẫn bằng tên tệp hình ảnh
             $desc = str_replace($imagePath, $imageName, $desc);
         }
@@ -73,7 +74,7 @@ class ProductController extends Controller
         $avatarPath = ImageStorageLibrary::storeImage($list_color_image['avatarThumb'], "products/{$request->name}/avatar");
         $request->merge(['avatar' => basename($avatarPath)]);
         $product = Product::create($request->all());
-
+        
         $listColor = [
             'red' => '#FF0000',
             'gray' => '#808080',
