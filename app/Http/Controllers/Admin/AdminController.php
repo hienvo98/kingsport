@@ -78,7 +78,6 @@ class AdminController extends Controller
         if (!Gate::allows('Super Admin')) {
             abort(403);
         }
-
         $usersWithoutRoles = User::whereDoesntHave('roles')->where('is_admin', '=', '1')->withTrashed()->get();
         $usersWithoutSuperAdmin = User::withTrashed()
             ->with('roles')
@@ -86,7 +85,6 @@ class AdminController extends Controller
                 $query->where('name', '<>', 'super admin');
             })
             ->where('is_admin', '=', '1')->get();
-
         $users = $usersWithoutRoles->merge($usersWithoutSuperAdmin);;
         return view('admin.members.index', compact('users'));
     }

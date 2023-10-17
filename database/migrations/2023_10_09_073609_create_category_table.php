@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('ordinal_number');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->enum('status',['1' , '0'])->default('0');
             $table->timestamps();
         });
