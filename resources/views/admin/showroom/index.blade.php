@@ -1,4 +1,3 @@
-
 @extends('layouts.appAdmin')
 @section('content')
     <!-- Page Header -->
@@ -13,7 +12,7 @@
             </nav>
         </div>
     </div>
-    @if(session('message'))
+    @if (session('message'))
         <div id="notification" class="alert alert-success">
             {{ session('message') }}
         </div>
@@ -26,8 +25,10 @@
                 <div class="card-body p-0">
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here" aria-describedby="button-addon2">
-                            <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here"
+                                aria-describedby="button-addon2">
+                            <button class="btn btn-light" type="button" id="button-addon2"><i
+                                    class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>
                     <div class="p-3 task-navigation border-bottom border-block-end-dashed">
@@ -35,22 +36,23 @@
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Vùng Miền</span>
                             </li>
-                            @if($regions)                      
-                            @foreach ($regions as $region)
-                            <li>
-                                <a href="javascript:void(0);" class="category-item">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-2 lh-1">
-                                            <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
-                                        </span>
-                                        
-                                        <span class="flex-fill text-nowrap">
-                                            {{$region->name}}
-                                        </span>
-                                    </div>
-                                </a>
-                            </li>
-                            @endforeach
+                            @if ($regions)
+                                @foreach ($regions as $region)
+                                    <li>
+                                        <a href="javascript:void(0);" class="category-item">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2 lh-1">
+                                                    <i
+                                                        class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
+                                                </span>
+
+                                                <span class="flex-fill text-nowrap">
+                                                    {{ $region->name }}
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
                             @endif
                         </ul>
                     </div>
@@ -69,22 +71,23 @@
                                 <div>
                                     <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
                                         <li class="nav-item m-1">
-                                            <a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#all-tasks" aria-selected="true">Tất Cả</a>
+                                            <a class="nav-link active" data-bs-toggle="tab" role="tab"
+                                                aria-current="page" href="#all-tasks" aria-selected="true">Tất Cả</a>
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#completed" aria-selected="true">Đang hoạt động</a>
+                                                href="#completed" aria-selected="true">Đang hoạt động</a>
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#pending" aria-selected="true">Ngừng hoạt động</a>
-                                        </li>                                    
+                                                href="#pending" aria-selected="true">Ngừng hoạt động</a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <div class="dropdown" style="display: none;" >
-                                        <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="dropdown" style="display: none;">
+                                        <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ti ti-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -98,9 +101,9 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.showroom.list-showroom');        
+                @include('admin.showroom.list-showroom')
             </div>
         </div>
     </div>
     <!--End::row-1 -->
-    @endsection
+@endsection

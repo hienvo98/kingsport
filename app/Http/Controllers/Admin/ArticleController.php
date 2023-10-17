@@ -25,7 +25,6 @@ class ArticleController extends Controller
         $blogPendings = $blog->where('status', 'off');
         $blogcompleteds = $blog->where('status', 'on');
         $_category = Category::get();
-        
         return view('admin.article.index', [
             'blog' => $blog,
             'category' => $_category,

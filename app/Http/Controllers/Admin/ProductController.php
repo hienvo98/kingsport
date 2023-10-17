@@ -22,8 +22,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::with('category', 'subCategory')->orderBy('id', 'desc')->paginate(5);
-        return view('admin.product.list', ['product' => $product]);
+        $products = Product::with('category','category.subCategory')->orderBy('id', 'desc')->paginate(5);
+        $subCatId = [];
+        foreach ($products as $product) {
+            $subCatId[] = unserialize($product->subcategory_id);
+        }
+        // unset($products[0]->category->subCategory[1]);
+        dd($products[0]);
+        return view('admin.product.list', compact('product'));
     }
 
     /**
