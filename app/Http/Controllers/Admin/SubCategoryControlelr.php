@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Libraries\ImageStorageLibrary;
 
 class SubCategoryControlelr extends Controller
 {
@@ -30,21 +30,15 @@ class SubCategoryControlelr extends Controller
      */
     public function store(Request $request)
     {
-        $formData = $request->input('formData');
-        $dataPairs = explode('&', $formData);
-        $data = [];
-        foreach ($dataPairs as $pair) {
-            list($key, $value) = explode('=', $pair);
-            $data[urldecode($key)] = urldecode($value);
-        }
-        
         $subCate = new SubCategory();
-        
-        $subCate->category_id = $request->input('categoryId');
-        $subCate->name = $data['sub_category_name'];
-        $subCate->ordinal_number = $data['ordinal_number'];
-        $subCate->status = $data['status']= true? 1: 0;
-
+        $subCate->category_id = $request -> category_id;
+        $subCate->name = $request -> sub_category_name;
+        $subCate->ordinal_number = $request->sub_ordinal_number;
+        $subCate->status = $data['status']= true ? '1': '0';
+        if(!empty($request->avatar)){
+            $pathImage = ImageStorageLibrary::storeImage($request->avatar,"category/{$request->category_name}/avatarSub/{$request->sub_category_name}");
+            $subCate->avatar = basename($pathImage);
+        }
         if($subCate->save()) {
             return response([
                 'code' => 200,
@@ -90,5 +84,12 @@ class SubCategoryControlelr extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getRank(Request $request){
+        return response() -> json([
+            'code' => 200,
+            'messages' => SubCategory::where('category_id',$request->categoryId)->count()
+        ],200);
     }
 }

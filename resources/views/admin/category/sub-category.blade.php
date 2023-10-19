@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="createSubCateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
