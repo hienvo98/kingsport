@@ -30,7 +30,7 @@
                 <div class="card-header">
                     <div class="card-title">New Showroom</div>
                 </div>
-                <form id="showroom-form" method="POST" enctype="multipart/form-data">
+                <form id="showroom-form" enctype="multipart/form-data">
                     @csrf()
                     <div class="card-body">
                         <div class="row gy-3">
@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-thumbnail" class="form-label">Images Detail</label>
-                                <input type="file" class="form-control" multiple name="images_detail" id="images_detail" accept=".jpg, .jpeg, .png" placeholder="Hình ảnh chi tiết" required>
+                                <input type="file" class="form-control" multiple name="images_detail[]" id="images_detail" accept=".jpg, .jpeg, .png" placeholder="Hình ảnh chi tiết" required>
                             </div>
                             <div class="col-xl-12">
                                 <div class="card custom-card">

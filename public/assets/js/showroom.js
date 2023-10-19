@@ -39,15 +39,11 @@ $(document).ready(function() {
             var file = files[i];
             if (file.type.match('image.*')) {
                 var reader = new FileReader();
-                loadImage(
-                    file,
-                    function (img) {
-                        // Khi xử lý xong, img chứa hình ảnh đã thay đổi kích thước
-                        // Hiển thị hình ảnh trong danh sách
+                loadImage(file,function (img) {
                         var image = $('<img>').attr('src', img.toDataURL('image/jpeg'));
                         $('#image-list').append(image);
                     },
-                    { maxWidth: 150, maxHeight: 150, canvas: true, orientation: true }
+                    { maxWidth: 300, maxHeight: 150, canvas: true, orientation: true }
                 );
             }
         }
@@ -57,12 +53,12 @@ $(document).ready(function() {
     $('#showroom-form').submit(function (event) {
         event.preventDefault();
         const formData = new FormData(this);
+        console.log(formData);
         const quill = new Quill('#blog-content', {
             theme: 'snow'
         });
         const quillContent = quill.root.innerHTML;
         formData.append('blog_content', quillContent);
-        // console.log(quillContent);
         $.ajax({
             type: 'POST',
             url: '/admin/showroom/store',
@@ -70,12 +66,11 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function (response) {
-                // console.log(response);
-                window.scrollTo(0, 0);
+                location.reload();
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
-                    location.reload();
+                    
                 }, 3000);
             },
             error: function (error) {

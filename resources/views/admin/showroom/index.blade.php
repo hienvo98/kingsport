@@ -49,6 +49,7 @@
                                                 <span class="flex-fill text-nowrap">
                                                     {{ $region->name }}
                                                 </span>
+                                                <span class="badge bg-success-transparent rounded-pill"><?php echo(count($region->showroom)) ;?></span>
                                             </div>
                                         </a>
                                     </li>

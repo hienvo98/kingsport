@@ -23,9 +23,8 @@ class ShowroomController extends Controller
      */
     public function index()
     {
-        $regions = Regions::get();
-        // dd($regions);
-        return view('admin.showroom.index')->with('regions', $regions);
+        $regions = Regions::with('showroom')->get();
+        return view('admin.showroom.index')->with(['regions' => $regions]);
     }
 
     /**
@@ -42,7 +41,6 @@ class ShowroomController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'title' => 'required|max:255',
             'url' => 'required|unique:showroom|max:255',
@@ -56,6 +54,7 @@ class ShowroomController extends Controller
         $showroom = new ShowRoom;
         $showroom->name = $request->input('title');
         $showroom->url = $request->input('url');
+        $showroom->address = $request->input('address');
         $showroom->phone = $request->input('phone');
         $showroom->region_id = $request->input('region_id');
         $showroom->seo_title = $request->input('seo_title');
@@ -67,21 +66,26 @@ class ShowroomController extends Controller
             if (!MimeChecker::isImage($thumbnail->getPathname())) {
                 return response()->json(['message' => 'Tệp không hợp lệ. Chỉ cho phép tải lên hình ảnh dưới 3MB.'], 400);
             }else{           
-                $imagePath = $this->imageStorage->storeImage($thumbnail, 'showroom_images/'.$request->input('title').'/'.'thumbnail');
+                $imagePath = $this->imageStorage->storeImage($thumbnail, 'showroom-images/'.$request->input('title').'/'.'thumbnail');
                 $fileName = basename($imagePath);
                 $showroom->thumbnail = $fileName;
             }
         }
-        $images_detail = $request->file('images_detail');
-
-        if ($images_detail) {
+        
+        if ($request->hasFile('images_detail')) {
+            $images = $request->file('images_detail');
             $imageList = [];
-            foreach ($images_detail as $image_detail) {
-                    $imagePath = $this->imageStorage->storeImage($image_detail, 'showroom_images/' . $request->input('title') . '/' . 'images-detail');
-                    $fileName = basename($imagePath);
-                    $imageList[] = $fileName;
-                
+            $count = 1;
+
+            foreach ($images as $image) {
+                $originalName = $image->getClientOriginalName();
+                $fileName = $request->input('url') . '-hinh-' . $count;
+                $imagePath = $this->imageStorage->storeImage($image, 'showroom-images/' . $request->input('url') . '/images-detail', $fileName);
+                $imageList[] = $fileName;
+
+                $count++; 
             }
+
             $showroom->images = json_encode($imageList);
         }
 

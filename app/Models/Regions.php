@@ -9,4 +9,7 @@ class Regions extends Model
 {
     use HasFactory;
     protected $table = 'regions';
+    public function showroom(){
+        return $this->hasMany(ShowRoom::class,'region_id');
+    }
 }
