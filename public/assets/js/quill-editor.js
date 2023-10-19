@@ -21,9 +21,10 @@ var toolbarOptions = [
 ];
 var quill = new Quill('#blog-content', {
     modules: {
-        toolbar: toolbarOptions
+        toolbar: toolbarOptions,
     },
-    theme: 'snow'
+    theme: 'snow',
+    
 });
 // for blog images
 const MultipleElement = document.querySelector('.blog-images');

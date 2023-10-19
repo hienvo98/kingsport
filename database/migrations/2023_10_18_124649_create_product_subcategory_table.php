@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
+        Schema::create('product_subcategory', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('subCategory_id');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
-            $table->dropColumn('product_id');
-        });
+        Schema::dropIfExists('product_subcategory');
     }
 };

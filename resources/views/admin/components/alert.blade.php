@@ -59,7 +59,7 @@
                 setTimeout(function() {
                     $('#successAlertContainer').addClass('d-none');
                     location.reload();
-                }, 2000);
+                }, 1000);
             }, 1500);
         })
     })

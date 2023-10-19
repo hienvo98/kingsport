@@ -32,57 +32,85 @@
                         <table class="table text-nowrap table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">
+                                    {{-- <th scope="col">
                                         <input class="form-check-input check-all" type="checkbox" id="all-products"
                                             value="" aria-label="...">
-                                    </th>
+                                    </th> --}}
                                     <th scope="col">Tên</th>
                                     <th scope="col">Danh Mục</th>
                                     <th scope="col">Danh Mục Thuộc Tính</th>
                                     <th scope="col">Giá</th>
                                     <th scope="col">Số Lượng</th>
-                                    <th scope="col">Mô Tả</th>
+                                    {{-- <th scope="col">Mô Tả</th> --}}
                                     <th scope="col">Trạng Thái</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">Thao Tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="product-list">
-                                    <td class="product-checkbox"><input class="form-check-input" type="checkbox"
-                                            id="product1" value="" aria-label="..."></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-2">
-                                                <span class="avatar avatar-md avatar-rounded">
-                                                    <img src="{{ asset('storage/images/demo.jpg') }}" alt="">
-                                                </span>
-                                            </div>
-                                            <div class="fw-semibold">
-                                                asdasdasddas
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light text-default">ádsadad</span>
-                                    </td>
-                                    <td><span class="badge bg-light text-default">ádsadd</span></td>
-                                    <td>ádasdad</td>
-                                    <td>adadad</td>
-                                    <td>dấdasdsd</td>
-                                    <td>
-                                            <span class="badge bg-danger-transparent">Tắt</span>
-                                            <span class="badge bg-success-transparent">Bật</span>
-                                    </td>
-                                    <td>
-                                        <div class="hstack gap-2 fs-15">
-                                            <a href="edit-products.html" class="btn btn-icon btn-sm btn-info-light"><i
-                                                    class="ri-edit-line"></i></a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-icon btn-sm btn-danger-light product-btn"><i
-                                                    class="ri-delete-bin-line"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (!empty($products))
+                                    @foreach ($products as $item)
+                                        <tr class="product-list">
+                                            {{-- <td class="product-checkbox"><input class="form-check-input" type="checkbox"
+                                                    id="product1" value="" aria-label="..."></td> --}}
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-2">
+                                                        <span class="avatar avatar-md avatar-rounded">
+                                                            <img src="{{ url("storage/uploads/products/{$item->name}/avatar/{$item->avatar}") }}"
+                                                                alt="">
+                                                        </span>
+                                                    </div>
+                                                    <div class="fw-semibold">
+                                                        {{ $item->name }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-light text-default">{{ $item->category->name }}</span>
+                                            </td>
+                                            <td>
+                                                @if (!empty($item->subCategory))
+                                                    @foreach ($item->subCategory as $subCat)
+                                                        <span
+                                                            class="badge bg-light text-default">{{ $subCat->name }}</span><br>
+                                                    @endforeach
+                                                @else
+                                                    <span class="badge bg-light text-default">Không Có</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <p class="text-danger text-decoration-line-through">
+                                                    {{ $item->sale_price > 0 ? number_format($item->regular_price, 0, '', '.') . ' đ' : '' }}
+                                                </p>
+                                                <p class="text-primary">{{ $item->sale_price > 0 ? number_format($item->sale_price, 0, '', '.') . ' đ' : number_format($item->regular_price, 0, '', '.') . ' đ' }}
+                                                </p>
+                                            </td>
+                                            <td>{{ $item->quantity }}</td>
+                                            {{-- <td>dấdasdsd</td> --}}
+                                            <td>
+                                                @if ($item->status == 'on')
+                                                    <span class="badge bg-success-transparent">Bật</span>
+                                                @else
+                                                    <span class="badge bg-danger-transparent">Tắt</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="hstack gap-2 fs-15">
+                                                    <a href="{{ route('admin.product.edit',['id'=>$item->id]) }}"
+                                                        class="btn btn-icon btn-sm btn-info-light"><i
+                                                            class="ri-edit-line"></i></a>
+                                                    <a href=""
+                                                        class="btn btn-icon btn-sm btn-danger-light product-btn btnDeleteProduct {{ $item->status=='off'?'disable-link':'' }}" data-id="{{ $item->id }}"><i
+                                                            class="ri-delete-bin-line"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class="">
+                                        <td colspan="9">Chưa Có Sản Phẩm nào Được Tạo</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -90,29 +118,30 @@
                         <nav aria-label="...">
                             <ul class="pagination mb-0">
                                 {{-- Nút "Previous" --}}
-                                {{-- @if ($product->onFirstPage())
+                                @if ($products->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Previous</span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $product->previousPageUrl() }}" aria-label="Previous">
+                                        <a class="page-link" href="{{ $products->previousPageUrl() }}"
+                                            aria-label="Previous">
                                             <span aria-hidden="true">Previous</span>
                                         </a>
                                     </li>
-                                @endif --}}
+                                @endif
 
                                 {{-- Danh sách các trang --}}
-                                {{-- @for ($i = 1; $i <= $product->lastPage(); $i++)
-                                    <li class="page-item {{ $i === $product->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $product->url($i) }}">{{ $i }}</a>
+                                @for ($i = 1; $i <= $products->lastPage(); $i++)
+                                    <li class="page-item {{ $i === $products->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
                                     </li>
-                                @endfor --}}
+                                @endfor
 
                                 {{-- Nút "Next" --}}
-                                {{-- @if ($product->hasMorePages())
+                                @if ($products->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $product->nextPageUrl() }}" aria-label="Next">
+                                        <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
                                             <span aria-hidden="true">Next</span>
                                         </a>
                                     </li>
@@ -120,7 +149,7 @@
                                     <li class="page-item disabled">
                                         <span class="page-link">Next</span>
                                     </li>
-                                @endif --}}
+                                @endif
                             </ul>
                         </nav>
                         <button type="button" class="btn btn-primary btn-wave m-1 waves-effect waves-light">Thêm Sản
@@ -130,4 +159,5 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/add-products.js') }}"></script>
 @endsection

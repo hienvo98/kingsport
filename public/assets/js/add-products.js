@@ -255,5 +255,22 @@ $(document).ready(function () {
             }
         })
     })
+   
+
+    $(`a.btnDeleteProduct`).click(function(even){
+        even.preventDefault();
+        let id = $(this).data('id');
+        $.ajax({
+            url:'delete/'+id,
+            type:'get',
+            success:function(response){
+                if(response.messages == 'success') $('#success').click();
+            },
+            error:function(error){
+                console.log(error)
+            }
+        })
+    })
+
 });
 

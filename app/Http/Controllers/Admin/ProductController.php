@@ -23,28 +23,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->orderBy('id', 'desc')->paginate(5);
-        $subCatId = [];
-        foreach ($products as $product) {
-            $subCatId[] = unserialize($product->subcategory_id);
-        }
-        foreach($products as $key => $product){
-            // dd(array_values($subCatId[$key]));
-            // dd($subCatId[$key]);
-            // dd($products[$key]);
-            for($i=0; $i< count($product->category->subCategory); $i++){
-                $fff =  in_array(($product->category->subCategory[$i]->id),$subCatId[$i]);
-                dd($fff);
-              if(!$fff){
-                unset ($products[$key]->category->subCategory[$i]);
-              };
-            }
-
-            // unset ($products[$key]->category->subCategory[0]);
-        }
-        // unset($products[0]->category->subCategory[0]);
-        dd($products[1]->category->subCategory);
-        return view('admin.product.list', compact('product'));
+        $products = Product::with('category')->with('subCategory')->with('colors', 'colors.images')->with('images')->orderBy('id', 'desc')->paginate(5);
+        return view('admin.product.list', compact('products'));
     }
 
     /**
@@ -66,14 +46,9 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        if (!empty($request->subCat)) {
-            $request->merge(['subcategory_id' => serialize($request->subCat)]);
-        } else {
-            $request->merge(['subcategory_id' => 'null']);
-        }
+
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
-
         $imagePaths = $matches[1];
         foreach ($imagePaths as $imagePath) {
             $newImagePath = $this->storeImage($imagePath, $request->input('name'));
@@ -87,7 +62,9 @@ class ProductController extends Controller
         $avatarPath = ImageStorageLibrary::storeImage($list_color_image['avatarThumb'], "products/{$request->name}/avatar");
         $request->merge(['avatar' => basename($avatarPath)]);
         $product = Product::create($request->all());
-
+        if (!empty($request->subCat)) {
+            $product->subCategory()->attach($request->subCat);
+        }
         $listColor = [
             'red' => '#FF0000',
             'gray' => '#808080',
@@ -144,7 +121,31 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
+        preg_match_all('/<img[^>]+src="([^"]+)"/',$product->description, $matches);
+        foreach($matches[1] as $imagePath){ 
+            $product->description = str_replace($imagePath, url("storage/uploads/products/$product->name/content/$imagePath"), $product->description );
+        }
+        $color_ver = [];
+        foreach ($product->colors as $color) {
+            $color_ver[$color->name] = unserialize($color->images->url);
+            $color->images->url = unserialize($color->images->url);
+        };
+        $image_ver=[];
+        foreach($color_ver as $color => $images){
+            $html = '';
+            foreach($images as $image){
+                $src = url("storage/uploads/products/$product->name/$color/$image");
+                $html .=  "<div class='swiper-slide' style='position:relative'>
+                <img class='img-fluid thumbnail' src='$src' alt='img'>
+            </div>";
+            }
+            $image_ver[] = $html;
+        }
+        if (!$product) abort(404);
+        $cate = Category::with('subCategory')->get();
+        $sorting = $product->sorting;
+        return view('admin.product.edit', compact('cate', 'sorting', 'product','image_ver'));
     }
 
     /**
@@ -152,7 +153,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return response() -> json([
+            'code'=>200,
+            'messages'=>$request->all()
+        ]);
+        dd($request->all());
     }
 
     /**
@@ -160,7 +165,17 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        if (!$product) return response()->json([
+            'code' => 404,
+            'messages' => 'Không tìm thấy sản phẩm'
+        ], 404);
+        $product->status = 'off';
+        $product->save();
+        return response()->json([
+            'code' => 200,
+            'messages' => 'success'
+        ], 200);
     }
 
     private function storeImage($imagePath, $title)

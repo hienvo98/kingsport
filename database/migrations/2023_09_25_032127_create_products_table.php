@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->integer('quantity');
             $table->integer('category_id');
-            $table->text('subcategory_id')->nullable();
             $table->text('description')->nullable();
             $table->integer('regular_price');
             $table->integer('sale_price');

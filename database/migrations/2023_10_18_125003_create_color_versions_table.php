@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id');
+        Schema::create('color_versions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('code_color');
+            $table->enum('status',['on','off'])->default('on');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
-            $table->dropColumn('product_id');
-        });
+        Schema::dropIfExists('color_versions');
     }
 };

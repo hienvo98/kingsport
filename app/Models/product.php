@@ -12,7 +12,6 @@ class Product extends Model
         'name',
         'quantity',
         'category_id',
-        'subcategory_id',
         'description',
         'regular_price',
         'sale_price',
@@ -41,11 +40,14 @@ class Product extends Model
     
     public function subCategory()
     {
-        return $this->belongsTo(SubCategory::class, 'subcategory_id');
+        return $this->belongsToMany(SubCategory::class, 'product_subcategory','product_id','subCategory_id');
     }
 
     public function colors(){
         return $this->hasMany(color_version::class);
     }
 
+    public function images(){
+        return $this->hasManyThrough(image_service::class,color_version::class,'product_id','color_ver_id');
+    }
 }
