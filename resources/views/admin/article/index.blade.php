@@ -244,7 +244,7 @@
                     </ul>
                 </nav>
                 <!-- Modal add -->
-                @include('admin/category/create')
+                {{-- @include('admin/category/create') --}}
             </div>
         </div>
     </div>

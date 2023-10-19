@@ -36,7 +36,7 @@ $(document).ready(function () {
             theme: 'snow'
         });
         const quillContent = quill.root.innerHTML;
-        formData.append('blog_content', quillContent);
+        formData.append('description', quillContent);
         // console.log(quillContent);
         $.ajax({
             type: 'POST',

@@ -1,6 +1,7 @@
 <div class="tab-content task-tabs-container">
     <div class="tab-pane show active p-0" id="all-tasks"role="tabpanel">                     
         <div class="row" id="tasks-container">
+        @if($blog)
         @foreach ($blog as $blogAll)
             <div class="col-xl-4 task-card">
                 <div class="card custom-card <?php if ($blogAll->status == 'off') { echo 'task-pending-card'; } else { echo 'task-completed-card'; } ?>">
@@ -30,6 +31,7 @@
                 </div>
             </div>
         @endforeach
+        @endif
         </div>                        
     </div>
     <div class="tab-pane p-0" id="pending"

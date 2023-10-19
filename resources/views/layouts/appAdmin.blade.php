@@ -16,6 +16,12 @@
     </div>
 </div>
 
+<!-- Modal edit -->
+@include('admin/category/edit')
+<!-- Modal edit -->
+<!-- Modal subCategory -->
+@include('admin/category/sub-category')
+
 @include('admin.partials.headersearch_modal')
 @include('admin.partials.footer')
 @include('admin.partials.commonjs')

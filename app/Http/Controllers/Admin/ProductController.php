@@ -13,7 +13,6 @@ use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use App\Models\color_version;
 use App\Models\image_service;
-use App\Models\SubCategory;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -44,16 +43,17 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
-
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
         $imagePaths = $matches[1];
         foreach ($imagePaths as $imagePath) {
             $newImagePath = $this->storeImage($imagePath, $request->input('name'));
+
             // Lấy tên tệp hình ảnh từ đường dẫn
             $imageName = pathinfo($newImagePath, PATHINFO_BASENAME);
+
             // Thay thế đường dẫn bằng tên tệp hình ảnh
             $desc = str_replace($imagePath, $imageName, $desc);
         }

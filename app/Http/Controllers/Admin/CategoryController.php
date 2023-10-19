@@ -5,14 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Libraries\ImageStorageLibrary;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Exists;
-use Illuminate\Support\Facades\File;
-
 
 class CategoryController extends Controller
 {
@@ -25,13 +20,11 @@ class CategoryController extends Controller
     // }
     public function index()
     {
-        if (!Gate::allows('admin.category.index')) {
+        if (! Gate::allows('admin.category.index')) {
             abort(403);
         }
-        // dd(is_dir(public_path("storage/uploads/category/ghế massage okok 2")));
-        $category = Category::with('subCategory')->orderBy('ordinal_number', 'desc')->paginate(5);
-        $stt = Category::count();
-        return view('admin.category.index', compact('category', 'stt'));
+        $cate = Category::with('subCategory')->orderBy('ordinal_number', 'desc')->paginate(5);
+        return view('admin.category.index')->with('category', $cate);
     }
 
     /**
@@ -39,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('admin.category.store')) {
+        if (! Gate::allows('admin.category.store')) {
             abort(403);
         }
         return view('admin.category.create');
@@ -51,20 +44,18 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        if (!Gate::allows('admin.category.store')) {
+        if (! Gate::allows('admin.category.store')) {
             abort(403);
         }
         $cate = new Category();
         $name = $request->input('category_name');
-        $status = $request->input('status') ? '1' : '0';
+        $status = $request->input('status') ? 1 : 0;
         $ordinal_number = $request->input('ordinal_number');
+
         $cate->name = $name;
         $cate->status = $status;
         $cate->ordinal_number = $ordinal_number;
-        if (!empty($request->avatar)) {
-            $avatarPath = ImageStorageLibrary::storeImage($request->avatar, "category/{$request->category_name}/avatar");
-            $cate->avatar = basename($avatarPath);
-        }
+        // dd($cate);
         $cate->save();
         return response()->json([
             'message' => 'Thêm thành công',
@@ -85,21 +76,18 @@ class CategoryController extends Controller
      */
     public function edit($categoryId)
     {
-        if (!Gate::allows('admin.category.store')) {
+        if (! Gate::allows('admin.category.store')) {
             abort(403);
         }
-
         $category = Category::find($categoryId);
 
         // Kiểm tra xem danh mục có tồn tại không
         if (!$category) {
             return response()->json(['error' => 'Danh mục không tồn tại'], 404);
         }
+
         // Trả về dữ liệu JSON chứa thông tin của danh mục
-        return response()->json([
-            'data' => $category,
-            'pathImage' => url("storage/uploads/category/{$category->name}/avatar/{$category->avatar}")
-        ]);
+        return response()->json(['data' => $category]);
     }
 
     /**
@@ -108,49 +96,19 @@ class CategoryController extends Controller
     public function update(Request $request, $categoryId)
     {
         //dd($request->all());
-        if (!Gate::allows('admin.category.update')) {
+        if (! Gate::allows('admin.category.update')) {
             abort(403);
         }
         $category = Category::find($categoryId);
         if (!$category) {
             return response()->json(['message' => 'Danh mục không tồn tại'], 404);
         }
-        //kiểm tra tên danh mục có thay đổi không?
-        if ($category->name != $request->input('category_name')) {
-            //kiểm tra thư mục tên danh mục có tồn tại
-            if (is_dir(public_path("storage/uploads/category/{$category->name}"))) {
-                //xoá thư mục
-                $oldFolderPath = public_path("storage/uploads/category/{$category->name}");
-                $newFolderPath = public_path("storage/uploads/category/{$request->category_name}");
-                File::move($oldFolderPath, $newFolderPath);
-                if (!empty($request->avatar)) {
-                    //kiểm tra file ảnh có tồn tại
-                    if (file_exists(public_path("storage/uploads/category/{$request->category_name}/avatar/{$category->avatar}"))) {
-                        //xoá ảnh củ
-                        unlink(public_path("storage/uploads/category/{$request->category_name}/avatar/{$category->avatar}"));
-                    }
-                    //thêm ảnh mới
-                    $pathImage = ImageStorageLibrary::storeImage($request->avatar, "category/{$request->category_name}/avatar");
-                    $category->avatar = basename($pathImage);
-                }
-            }
-        } else {
-            // xử lý khi tên danh mục không thay đổi
-            if (!empty($request->avatar)) {
-                //kiểm tra file ảnh có tồn tại
-                if (file_exists(public_path("storage/uploads/category/{$category->name}/avatar/{$category->avatar}"))) {
-                    //xoá ảnh củ
-                    unlink(public_path("storage/uploads/category/{$category->name}/avatar/{$category->avatar}"));
-                }
-                //thêm ảnh mới
-                $pathImage = ImageStorageLibrary::storeImage($request->avatar, "category/{$request->category_name}/avatar");
-                $category->avatar = basename($pathImage);
-            }
-        }
 
         $category->name = $request->input('category_name');
-        $category->status = $request->input('status') == 'true' ? '1' : '0';
+        $category->status = $request->input('status') == 'true' ? 1 : 0;
         $category->ordinal_number = $request->input('ordinal_number');
+        // ... 
+
         $category->save();
         return response()->json([
             'message' => 'Cập nhật thành công',
@@ -164,22 +122,16 @@ class CategoryController extends Controller
      */
     public function destroy($categoryId)
     {
-        if (!Gate::allows('admin.category.destroy')) {
+        if (! Gate::allows('admin.category.destroy')) {
             abort(403);
         }
-
         $category = Category::find($categoryId);
-        // return response() -> json([
-        //     'code'=>200,
-        //     'messages'=> $category
-        // ]);
         if (!$category) {
             return response()->json([
                 'message' => 'danh mục không tồn tại'
             ], 404);
         }
-
-        $category->status = '0';
+        $category->status = 0;
         $category->save();
         return response()->json(['message' => 'đã xoá sản phẩm']);
     }
@@ -188,7 +140,7 @@ class CategoryController extends Controller
     {
         $type = $request->type;
         $keyword = $request->keyword;
-        if ($type == 'Category') $data = Category::where('name', 'like', "%{$keyword}%")->orderby('id', 'desc')->get();
+        if ($type == 'Category') $data = Category::where('name', 'like', "%{$keyword}%")->orderby('id','desc')-> get();
         $html = '';
         foreach ($data as $cat) {
             $html .= "<tr class='product-list'><td><div class='d-flex align-items-center'><div class='fw-semibold'>";
@@ -205,9 +157,9 @@ class CategoryController extends Controller
             $html .= "<span class='badge bg-light text-default'> $cat->ordinal_number </span>";
             $html .= "</td><td style='text-align: center;'>";
             $html .= "<span id='statusCategory-$cat->id'";
-            if ($cat->status == 1) {
+            if( $cat->status ==1 ){
                 $bg = 'bg-success';
-            } else {
+            }else{
                 $bg = 'bg-danger';
             }
             $html .= "class='badge $bg'>";
@@ -216,7 +168,7 @@ class CategoryController extends Controller
             } else {
                 $html .= 'Đã Tắt';
             }
-            $status = $cat->status == 0 ? 'disable-link' : '';
+            $status = $cat->status==0?'disable-link':'';
             $html .= "</span>
             </td>
             <td>
@@ -244,13 +196,12 @@ class CategoryController extends Controller
         </tr>";
         }
         return response()->json([
-            'code' => '200',
+            'code'=>'200',
             'data' => $html
         ]);
     }
 
-    public  function getSubCategory($categoryId)
-    {
+    public  function getSubCategory($categoryId){
         $id = (int)$categoryId;
         $subCate = SubCategory::where('category_id', $id)->get()->toArray();
         //dd($subCate);
