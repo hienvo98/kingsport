@@ -15,7 +15,6 @@ class color_version extends Model
     }
 
     public function images(){
-        return $this->hasMany(image_service::class);
+        return $this->hasOne(image_service::class,'color_ver_id');
     }
-    
 }

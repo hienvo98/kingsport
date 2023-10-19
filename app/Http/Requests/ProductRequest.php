@@ -28,8 +28,6 @@ class ProductRequest extends FormRequest
             'desc' => 'required|string',
             'regular_price' => 'required|integer',
             'sale_price' => 'integer',
-            // 'image_color.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            // 'image_color*' => 'required|array',
             'image_color.*' => 'required',
             'image_color.*.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'discount' => 'nullable|integer|between:0,50',

@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id');
+        Schema::create('image_services', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('color_ver_id');
+            $table->text('url');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('color_versions', function (Blueprint $table) {
-            $table->dropColumn('product_id');
-        });
+        Schema::dropIfExists('image_services');
     }
 };
