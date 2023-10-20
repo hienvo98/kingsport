@@ -31,7 +31,7 @@ $(document).ready(function () {
             contentType: false,
             data: formData,
             success: function (response) {
-                console.log(response);
+                $('#success').click();
             },
             error: function (error) {
                 console.log(error);
