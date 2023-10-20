@@ -209,7 +209,7 @@
                                                                 sale</label>
                                                             <input type="text" name="regular_price"
                                                                 class="form-control" value="{{ $product->regular_price }}" id="product-dealer-price"
-                                                                placeholder="Regular Price">
+                                                                placeholder="Regular Price" required>
                                                             <label for="product-description-add"
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                         </div>
@@ -328,7 +328,7 @@
                                                                             data-color="avatar"
                                                                             class="product-Images form-control "
                                                                             data-allow-reorder="true"
-                                                                            data-max-file-size="3MB">
+                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
                                                                         <input type="hidden" name="list_color_1"
                                                                             value="">
                                                                     </div>
@@ -419,9 +419,9 @@
                                                                             name=""
                                                                             class="product-Images form-control " multiple
                                                                             data-allow-reorder="true"
-                                                                            data-max-file-size="3MB">
+                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
                                                                         <input type="hidden" name="list_color_1"
-                                                                            value="">
+                                                                            value="" >
                                                                     </div>
                                                                     <div class="col-xl-12">
                                                                         <div class="card custom-card">
@@ -504,7 +504,7 @@
                                                                         </p>
                                                                         <input type="file" data-color="color-2"
                                                                             id="file-color-2" multiple name=""
-                                                                            class="product-Images form-control">
+                                                                            class="product-Images form-control" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
 
                                                                     </div>
                                                                     <div class="col-xl-12">
@@ -590,7 +590,7 @@
                                                                         <input type="file" data-color="color-3"
                                                                             id="file-color-3" multiple name=""
                                                                             class="product-Images form-control"
-                                                                            name="filepond">
+                                                                            name="filepond" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
                                                                     </div>
                                                                     <div class="col-xl-12">
                                                                         <div class="card custom-card">

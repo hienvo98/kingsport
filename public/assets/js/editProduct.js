@@ -10,7 +10,6 @@ $(document).ready(function () {
     let num_color = $(`input[name=avatar]`).data('num-color');
     for (let i = 1; i <= num_color; i++) {
         $(`div#addImage`).click();
-        $(`select[data-select-color=color-${i}]`).prop('required', false);
         $(`input#file-color-${i}`).prop('required', false);
         $(`select[data-select-color=color-${i}]`).val($(`input[name=avatar]`).data(`color-${i}`));
         $(`select.select-color`).trigger('change');
@@ -21,21 +20,22 @@ $(document).ready(function () {
         e.preventDefault();
         var formData = new FormData(this);
         const quillContent = quill.root.innerHTML;
+        console.log(quillContent.length);
         formData.append('desc', quillContent); 
         var id = $(`input[name=product_id]`).val();
         var route = $(`input[name=route]`).val();
-        $.ajax({
-            url: route,
-            type: 'post',
-            processData: false,
-            contentType: false,
-            data: formData,
-            success: function (response) {
-                $('#success').click();
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        })
+        // $.ajax({
+        //     url: route,
+        //     type: 'post',
+        //     processData: false,
+        //     contentType: false,
+        //     data: formData,
+        //     success: function (response) {
+        //         $('#success').click();
+        //     },
+        //     error: function (error) {
+        //         console.log(error);
+        //     }
+        // })
     })
 });

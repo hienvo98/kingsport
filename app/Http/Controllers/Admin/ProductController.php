@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Libraries\ImageStorageLibrary;
@@ -65,7 +66,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
@@ -174,10 +175,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductUpdateRequest $request, string $id)
     {
-        // return response()->json(['data' => $request->except('name')]);
-
         //tìm sản phẩm
         $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
         //sử lý khi không tìm thấy sản phẩm
@@ -191,10 +190,9 @@ class ProductController extends Controller
             $product->name = $request->name;
             $product->save();
         }
-
+        //xử lý Description của sản phẩm
         $desc = $request->desc;
-        //xoá ảnh trong 
-
+        //lấy danh sách các img trong description
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
         //tạo thư mục lưu trữ tạm thời ảnh của content
         $newFolderConent = public_path("storage/uploads/products/$product->name/content2");
@@ -294,14 +292,21 @@ class ProductController extends Controller
                 }
             }
         }
-        //xử lý danh mục sản phẩm thay đổi
+        //xử lý danh mục sản phẩm thay đổi và xử lý khi danh mục thuộc tính thay đổi
         if($request->category_id != $product->category_id){
             $product->subCategory()->sync([]);
             $product->subCategory()->sync(array_diff($request->subCat,$product->subCategory->pluck('id')->toArray()));
         }else{
             $product->subCategory()->sync($request->subCat);
         }
-        //xử lý khi danh mục thuộc tính thay đổi
+        //cập nhật 1 số trường
+        $request->on_outstanding?'':$request->merge(['on_outstanding'=>'off']);
+        $request->on_hot?'':$request->merge(['on_hot'=>'off']);
+        $request->on_sale?'':$request->merge(['on_sale'=>'off']);
+        $request->on_installment?'':$request->merge(['on_installment'=>'off']);
+        $request->on_new?'':$request->merge(['on_new'=>'off']);
+        $request->on_comming?'':$request->merge(['on_comming'=>'off']);
+        $request->on_gift?'':$request->merge(['on_gift'=>'off']);
         $product->update($request->except(['name','avatar']));
         return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
     }
