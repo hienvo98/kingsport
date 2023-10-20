@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{categoryId}', [CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/update/{categoryId}', [CategoryController::class, 'update'])->name('category.update');
         Route::post('/sub-category/create', [SubCategoryControlelr::class, 'store'])->name('subCategory.create');
+        Route::get('/sub-category/getRank/{categoryId}',[SubCategoryControlelr::class,'getRank']);
         Route::get('/delete/{categoryId}',[CategoryController::class,'destroy'])->name('category.destroy');
         Route::get('/search',[CategoryController::class,'search']);
         Route::get('/get-subcategories/{categoryId}', [CategoryController::class, 'getSubCategory']);

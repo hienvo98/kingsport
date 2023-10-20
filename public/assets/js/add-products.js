@@ -235,9 +235,6 @@ $(document).ready(function () {
         formData.append('status', $(`select[name=status]`).val());
         formData.append('status_stock', $(`select[name=status_stock]`).val());
 
-        // const quill = new Quill('#blog-content', {
-        //     theme: 'snow'
-        // });
         const quillContent = quill.root.innerHTML;
         formData.append('desc', quillContent);
         $.ajax({
