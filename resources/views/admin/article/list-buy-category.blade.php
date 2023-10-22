@@ -10,11 +10,11 @@
                             <div>
                                 <p class="fw-semibold mb-3 d-flex align-items-center"><a href="javascript:void(0);"><i class="ri-star-s-fill fs-16 op-5 me-1 text-muted"></i></a>{{$blogAll->title}}</p>
                                 <p class="mb-3">Ngày tạo : <span class="fs-12 mb-1 text-muted">{{$blogAll->created_at}}</span></p>
-                                <p class="mb-3">Ngày xuất bản : <span class="fs-12 mb-1 text-muted">{{$blogAll->created_at}}</span></p>
+                                <p class="mb-3">Ngày xuất bản : <span class="fs-12 mb-1 text-muted">{{$blogAll->publish_date}}</span></p>
                                 <p class="mb-0">Người tạo :
                                     <span class="avatar-list-stacked ms-1">
                                         <span class="avatar avatar-sm avatar-rounded">
-                                            <img src="../assets/images/faces/2.jpg" alt="img">
+                                            <img src="{{ url("storage/uploads/blog_images/$blogAll->title/thumbnail/$blogAll->thumbnail") }}" alt="img">
                                         </span>
                                     </span>
                                 </p>

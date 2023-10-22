@@ -7,7 +7,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Http\Requests\ProductUpdateRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Libraries\ImageStorageLibrary;
@@ -27,24 +26,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // File::delete(public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2'));
-        // $directory = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatarFuck');
-        // $newDirectory = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar');
-        // if (File::isDirectory($directory)) {
-        //     // File::deleteDirectory($directory);
-        //     File::move($directory, $newDirectory);
-        // }
-        // $sourcePath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar/652fdd5d19693_1697635677.webp');
-        // $destinationPath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2/652fdd5d19693_1697635677.webp');
-        // if (File::exists($sourcePath)) {
-        //     File::copy($sourcePath, $destinationPath);
-        // }
-        // $directoryPath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2');
-
-        // if (!File::isDirectory($directoryPath)) {
-        //     File::makeDirectory($directoryPath, 0755, true);
-        // }
-
         $products = Product::with('category')->with('subCategory')->with('colors', 'colors.images')->with('images')->orderBy('id', 'desc')->paginate(5);
         return view('admin.product.list', compact('products'));
     }
@@ -59,14 +40,10 @@ class ProductController extends Controller
         return view('admin.product.create', compact('cate', 'sorting'));
     }
 
-    // public function getSubCategory($id){
-    //     dd($request->all);
-    // }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
@@ -175,8 +152,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductUpdateRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
+        // return response()->json(['data' => $request->except('name')]);
+
         //tìm sản phẩm
         $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
         //sử lý khi không tìm thấy sản phẩm
@@ -190,9 +169,10 @@ class ProductController extends Controller
             $product->name = $request->name;
             $product->save();
         }
-        //xử lý Description của sản phẩm
+
         $desc = $request->desc;
-        //lấy danh sách các img trong description
+        //xoá ảnh trong 
+
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
         //tạo thư mục lưu trữ tạm thời ảnh của content
         $newFolderConent = public_path("storage/uploads/products/$product->name/content2");
@@ -292,21 +272,14 @@ class ProductController extends Controller
                 }
             }
         }
-        //xử lý danh mục sản phẩm thay đổi và xử lý khi danh mục thuộc tính thay đổi
+        //xử lý danh mục sản phẩm thay đổi
         if($request->category_id != $product->category_id){
             $product->subCategory()->sync([]);
             $product->subCategory()->sync(array_diff($request->subCat,$product->subCategory->pluck('id')->toArray()));
         }else{
             $product->subCategory()->sync($request->subCat);
         }
-        //cập nhật 1 số trường
-        $request->on_outstanding?'':$request->merge(['on_outstanding'=>'off']);
-        $request->on_hot?'':$request->merge(['on_hot'=>'off']);
-        $request->on_sale?'':$request->merge(['on_sale'=>'off']);
-        $request->on_installment?'':$request->merge(['on_installment'=>'off']);
-        $request->on_new?'':$request->merge(['on_new'=>'off']);
-        $request->on_comming?'':$request->merge(['on_comming'=>'off']);
-        $request->on_gift?'':$request->merge(['on_gift'=>'off']);
+        //xử lý khi danh mục thuộc tính thay đổi
         $product->update($request->except(['name','avatar']));
         return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
     }

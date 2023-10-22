@@ -24,7 +24,7 @@
         <div class="col-xl-3">
             <div class="card custom-card">
                 <div class="card-body p-0">
-                    <div class="p-3 d-grid border-bottom border-block-end-dashed">
+                    {{-- <div class="p-3 d-grid border-bottom border-block-end-dashed">
                         <button class="btn btn-primary d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addtask">
                             <i class="ri-add-circle-line fs-16 align-middle me-1"></i>Tạo bài viết
                         </button>
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here" aria-describedby="button-addon2">
@@ -225,7 +225,7 @@
                         {{-- Danh sách các trang --}}
                         @for ($i = 1; $i <= $blog->lastPage(); $i++)
                             <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $blog->url($i) }}">{{ $i }}</a>
+                                <a class="page-link  {{ $i === $blog->currentPage() ? 'disable-link' : '' }}" href="{{ $blog->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 

@@ -316,7 +316,7 @@
                                                                             data-color="avatar"
                                                                             class="product-Images form-control "
                                                                             data-allow-reorder="true"
-                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000" required>
+                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .webp" size="3000000" required>
                                                                         <input type="hidden" name="list_color_1"
                                                                             value="">
                                                                     </div>
@@ -405,7 +405,7 @@
                                                                             name=""
                                                                             class="product-Images form-control " multiple
                                                                             data-allow-reorder="true"
-                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
+                                                                            data-max-file-size="3MB" accept=".jpeg, .jpg, .png, .webp" size="3000000">
                                                                         <input type="hidden" name="list_color_1"
                                                                             value="">
                                                                     </div>
@@ -490,7 +490,7 @@
                                                                         </p>
                                                                         <input type="file" data-color="color-2"
                                                                             id="file-color-2" multiple name=""
-                                                                            class="product-Images form-control" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
+                                                                            class="product-Images form-control" accept=".jpeg, .jpg, .png, .webp" size="3000000">
 
                                                                     </div>
                                                                     <div class="col-xl-12">
@@ -576,7 +576,7 @@
                                                                         <input type="file" data-color="color-3"
                                                                             id="file-color-3" multiple name=""
                                                                             class="product-Images form-control"
-                                                                            name="filepond" accept=".jpeg, .jpg, .png, .gif, .webp" size="3000000">
+                                                                            name="filepond" accept=".jpeg, .jpg, .png, .webp" size="3000000">
                                                                     </div>
                                                                     <div class="col-xl-12">
                                                                         <div class="card custom-card">

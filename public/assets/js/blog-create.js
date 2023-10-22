@@ -32,12 +32,8 @@ $(document).ready(function () {
     $('#blog-form').submit(function (event) {
         event.preventDefault();
         const formData = new FormData(this);
-        const quill = new Quill('#blog-content', {
-            theme: 'snow'
-        });
         const quillContent = quill.root.innerHTML;
         formData.append('description', quillContent);
-        // console.log(quillContent);
         $.ajax({
             type: 'POST',
             url: '/admin/post/store',
@@ -45,16 +41,29 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                // console.log(response);
-                window.scrollTo(0, 0);
-                $('#successAlertContainer').removeClass('d-none');
-                setTimeout(function () {
-                    $('#successAlertContainer').addClass('d-none');
-                    location.reload();
-                }, 3000);
+                $('#success').click();
             },
             error: function (error) {
-                console.error(error);
+                if (error.responseJSON && error.responseJSON.errors) {
+                    $("html, body").animate({ scrollTop: 0 }, 'fast')
+                    var errors = error.responseJSON.errors;
+                    console.log("Lỗi cụ thể:");
+                    console.log(errors);
+                    var errorMessages = "";
+                    var typeError = 0;
+                    for (var key in errors) {
+                        if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
+                            for (var keyChild of errors[key]) {
+                                errorMessages += `<div class="alert alert-danger text-capitalize">
+                                    ${keyChild}
+                                </div>`;
+                            }
+                        } else {
+                            typeError++;
+                        }
+                    }
+                    $(`div#errors`).append(errorMessages);
+                }
             }
         });
     });

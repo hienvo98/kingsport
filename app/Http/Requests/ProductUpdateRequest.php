@@ -11,7 +11,7 @@ class ProductUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,14 +22,14 @@ class ProductUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:products',
+            'name' => 'required|string|max:255',
             'category_id' => 'required',
-            'description' => 'required|string|min:12',
-            'avatar' => 'image|mimes:jpeg,png,jpg,gif,webp|max:3072',
+            'desc' => 'required|string|min:12',
+            'avatar' => 'image|mimes:jpeg,png,jpg,webp|max:3072',
             'regular_price' => 'required|integer',
             'sale_price' => 'integer',
             'image_color.*' => 'required',
-            'image_color.*.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:3072',
+            'image_color.*.*' => 'image|mimes:jpeg,png,jpg,webp|max:3072',
             'discount' => 'nullable|integer|between:0,50',
             'color' => 'required',
             'quantity' => 'required|integer|regex:/^[0-9]+$/',
@@ -49,7 +49,7 @@ class ProductUpdateRequest extends FormRequest
             'sale_price.integer' => 'Giá tiền đã sale sản phẩm phải ở dạng số nguyên',
             'image_color.*.*.mines' => 'Ảnh có dạng jpeg,png,jpg,gif,webp',
             'color.required' => 'Vui lòng chọn màu và ảnh chi tiết cho sản phẩm',
-            'description.min' => 'Vui lòng viết mô tả cho sản phẩm để người ta biết mình bán cái con mẹ gì',
+            'desc.min' => 'Vui lòng viết mô tả cho sản phẩm để người ta biết mình bán cái con mẹ gì',
             'status.required' => 'Chưa chọn trạng thái',
             'quantity.regex' => 'admin cố tình nhập bậy, đã ghi log để xử phạt',
             'quantity.required' => 'chưa nhập số lượng sản phẩm',
