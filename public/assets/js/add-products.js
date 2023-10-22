@@ -75,7 +75,7 @@ $(document).ready(function () {
     setTimeout(function () {
         $("#notification").fadeOut();
     }, 5000);
- 
+
     var stt = 1; //xác định vị trí của colorGroup khi xử lý xoá color group và sau đó thêm lại.
     $(`div#addImage`).click(function () {
         var groupColorNone = $(`div.color-group`).not('.color_group_display').first();
@@ -91,7 +91,7 @@ $(document).ready(function () {
         groupColorNone.slideToggle();
     })
     //xoá form ảnh
-    $(`a.trash`).click(function(){
+    $(`a.trash`).click(function () {
         var color_number = $(this).data('group-color');
         var colorGroup = $(`div[data-group-color=${color_number}]`);
         colorGroup.removeClass('color_group_display');
@@ -101,6 +101,7 @@ $(document).ready(function () {
         $(`input#file-${color_number}`).prop('required', false);
         $(`input#file-${color_number}`).val('');
         $(`div[data-slide=${color_number}]`).empty();
+        if ($(`div.color_group_display`).length < 3) $(`div#addImage`).slideToggle();
         colorGroup.slideToggle();
     })
 
@@ -117,7 +118,7 @@ $(document).ready(function () {
     });
 
     // xử lý click chọn màu
-    $(`select.select-color`).change(function(){
+    $(`select.select-color`).change(function () {
         let color_number = $(this).attr('data-number-color');
         let value = $(this).val();
         $(`input#${color_number}`).val(value);
@@ -144,33 +145,6 @@ $(document).ready(function () {
             $(item).find(`option[data-color=${selected_color[1]}]`).remove();
         })
     });
-    // let selectColorEvent = function () {
-    //     let color_number = $(this).attr('data-number-color');
-    //     let value = $(this).val();
-    //     $(`input#${color_number}`).val(value);
-    //     $(`input#${color_number}`).prop('checked', true);
-    //     $(`input#file-${color_number}`).attr('name', `image_color[${value}][]`);
-    //     $(`input#file-${color_number}`).attr('data-ver-color', value);
-    //     let currentColor = [];
-    //     $.each($(`input.check-color`), function (index, value) {
-    //         currentColor.push(value.value);
-    //     });
-    //     $.each($(`select.select-color`).not($(this)), function (index, item) {
-    //         let regular_color = ['red', 'black', 'gray', 'white', 'beige', 'brown'];
-    //         let list_option = $(item).find(`option`);
-    //         let color_select = [];
-    //         $.each(list_option, function (index, item) {
-    //             if ($(item).attr('data-color')) color_select.push($(item).attr('data-color'));
-    //         });
-    //         let miss_color = regular_color.filter(item => !color_select.includes(item));
-    //         $.each(miss_color, function (index, value) {
-    //             $(item).append(`<option data-color="${value}" >${value}</option>`)
-    //         });
-    //         let selected_color = currentColor.filter(value => value != $(item).val() && value != '');
-    //         $(item).find(`option[data-color=${selected_color[0]}]`).remove();
-    //         $(item).find(`option[data-color=${selected_color[1]}]`).remove();
-    //     })
-    // }
 
     let slugUrl = function (str) {
         // Chuyển hết sang chữ thường
