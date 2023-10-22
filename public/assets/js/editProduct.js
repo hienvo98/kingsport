@@ -10,6 +10,7 @@ $(document).ready(function () {
     let num_color = $(`input[name=avatar]`).data('num-color');
     for (let i = 1; i <= num_color; i++) {
         $(`div#addImage`).click();
+        $(`a[data-group-color]`).first().remove();
         $(`input#file-color-${i}`).prop('required', false);
         $(`select[data-select-color=color-${i}]`).val($(`input[name=avatar]`).data(`color-${i}`));
         $(`select.select-color`).trigger('change');

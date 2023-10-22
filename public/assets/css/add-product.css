@@ -75,3 +75,10 @@
         transform: rotate(360deg)
     }
 }
+
+.trash{
+    height: 100% !important;
+    padding: 10px !important;
+    margin-left: 30px !important;
+    width: 40px !important;
+}

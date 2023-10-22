@@ -34,7 +34,6 @@ class ArticleController extends Controller
             $blogcompleteds = $blog->where('status', 'on');
         }
         $category = Category::get();
-        dd($blog);
         return view('admin.article.index', [
             'blog' => $blog,
             'category' => $category,
