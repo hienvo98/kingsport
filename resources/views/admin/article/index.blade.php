@@ -92,7 +92,7 @@
                     </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here" aria-describedby="button-addon2">
+                            <input type="text" id="searchPost" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>
@@ -102,19 +102,19 @@
                                 <span class="fs-11 text-muted op-7 fw-semibold">TASKS</span>
                             </li>
                             <li class="active">
-                                <a href="javascript:void(0);">
+                                <a href="{{ route('admin.post.index') }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-task-line align-middle fs-14"></i>
                                         </span>
                                         <span class="flex-fill text-nowrap">
-                                            All Tasks
+                                            Tất cả bài viết
                                         </span>
                                         <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->count()) ;?></span>
                                     </div>
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="javascript:void(0);">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
@@ -125,9 +125,9 @@
                                         </span>
                                     </div>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
-                                <a href="javascript:void(0);">
+                                <a href="{{ route('admin.post.index',['trash'=>'on']) }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-delete-bin-5-line align-middle fs-14"></i>
@@ -140,20 +140,6 @@
                             </li>
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.post.index') }}" class="category-item">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-2 lh-1">
-                                            <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
-                                        </span>
-                                        
-                                        <span class="flex-fill text-nowrap">
-                                            Tất Cả 
-                                        </span>
-                                        
-                                    </div>
-                                </a>
                             </li>
                             @foreach ($category as $_category)
                             <li>
@@ -217,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.article.list-buy-category');        
+                @include('admin.article.list-buy-category')      
             </div>
             <div class="d-flex pagination justify-content-end flex-wrap">
                 <nav aria-label="...">

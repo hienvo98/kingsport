@@ -24,9 +24,10 @@ class ArticleController extends Controller
         $this->imageStorage = $imageStorage;
     }
 
-    public function index($id = '')
+    public function index(Request $request, $id = '')
     {
         if (!empty($id)) {
+            if(empty(Category::find($id))) abort(404);
             $blog = Category::with('articles')->find($id)->articles()->paginate(10);
             $blogcompleteds = $blog->filter(function ($article) {
                 return Carbon::parse($article->publish_date)->isPast();
@@ -35,7 +36,7 @@ class ArticleController extends Controller
                 return Carbon::parse($article->publish_date)->isFuture();
             });
         } else {
-            $blog = Article::with('category')->paginate(9);
+            $blog = $request->trash=='on'?Article::with('category')->where('status','off')->paginate(9):Article::with('category')->paginate(9);
             $blogPendings = $blog->filter(function ($article) {
                 return Carbon::parse($article->publish_date)->isFuture();
             });
@@ -226,6 +227,153 @@ class ArticleController extends Controller
             ], 200);
         }
     }
+
+    public function search(Request $request){
+        $keywords = $request->keywords;
+        $blogs = Article::with('category')->where('title','like',"%$keywords%")->paginate(9);
+        $blogPendings = $blogs->filter(function($artical){
+            return Carbon::parse($artical->publish_date)->isFuture();
+        });
+        $blogCompleteds = $blogs->filter(function($artical){
+            return Carbon::parse($artical->publish_date)->isPast();
+        });
+        $blogHtml = '';
+        foreach($blogs as $blog){
+            $pathThumbnail = url("storage/uploads/blog_images/$blog->title/thumbnail/$blog->thumbnail");
+            $routeEdit = route('admin.post.edit',['id'=>$blog->id]);
+            $disabled = $blog->status == 'off' ? 'disabled' : '';
+            $blogHtml .= 
+            "<div class='col-xl-4'>
+            <div class='card custom-card task-pending-card'>
+                <div class='card-body'>
+                    <div class='d-flex justify-content-between flex-wrap gap-2'>
+                        <div>
+                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
+                                    href='javascript:void(0);'></i></a> $blog->title 
+                            </p>
+                            <p class='mb-3'>Ngày tạo : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->created_at</span></p>
+                            <p class='mb-3'>Ngày xuất bản : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->publish_date</span></p>
+                            <p class='mb-0'>Người tạo :
+                                <span class='avatar-list-stacked ms-1'>
+                                    <span class='avatar avatar-sm avatar-rounded'>
+                                        <img src='$pathThumbnail'
+                                            alt='img'>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class='btn-list'>
+                                <a href='$routeEdit'
+                                    class='btn btn-icon btn-sm btn-info-light'><i
+                                        class='ri-edit-line'></i></a>
+                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
+                                    data-id='$blog->id'
+                                    $disabled><i
+                                        class='ri-delete-bin-line'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
+        }
+        $blogCompletedsHtml = '';
+        foreach($blogCompleteds as $blog){
+            $pathThumbnail = url("storage/uploads/blog_images/$blog->title/thumbnail/$blog->thumbnail");
+            $routeEdit = route('admin.post.edit',['id'=>$blog->id]);
+            $disabled = $blog->status == 'off' ? 'disabled' : '';
+            $blogCompletedsHtml .= 
+            "<div class='col-xl-4'>
+            <div class='card custom-card task-pending-card'>
+                <div class='card-body'>
+                    <div class='d-flex justify-content-between flex-wrap gap-2'>
+                        <div>
+                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
+                                    href='javascript:void(0);'></i></a> $blog->title 
+                            </p>
+                            <p class='mb-3'>Ngày tạo : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->created_at</span></p>
+                            <p class='mb-3'>Ngày xuất bản : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->publish_date</span></p>
+                            <p class='mb-0'>Người tạo :
+                                <span class='avatar-list-stacked ms-1'>
+                                    <span class='avatar avatar-sm avatar-rounded'>
+                                        <img src='$pathThumbnail'
+                                            alt='img'>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class='btn-list'>
+                                <a href='$routeEdit'
+                                    class='btn btn-icon btn-sm btn-info-light'><i
+                                        class='ri-edit-line'></i></a>
+                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
+                                    data-id='$blog->id'
+                                    $disabled><i
+                                        class='ri-delete-bin-line'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
+        }
+        $blogPendingsHtml='';
+        foreach($blogPendings as $blog){
+            $pathThumbnail = url("storage/uploads/blog_images/$blog->title/thumbnail/$blog->thumbnail");
+            $routeEdit = route('admin.post.edit',['id'=>$blog->id]);
+            $disabled = $blog->status == 'off' ? 'disabled' : '';
+            $blogPendingsHtml .= 
+            "<div class='col-xl-4'>
+            <div class='card custom-card task-pending-card'>
+                <div class='card-body'>
+                    <div class='d-flex justify-content-between flex-wrap gap-2'>
+                        <div>
+                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
+                                    href='javascript:void(0);'></i></a> $blog->title 
+                            </p>
+                            <p class='mb-3'>Ngày tạo : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->created_at</span></p>
+                            <p class='mb-3'>Ngày xuất bản : <span
+                                    class='fs-12 mb-1 text-muted'>$blog->publish_date</span></p>
+                            <p class='mb-0'>Người tạo :
+                                <span class='avatar-list-stacked ms-1'>
+                                    <span class='avatar avatar-sm avatar-rounded'>
+                                        <img src='$pathThumbnail'
+                                            alt='img'>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class='btn-list'>
+                                <a href='$routeEdit'
+                                    class='btn btn-icon btn-sm btn-info-light'><i
+                                        class='ri-edit-line'></i></a>
+                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
+                                    data-id='$blog->id'
+                                     $disabled><i
+                                        class='ri-delete-bin-line'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
+        }
+        return response()->json([
+            'code'=>200,
+            'blogs' => $blogHtml,
+            'blogPendings'=>$blogPendingsHtml,
+            'blogCompleteds'=>$blogCompletedsHtml
+        ],200);
+    }
+
     private function storeImage($imagePath, $title, $folder)
     {
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagePath));
