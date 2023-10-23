@@ -1,11 +1,3 @@
-// for blog tags
-const multipleCancelButton1 = new Choices(
-    '#blog-tags',
-    {
-        allowHTML: true,
-        removeItemButton: true,
-    }
-);
 
 $(document).ready(function () {
     const $titleInput = $('#blog-title');
@@ -67,5 +59,52 @@ $(document).ready(function () {
             }
         });
     });
+    $(`.btnPostDelete`).click(function () {
+        let id = $(this).data('id');
+        $.ajax({
+            url: 'delete/'+id,
+            type: 'get',
+            success: function(response){
+                $('#success').click();
+            },
+            error: function(error){
+
+            }
+        })
+    })
+
+    $(`input[type=file]`).change(function(){
+        $('img#thumbnailImg').attr('src',URL.createObjectURL(this.files[0]));
+    })
+    
+    $(`form#blog-form-update`).submit(function(e){
+        e.preventDefault();
+        var formData = new FormData(this);
+        // var quillContent = quill.root.innerHTML;
+        formData.append('content',quill.root.innerHTML);
+        $.ajax({
+            url: $(this).data('route'),
+            type: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response){
+                $('#success').click();
+            },
+            error: function(error){
+
+            }
+        })
+        console.log(quillContent);
+        console.log(formData);
+    })
 
 });
+// for blog tags
+const multipleCancelButton1 = new Choices(
+    '#blog-tags',
+    {
+        allowHTML: true,
+        removeItemButton: true,
+    }
+);

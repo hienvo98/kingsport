@@ -110,7 +110,7 @@
                                         <span class="flex-fill text-nowrap">
                                             All Tasks
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill"><?php echo(count($blog)) ;?></span>
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->count()) ;?></span>
                                     </div>
                                 </a>
                             </li>
@@ -141,9 +141,23 @@
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.post.index') }}" class="category-item">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
+                                        </span>
+                                        
+                                        <span class="flex-fill text-nowrap">
+                                            Tất Cả 
+                                        </span>
+                                        
+                                    </div>
+                                </a>
+                            </li>
                             @foreach ($category as $_category)
                             <li>
-                                <a href="javascript:void(0);" class="category-item" data-category-id="{{ $_category->id }}">
+                                <a href="{{ route('admin.post.index',['id'=>$_category->id]) }}" class="category-item">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
@@ -248,5 +262,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
     <!--End::row-1 -->
     @endsection

@@ -85,9 +85,7 @@ $(document).ready(function () {
         let color_number = groupColorNone.attr('data-group-color');
         $(`select[data-select-color=${color_number}]`).prop('required', true);
         $(`input#file-${color_number}`).prop('required', true);
-        // $(`select.select-color`).change(selectColorEvent);
-        num = $(`div.color_group_display`).length;
-        if (num == 3) $(this).slideToggle();
+        if ($(`div.color-group`).not('.color_group_display').length == 0) $(this).slideUp();
         groupColorNone.slideToggle();
     })
     //xoá form ảnh
@@ -101,7 +99,7 @@ $(document).ready(function () {
         $(`input#file-${color_number}`).prop('required', false);
         $(`input#file-${color_number}`).val('');
         $(`div[data-slide=${color_number}]`).empty();
-        if ($(`div.color_group_display`).length < 3) $(`div#addImage`).slideToggle();
+        if ($(`div.color_group_display`).length < 3) $(`div#addImage`).slideDown();
         colorGroup.slideToggle();
     })
 

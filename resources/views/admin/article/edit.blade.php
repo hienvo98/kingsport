@@ -27,18 +27,18 @@
                 <div class="card-header">
                     <div class="card-title">New Blog</div>
                 </div>
-                <form id="blog-form" method="POST" enctype="multipart/form-data">
+                <form id="blog-form-update" method="POST" data-route="{{ route('admin.post.update',['id'=>$post->id]) }}" enctype="multipart/form-data">
                     @csrf()
                     <div class="card-body">
                         <div class="row gy-3">
                             <div class="col-xl-12">
                                 <label for="blog-title" class="form-label">Tiêu đề</label>
-                                <input type="text" name="title" class="form-control" id="blog-title"
+                                <input type="text" name="title" value="{{ $post->title }}" class="form-control" id="blog-title"
                                     placeholder="Blog Title">
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-url" class="form-label">URL</label>
-                                <input type="text" name="url" class="form-control" id="blog-url"
+                                <input type="text" name="url" value="{{ $post->url }}" class="form-control" id="blog-url"
                                     placeholder="Blog Title">
                             </div>
                             <div class="col-xl-12">
@@ -47,31 +47,31 @@
                                     id="blog-category">
                                     <option value="">Select Category</option>
                                     @foreach ($category as $cate)
-                                        <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                        <option {{ $post->category_id==$cate->id?'selected':'' }} value="{{ $cate->id }}">{{ $cate->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-title" class="form-label">Seo Title</label>
-                                <input type="text" name="seo_title" class="form-control" id="seo_title"
+                                <input type="text" name="seo_title" value="{{ $post->seo_title }}" class="form-control" id="seo_title"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-description" class="form-label">Seo Description</label>
-                                <input type="text" name="seo_description" class="form-control" id="seo_description"
+                                <input type="text" name="seo_description" value="{{ $post->seo_description }}" class="form-control" id="seo_description"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                <input type="text" name="seo_key" class="form-control" id="seo_keyword"
+                                <input type="text" name="seo_key" value="{{ $post->seo_keywords }}" class="form-control" id="seo_keyword"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
                                 <label for="product-status-add" class="form-label">Trạng thái form</label>
                                 <select class="form-control" data-trigger name="form_status" id="form-status">
                                     <option value="">Select</option>
-                                    <option value="on">Bật</option>
-                                    <option value="off">Tắt</option>
+                                    <option {{ $post->on_form=='on'?'selected':'' }} value="on">Bật</option>
+                                    <option  {{ $post->on_form=='off'?'selected':'' }} value="off">Tắt</option>
                                 </select>
                             </div>
                             <div class="col-xl-6"hidden>
@@ -84,36 +84,36 @@
                                 </select>
                             </div>
                             <div class="col-xl-8">
-                                <label for="blog-thumbnail" class="form-label">Thumbnail</label>
+                                <label for="blog-thumbnail" class="form-label">File Thumbnail</label>
                                 <input type="file" class="form-control" name="thumbnail" id="thumbnail"
-                                    placeholder="Thumbnail" required>
+                                    placeholder="Thumbnail">
                             </div>
                             <div class="col-xl-2">
-                                <label for="" class="form-label">Ảnh Thumbnail</label><br>
-                                <img id="thumbnailImg" src="" alt=" Chưa Có Ảnh..." class="img-fluid img-thumbnail rounded">
+                                <label for="" class="form-label">Ảnh Thumbnail</label>
+                                <img id="thumbnailImg" src="{{ url("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail") }}" alt="..." class="img-fluid img-thumbnail rounded">
                             </div>
                             <div class="col-xl-6">
                                 <label for="publish-date" class="form-label">Ngày xuất bản</label>
-                                <input type="text" name="publish_date" class="form-control" id="publish-date"
+                                <input type="text" value="{{ $post->publish_date }}" name="publish_date" class="form-control" id="publish-date"
                                     value="" placeholder="Choose date">
                             </div>
                             <div class="col-xl-6">
                                 <label for="product-status-add" class="form-label">Trạng thái</label>
                                 <select class="form-control" data-trigger name="status" id="product-status-add">
                                     <option value="">Select</option>
-                                    <option value="on">Bật</option>
-                                    <option value="off">Tắt</option>
+                                    <option {{ $post->status=='on'?'selected':'' }} value="on">Bật</option>
+                                    <option {{ $post->status=='off'?'selected':'' }} value="off">Tắt</option>
                                 </select>
                             </div>
                             <div class="col-xl-12">
                                 <label class="form-label">Blog Content</label>
-                                <div id="blog-content"></div>
+                                <div id="blog-content">{!! $post->content !!}</div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="btn-list text-end">
-                            <button type="submit" class="btn btn-sm btn-primary">Post Blog</button>
+                            <button type="submit" class="btn btn-sm btn-primary">Cập Nhật</button>
                         </div>
                     </div>
                 </form>

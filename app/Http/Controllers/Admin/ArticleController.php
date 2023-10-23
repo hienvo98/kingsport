@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 
 class ArticleController extends Controller
 {
@@ -25,13 +27,21 @@ class ArticleController extends Controller
     public function index($id = '')
     {
         if (!empty($id)) {
-            $blog = Category::with('articles')->find($id);
-            $blogPendings = $blog->where('status', 'off');
-            $blogcompleteds = $blog->where('status', 'on');
+            $blog = Category::with('articles')->find($id)->articles()->paginate(10);
+            $blogcompleteds = $blog->filter(function ($article) {
+                return Carbon::parse($article->publish_date)->isPast();
+            });
+            $blogPendings = $blog->filter(function ($article) {
+                return Carbon::parse($article->publish_date)->isFuture();
+            });
         } else {
             $blog = Article::with('category')->paginate(9);
-            $blogPendings = $blog->where('status', 'off');
-            $blogcompleteds = $blog->where('status', 'on');
+            $blogPendings = $blog->filter(function ($article) {
+                return Carbon::parse($article->publish_date)->isFuture();
+            });
+            $blogcompleteds = $blog->filter(function ($article) {
+                return Carbon::parse($article->publish_date)->isPast();
+            });
         }
         $category = Category::get();
         return view('admin.article.index', [
@@ -63,7 +73,7 @@ class ArticleController extends Controller
         $blog->seo_title = $request->input('seo_title');
         $blog->seo_description = $request->input('seo_description');
         $blog->seo_keywords = $request->input('seo_key');
-        $blog->publish_date = $request->input('publish_date');
+        $blog->publish_date = Carbon::parse($request->input('publish_date'));
         $blog->status = $request->input('status');
         $thumbnail = $request->file('thumbnail');
         if ($thumbnail) {
@@ -84,7 +94,7 @@ class ArticleController extends Controller
 
         $imagePaths = $matches[1];
         foreach ($imagePaths as $imagePath) {
-            $newImagePath = $this->storeImage($imagePath, $request->input('title'));
+            $newImagePath = $this->storeImage($imagePath, $request->input('title'), 'content');
 
             // Lấy tên tệp hình ảnh từ đường dẫn
             $imageName = pathinfo($newImagePath, PATHINFO_BASENAME);
@@ -116,7 +126,14 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Article::find($id);
+        preg_match_all('/<img[^>]+src="([^"]+)"/', $post->content, $matches);
+        foreach ($matches[1] as $img) {
+            $post->content = str_replace($img, url("storage/uploads/blog_images/$post->title/content/$img"), $post->content);
+        }
+        $category = Category::all();
+        if (empty($post)) abort(404);
+        return view('admin.article.edit', compact('post', 'category'));
     }
 
     /**
@@ -124,7 +141,74 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Article::find($id);
+        if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
+        //sử lý thay đổi title bài viết
+        if($request->title != $post->title){
+            //lấy tên thư mục cũ
+            $oldPathTitle = public_path("storage/uploads/blog_images/$post->title");
+            $newPathTitle = public_path("storage/uploads/blog_images/$request->title");
+            if(File::isDirectory($oldPathTitle)){
+                File::move($oldPathTitle,$newPathTitle);
+            }
+            $post->title = $request->title;
+            $post -> save();
+        }
+        //xử lý khi thay đổi thumbnail
+        if($request->thumbnail){
+            $oldThumbNail = public_path("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail");
+            if(File::exists($oldThumbNail)){
+                unlink($oldThumbNail);
+               $newThumbPath = ImageStorageLibrary::storeImage($request->thumbnail,"blog_images/$post->title/thumbnail");
+               $newThumbName = basename($newThumbPath);
+               $post->thumbnail = $newThumbName;
+            }
+        }
+        //xử lý khi thay đổi content
+        if (!File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content2"))) {
+            File::makeDirectory(public_path("storage/uploads/blog_images/$post->title/content2"), 0755, true);
+        }
+        $content = $request->content;
+        preg_match_all('/<img[^>]+src="([^"]+)"/', $content, $matches);
+        $stt = 0;
+
+        foreach ($matches[1] as $key => $path) {
+            $basename = basename($path);
+            $oldPath = public_path("storage/uploads/blog_images/$post->title/content/$basename");
+            if (File::exists($oldPath)) {
+                $newPath = public_path("storage/uploads/blog_images/$post->title/content2/$basename");
+                //copy ảnh sang thư mục tạm thời
+                File::copy($oldPath,$newPath);
+                //thay thế đường dẫn bằng tên hình ảnh
+                $content = str_replace($path,$basename,$content);
+                unset($matches[1][$key]);
+            } else {
+                //lưu ảnh mới có trong content
+               $pathNewImage =  $this->storeImage($path, $post->title, 'content2');
+               $imageName = pathinfo($pathNewImage, PATHINFO_BASENAME);
+               //thay thế đường dẫn bằng tên hình ảnh
+               $content = str_replace($path,$imageName,$content);
+            }
+        }
+        //xoá thư mục content cũ
+        if (File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content"))) {
+            File::deleteDirectory(public_path("storage/uploads/blog_images/$post->title/content"));
+        }
+        //đổi tên thư mục tạm thời content2 thành content
+        if(File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content2"))){
+            File::move(public_path("storage/uploads/blog_images/$post->title/content2"),public_path("storage/uploads/blog_images/$post->title/content"));
+        };
+        $post->content = $content;
+        $post->url = $request->input('url');
+        $post->category_id = $request->input('category_id');
+        $post->seo_title = $request->input('seo_title');
+        $post->seo_description = $request->input('seo_description');
+        $post->seo_keywords = $request->input('seo_key');
+        $post->publish_date = Carbon::parse($request->input('publish_date'));
+        $post->status = $request->input('status');
+        $post->on_form = $request->input('form_status');
+        $post->save();
+        return response()->json(['code' => 200, 'messages' => $post], 200);
     }
 
     /**
@@ -132,14 +216,21 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Article::find($id);
+        if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm'], 404);
+        $post->status = 'off';
+        if ($post->save()) {
+            return response()->json([
+                'code' => 200,
+                'messages' => $id
+            ], 200);
+        }
     }
-    private function storeImage($imagePath, $title)
+    private function storeImage($imagePath, $title, $folder)
     {
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagePath));
         $imageName = time() . '_' . Str::random(10) . '.png';
-        Storage::disk('public')->put('uploads/blog_images/' . $title . '/content/' . $imageName, $imageData);
-
+        Storage::disk('public')->put('uploads/blog_images/' . $title . "/$folder/" . $imageName, $imageData);
         return asset('storage/uploads/blog_images/' . $imageName);
     }
 }
