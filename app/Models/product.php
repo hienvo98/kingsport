@@ -50,4 +50,7 @@ class Product extends Model
     public function images(){
         return $this->hasManyThrough(image_service::class,color_version::class,'product_id','color_ver_id');
     }
+    public function articles(){
+        return $this->belongsToMany(Article::class,'product_article','product_id','article_id');
+    }
 }

@@ -13,7 +13,7 @@
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <div>
                                         <p class="fw-semibold mb-3 d-flex align-items-center"><a
-                                                href="javascript:void(0);"></i></a>{{ $blogAll->title }}
+                                                href="javascript:void(0);"></i></a>{{ $blogAll->title  }}
                                         </p>
                                         <p class="mb-3">Ngày tạo : <span
                                                 class="fs-12 mb-1 text-muted">{{ $blogAll->created_at }}</span></p>
@@ -42,7 +42,7 @@
                                                     class="ri-edit-line"></i></a>
                                             <button
                                                 class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
-                                                data-id="{{ $blogAll->id }}"
+                                                data-id="{{ $blogAll->id }}" data-route="{{ url("/admin/post/delete/$blogAll->id") }}"
                                                 {{ $blogAll->status == 'off' ? 'disabled' : '' }}><i
                                                     class="ri-delete-bin-line"></i></button>
                                         </div>
@@ -86,7 +86,7 @@
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
                                         <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
-                                            data-id="{{ $blogPending->id }}"
+                                            data-id="{{ $blogPending->id }}" data-route="{{ url("/admin/post/delete/$blogPending->id") }}"
                                             {{ $blogPending->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>
                                     </div>
@@ -127,7 +127,7 @@
                                         <a href="{{ route('admin.post.edit',['id'=>$blogcompleted->id]) }}"
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
-                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
+                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete" data-route="{{ url("/admin/post/delete/$blogcompleted->id") }}"
                                             data-id="{{ $blogcompleted->id }}"
                                             {{ $blogcompleted->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>
