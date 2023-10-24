@@ -24,7 +24,7 @@
         <div class="col-xl-3">
             <div class="card custom-card">
                 <div class="card-body p-0">
-                    <div class="p-3 d-grid border-bottom border-block-end-dashed">
+                    {{-- <div class="p-3 d-grid border-bottom border-block-end-dashed">
                         <button class="btn btn-primary d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addtask">
                             <i class="ri-add-circle-line fs-16 align-middle me-1"></i>Tạo bài viết
                         </button>
@@ -89,10 +89,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here" aria-describedby="button-addon2">
+                            <input type="text" id="searchPost" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>
@@ -102,19 +102,19 @@
                                 <span class="fs-11 text-muted op-7 fw-semibold">TASKS</span>
                             </li>
                             <li class="active">
-                                <a href="javascript:void(0);">
+                                <a href="{{ route('admin.post.index') }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-task-line align-middle fs-14"></i>
                                         </span>
                                         <span class="flex-fill text-nowrap">
-                                            All Tasks
+                                            Tất cả bài viết
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill"><?php echo(count($blog)) ;?></span>
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->count()) ;?></span>
                                     </div>
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="javascript:void(0);">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
@@ -125,9 +125,9 @@
                                         </span>
                                     </div>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
-                                <a href="javascript:void(0);">
+                                <a href="{{ route('admin.post.index',['trash'=>'on']) }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-delete-bin-5-line align-middle fs-14"></i>
@@ -143,7 +143,7 @@
                             </li>
                             @foreach ($category as $_category)
                             <li>
-                                <a href="javascript:void(0);" class="category-item" data-category-id="{{ $_category->id }}">
+                                <a href="{{ route('admin.post.index',['id'=>$_category->id]) }}" class="category-item">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
@@ -203,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.article.list-buy-category');        
+                @include('admin.article.list-buy-category')      
             </div>
             <div class="d-flex pagination justify-content-end flex-wrap">
                 <nav aria-label="...">
@@ -225,7 +225,7 @@
                         {{-- Danh sách các trang --}}
                         @for ($i = 1; $i <= $blog->lastPage(); $i++)
                             <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $blog->url($i) }}">{{ $i }}</a>
+                                <a class="page-link  {{ $i === $blog->currentPage() ? 'disable-link' : '' }}" href="{{ $blog->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 
@@ -248,5 +248,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
     <!--End::row-1 -->
     @endsection

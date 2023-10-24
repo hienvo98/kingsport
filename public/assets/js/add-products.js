@@ -76,23 +76,36 @@ $(document).ready(function () {
         $("#notification").fadeOut();
     }, 5000);
 
-
+    var stt = 1; //xác định vị trí của colorGroup khi xử lý xoá color group và sau đó thêm lại.
     $(`div#addImage`).click(function () {
-        let num = $("div.color_group_display").length;
-        let color_number = `color-${num + 1}`;
-        $(`div[data-group-color=${color_number}]`).addClass('color_group_display');
-        $(`div[data-group-color=${color_number}]`).slideToggle();
-        // //xử lý khi chọn màu
+        var groupColorNone = $(`div.color-group`).not('.color_group_display').first();
+        groupColorNone.addClass('color_group_display');
+        groupColorNone.css('order', stt);
+        stt++;
+        let color_number = groupColorNone.attr('data-group-color');
         $(`select[data-select-color=${color_number}]`).prop('required', true);
         $(`input#file-${color_number}`).prop('required', true);
-        $(`select.select-color`).change(selectColorEvent);
-
-        if (num + 1 == 3) $(this).slideToggle();
+        if ($(`div.color-group`).not('.color_group_display').length == 0) $(this).slideUp();
+        groupColorNone.slideToggle();
+    })
+    //xoá form ảnh
+    $(`a.trash`).click(function () {
+        var color_number = $(this).data('group-color');
+        var colorGroup = $(`div[data-group-color=${color_number}]`);
+        colorGroup.removeClass('color_group_display');
+        $(`select[data-number-color=${color_number}]`).val('');
+        $(`select.select-color`).trigger('change');
+        $(`select[data-select-color=${color_number}]`).prop('required', false);
+        $(`input#file-${color_number}`).prop('required', false);
+        $(`input#file-${color_number}`).val('');
+        $(`div[data-slide=${color_number}]`).empty();
+        if ($(`div.color_group_display`).length < 3) $(`div#addImage`).slideDown();
+        colorGroup.slideToggle();
     })
 
     $('input[type="file"]').change(function () {
         var imageList = $(`div#image-container-${$(this).attr('data-color')}`);
-        let slide = ``;
+        var slide = ``;
         for (var i = 0; i < this.files.length; i++) {
             slide += `<div class="swiper-slide" style="position:relative">
                 <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
@@ -100,32 +113,10 @@ $(document).ready(function () {
         };
         $(`div[data-slide=${$(this).attr('data-color')}]`).empty();
         $(`div[data-slide=${$(this).attr('data-color')}]`).append(slide); // Thêm slide mới vào cấu trúc DOM
-         
-
-        $('img.thumbnail').click(function () {
-            // var modal = $('div.modal');
-            // var modalImage = $('#modalImage');
-            // modalImage.attr('src', $(this).attr('src'));
-            // modal.css('display', 'block');
-            // modal.attr("style", "display: block !important;");
-            // console.log('okok');
-        });
-
-        $('.close').click(function () {
-            $('div.modal').css('display', 'none');
-        });
-
-        $('div.modal').click(function (e) {
-            if (e.target === this) {
-                $(this).css('display', 'none');
-            }
-        });
-
     });
 
-    // $('div#imageModal').css('display','none');
     // xử lý click chọn màu
-    let selectColorEvent = function () {
+    $(`select.select-color`).change(function () {
         let color_number = $(this).attr('data-number-color');
         let value = $(this).val();
         $(`input#${color_number}`).val(value);
@@ -151,7 +142,7 @@ $(document).ready(function () {
             $(item).find(`option[data-color=${selected_color[0]}]`).remove();
             $(item).find(`option[data-color=${selected_color[1]}]`).remove();
         })
-    }
+    });
 
     let slugUrl = function (str) {
         // Chuyển hết sang chữ thường
@@ -184,8 +175,6 @@ $(document).ready(function () {
     $(`input[name=name]`).keyup(function () {
         $(`input[name=url]`).val(slugUrl($(this).val()));
     })
-    // console.log(quill.root.innerHTML);
-    // $(`button#submit`).prop('disabled', true);
     // xử lý dữ liệu trước khi submit form bằng ajax lên server
     $(`form#form-product`).submit(function (e) {
         e.preventDefault();
@@ -278,18 +267,18 @@ $(document).ready(function () {
             }
         })
     })
-   
 
-    $(`a.btnDeleteProduct`).click(function(even){
+
+    $(`a.btnDeleteProduct`).click(function (even) {
         even.preventDefault();
         let id = $(this).data('id');
         $.ajax({
-            url:'delete/'+id,
-            type:'get',
-            success:function(response){
-                if(response.messages == 'success') $('#success').click();
+            url: 'delete/' + id,
+            type: 'get',
+            success: function (response) {
+                if (response.messages == 'success') $('#success').click();
             },
-            error:function(error){
+            error: function (error) {
                 console.log(error)
             }
         })

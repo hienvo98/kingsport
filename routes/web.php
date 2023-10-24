@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
+use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,13 +71,13 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     });
 
     Route::prefix('/post')->group(function(){
-        Route::get('/index',[ArticleController::class,'index'])->name('post.index');
+        Route::get('/index/{id?}',[ArticleController::class,'index'])->name('post.index');
         Route::get('/create',[ArticleController::class,'create'])->name('post.create');
         Route::post('/store',[ArticleController::class,'store'])->name('post.store');
         Route::get('/edit/{id}',[ArticleController::class,'edit'])->name('post.edit');
-        Route::post('/update',[ArticleController::class,'update'])->name('post.update');
+        Route::post('/update/{id}',[ArticleController::class,'update'])->name('post.update');
         Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
-
+        Route::get('/search',[ArticleController::class,'search']);
     });
 
     Route::prefix('/showroom')->group(function(){

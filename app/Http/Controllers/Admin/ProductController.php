@@ -26,24 +26,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // File::delete(public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2'));
-        // $directory = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatarFuck');
-        // $newDirectory = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar');
-        // if (File::isDirectory($directory)) {
-        //     // File::deleteDirectory($directory);
-        //     File::move($directory, $newDirectory);
-        // }
-        // $sourcePath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar/652fdd5d19693_1697635677.webp');
-        // $destinationPath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2/652fdd5d19693_1697635677.webp');
-        // if (File::exists($sourcePath)) {
-        //     File::copy($sourcePath, $destinationPath);
-        // }
-        // $directoryPath = public_path('storage/uploads/products/GHẾ MASSAGE KINGSPORT G50/avatar2');
-
-        // if (!File::isDirectory($directoryPath)) {
-        //     File::makeDirectory($directoryPath, 0755, true);
-        // }
-
         $products = Product::with('category')->with('subCategory')->with('colors', 'colors.images')->with('images')->orderBy('id', 'desc')->paginate(5);
         return view('admin.product.list', compact('products'));
     }
@@ -57,10 +39,6 @@ class ProductController extends Controller
         $sorting = DB::table('products')->max('sorting') + 1;
         return view('admin.product.create', compact('cate', 'sorting'));
     }
-
-    // public function getSubCategory($id){
-    //     dd($request->all);
-    // }
 
     /**
      * Store a newly created resource in storage.
