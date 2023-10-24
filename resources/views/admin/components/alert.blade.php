@@ -52,7 +52,9 @@
     $(document).ready(function() {
         $('#success').click(function() {
             $('#modal-loading').modal('show');
+            $('#modal-loading').addClass('overlay');
             setTimeout(function() {
+                $('#modal-loading').removeClass('overlay');
                 $('#modal-loading').modal('hide');
                 $('div#notify').text('Đã Tải Lên Thành Công');
                 $('#successAlertContainer').removeClass('d-none');

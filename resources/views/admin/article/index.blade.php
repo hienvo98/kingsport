@@ -1,4 +1,3 @@
-
 @extends('layouts.appAdmin')
 @section('content')
     <!-- Page Header -->
@@ -92,17 +91,17 @@
                     </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" id="searchPost" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
+                            <input type="text" id="searchPost" data-route="{{ url('/admin/post/search') }}" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>
                     <div class="p-3 task-navigation border-bottom border-block-end-dashed">
                         <ul class="list-unstyled task-main-nav mb-0">
-                            <li class="px-0 pt-0">
-                                <span class="fs-11 text-muted op-7 fw-semibold">TASKS</span>
+                            <li class="px-0 pt-2">
+                                <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
                             </li>
                             <li class="active">
-                                <a href="{{ route('admin.post.index') }}">
+                                <a class="list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory") }}" href="javascript:void(0)">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-task-line align-middle fs-14"></i>
@@ -114,20 +113,8 @@
                                     </div>
                                 </a>
                             </li>
-                            {{-- <li>
-                                <a href="javascript:void(0);">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-2 lh-1">
-                                            <i class="ri-star-line align-middle fs-14"></i>
-                                        </span>
-                                        <span class="flex-fill text-nowrap">
-                                            Starred
-                                        </span>
-                                    </div>
-                                </a>
-                            </li> --}}
                             <li>
-                                <a href="{{ route('admin.post.index',['trash'=>'on']) }}">
+                                <a href="javascript:void(0)" class="list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory/0") }}"  >
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-delete-bin-5-line align-middle fs-14"></i>
@@ -135,15 +122,13 @@
                                         <span class="flex-fill text-nowrap">
                                             Trash
                                         </span>
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->where('status','off')->count()) ;?></span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="px-0 pt-2">
-                                <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
-                            </li>
                             @foreach ($category as $_category)
                             <li>
-                                <a href="{{ route('admin.post.index',['id'=>$_category->id]) }}" class="category-item">
+                                <a href="javascript:void(0)" data-id="{{ $_category->id }}" class="category-item list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory/$_category->id") }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
@@ -153,6 +138,7 @@
                                             {{$_category->name}}
                                         </span>
                                         
+                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($_category->articles->count()) ;?></span>
                                     </div>
                                 </a>
                             </li>
@@ -206,7 +192,7 @@
                 @include('admin.article.list-buy-category')      
             </div>
             <div class="d-flex pagination justify-content-end flex-wrap">
-                <nav aria-label="...">
+                <nav aria-label="..." id="nav">
                     <ul class="pagination mb-0">
                         {{-- Nút "Previous" --}}
                         @if ($blog->onFirstPage())
@@ -215,7 +201,7 @@
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $blog->previousPageUrl() }}"
+                                <a class="page-link" href="{{!empty($trash)?$blog->appends(['trash'=>'on'])->previousPageUrl():$blog->previousPageUrl() }}"
                                     aria-label="Previous">
                                     <span aria-hidden="true">Previous</span>
                                 </a>
@@ -225,14 +211,14 @@
                         {{-- Danh sách các trang --}}
                         @for ($i = 1; $i <= $blog->lastPage(); $i++)
                             <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
-                                <a class="page-link  {{ $i === $blog->currentPage() ? 'disable-link' : '' }}" href="{{ $blog->url($i) }}">{{ $i }}</a>
+                                <a class="page-link  {{ $i === $blog->currentPage() ? 'disable-link' : '' }}" href="{{!empty($trash)?$blog->appends(['trash'=>'on'])->url($i):$blog->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 
                         {{-- Nút "Next" --}}
                         @if ($blog->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $blog->nextPageUrl() }}" aria-label="Next">
+                                <a class="page-link" href="{{ !empty($trash)?$blog->appends(['trash'=>'on'])->nextPageUrl():$blog->nextPageUrl() }}" aria-label="Next">
                                     <span aria-hidden="true">Next</span>
                                 </a>
                             </li>

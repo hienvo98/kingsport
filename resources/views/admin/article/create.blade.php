@@ -1,124 +1,293 @@
 @extends('layouts.appAdmin')
 @section('content')
     <!-- Page Header -->
+    <link rel="stylesheet" href="{{ asset('assets/libs/prismjs/themes/prism-coy.min.css') }}">
+
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-        <h1 class="page-title fw-semibold fs-18 mb-0">Bài viết</h1>
+        <h1 class="page-title fw-semibold fs-18 mb-0">Tạo Bài Viết</h1>
         <div class="ms-md-1 ms-0">
             <nav>
-
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Bài viết</li>
+                    <li class="breadcrumb-item active" aria-current="page">Tạo Bài Viết</li>
                 </ol>
             </nav>
         </div>
     </div>
-    @if (session('message'))
-        <div id="notification" class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
+
     <div id="errors">
 
     </div>
+
+    <!-- Page Header Close -->
+    <!-- Start::row-1 -->
     <div class="row">
-        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card custom-card">
-                <div class="card-header">
-                    <div class="card-title">New Blog</div>
+        <div class="col-xl-12">
+            <form id="blog-form" method="POST" enctype="multipart/form-data">
+                @csrf()
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card custom-card">
+                            <div class="card-body p-0">
+                                <div class="d-flex p-3 align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Nội Dung Bài Viết</h6>
+                                    </div>
+                                    <div>
+                                        <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
+                                            <li class="nav-item m-1">
+                                                <a class="nav-link active" data-bs-toggle="tab" role="tab"
+                                                    aria-current="page" href="#all-tasks" aria-selected="true">Thông Tin Bài
+                                                    Viết</a>
+                                            </li>
+                                            <li class="nav-item m-1">
+                                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                                    href="#pending" aria-selected="true">Nội Dung Bài Viết</a>
+                                            </li>
+                                            <li class="nav-item m-1">
+                                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="image"
+                                                    href="#image" aria-selected="true">Sản Phẩm Liên Quan Bài Viết</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="ti ti-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Select All</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Share All</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Delete All</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content task-tabs-container">
+                        <div class="tab-pane show active p-0" id="all-tasks" role="tabpanel">
+                            <div class="row" id="tasks-container">
+                                <div class="p-4">
+                                    <div class="row gx-5">
+                                        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                                            <div class="card custom-card shadow-none mb-0 border-0">
+                                                <div class="card-body p-0">
+                                                    <div class="row gy-3 p-3">
+                                                        <div class="col-xl-12">
+                                                            <label for="blog-title" class="form-label">Tiêu đề</label>
+                                                            <input type="text" name="title" class="form-control"
+                                                                id="blog-title" placeholder="Blog Title">
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="blog-url" class="form-label">URL</label>
+                                                            <input type="text" name="url" class="form-control"
+                                                                id="blog-url" placeholder="Blog Title">
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="blog-category" class="form-label">Chọn danh
+                                                                mục</label>
+                                                            <select class="form-control" name="category_id" data-trigger
+                                                                name="blog-category" id="blog-category">
+                                                                <option value="">Select Category</option>
+                                                                @foreach ($category as $cate)
+                                                                    <option value="{{ $cate->id }}">{{ $cate->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <label for="seo-title" class="form-label">Seo Title</label>
+                                                            <input type="text" name="seo_title" class="form-control"
+                                                                id="seo_title" placeholder="Enter Name">
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <label for="seo-description" class="form-label">Seo
+                                                                Description</label>
+                                                            <input type="text" name="seo_description"
+                                                                class="form-control" id="seo_description"
+                                                                placeholder="Enter Name">
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <label for="seo-keyword" class="form-label">Seo
+                                                                Keyword</label>
+                                                            <input type="text" name="seo_key" class="form-control"
+                                                                id="seo_keyword" placeholder="Enter Name">
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <label for="product-status-add" class="form-label">Trạng thái
+                                                                form</label>
+                                                            <select class="form-control" data-trigger name="form_status"
+                                                                id="form-status">
+                                                                <option value="">Select</option>
+                                                                <option value="on">Bật</option>
+                                                                <option value="off">Tắt</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <label for="blog-thumbnail"
+                                                                class="form-label">Thumbnail</label>
+                                                            <input type="file" class="form-control" name="thumbnail"
+                                                                id="thumbnail" placeholder="Thumbnail" required>
+                                                        </div>
+                                                        <div class="col-xl-2">
+                                                            <label for="" class="form-label">Ảnh
+                                                                Thumbnail</label><br>
+                                                            <img id="thumbnailImg" src="" alt=" Chưa Có Ảnh..."
+                                                                class="img-fluid img-thumbnail rounded">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
+                            </div>
+                        </div>
+
+                        <div class="tab-pane p-0" id="pending" role="tabpanel">
+                            <div class="row">
+                                <div class="p-4">
+                                    <div class="row gx-5">
+                                        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                                            <div class="card custom-card shadow-none mb-0 border-0">
+                                                <div class="card-body p-0">
+                                                    <div class="row gy-3 p-3">
+                                                        <label for="product-description-add" class="form-label">Mô tả Sản
+                                                            Phẩm</label>
+                                                        <div id="blog-content"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane p-0" id="image" role="tabpanel">
+                            <div class="row">
+                                <div class="p-4">
+                                    <div class="row gx-5">
+                                        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                                            <div class="card custom-card shadow-none mb-0 border-0">
+                                                <div class="card-body p-0">
+                                                    <div class="row gy-3 p-3">
+                                                        <div class="col-xl-12 my-3">
+
+
+
+                                                            <div class="row">
+                                                                <div class="col-xl-12">
+                                                                    <div class="card custom-card">
+                                                                        <div
+                                                                            class="card-header d-flex align-items-center justify-content-between">
+                                                                            <h6 class="card-title">Danh Sách Sản Phẩm</h6>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            {{-- <p  class="fw-semibold mb-2">Default</p>
+                                                                            <select  class="form-control" data-trigger
+                                                                                name="choices-multiple-default"
+                                                                                id="choices-multiple-default" multiple>
+                                                                                <option value="Choice 1" selected>Choice 1
+                                                                                </option>
+                                                                                <option value="Choice 2">Choice 4</option>
+                                                                                <option value="Choice 3">Choice 5</option>
+                                                                                <option value="Choice 4" disabled>Choice 6
+                                                                                </option>
+                                                                            </select> --}}
+                                                                            {{-- <p  class="fw-semibold mb-2">With Remove Button
+                                                                            </p>
+                                                                            <select   class="form-control" data-trigger
+                                                                                name="choices-multiple-remove-button"
+                                                                                id="choices-multiple-remove-button"
+                                                                                multiple>
+                                                                                <option value="Choice 1" selected>Choice 1
+                                                                                </option>
+                                                                                <option value="Choice 2">Choice 2</option>
+                                                                                <option value="Choice 3">Choice 3</option>
+                                                                                <option value="Choice 4">Choice 4</option>
+                                                                            </select> --}}
+                                                                            <p class="fw-semibold mb-2">Có Thể Chọn Nhiều Sản Phẩm</p>
+                                                                            <select data-trigger class="form-control"
+                                                                                name="choices-multiple-groups"
+                                                                                id="choices-multiple-groups" multiple>
+                                                                                <option value="">Chọn Sản Phẩm
+                                                                                </option>
+                                                                                <optgroup label="UK">
+                                                                                    <option value="London">London</option>
+                                                                                    <option value="Manchester">Manchester
+                                                                                    </option>
+                                                                                    <option value="Liverpool">Liverpool
+                                                                                    </option>
+                                                                                </optgroup>
+                                                                                <optgroup label="FR">
+                                                                                    <option value="Paris">Paris</option>
+                                                                                    <option value="Lyon">Lyon</option>
+                                                                                    <option value="Marseille">Marseille
+                                                                                    </option>
+                                                                                </optgroup>
+                                                                                <optgroup label="DE" disabled>
+                                                                                    <option value="Hamburg">Hamburg
+                                                                                    </option>
+                                                                                    <option value="Munich">Munich</option>
+                                                                                    <option value="Berlin">Berlin</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="US">
+                                                                                    <option value="New York">New York
+                                                                                    </option>
+                                                                                    <option value="Washington" disabled>
+                                                                                        Washington</option>
+                                                                                    <option value="Michigan">Michigan
+                                                                                    </option>
+                                                                                </optgroup>
+                                                                                <optgroup label="SP">
+                                                                                    <option value="Madrid">Madrid</option>
+                                                                                    <option value="Barcelona">Barcelona
+                                                                                    </option>
+                                                                                    <option value="Malaga">Malaga</option>
+                                                                                </optgroup>
+                                                                                <optgroup label="CA">
+                                                                                    <option value="Montreal">Montreal
+                                                                                    </option>
+                                                                                    <option value="Toronto">Toronto
+                                                                                    </option>
+                                                                                    <option value="Vancouver">Vancouver
+                                                                                    </option>
+                                                                                </optgroup>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <form id="blog-form" method="POST" enctype="multipart/form-data">
-                    @csrf()
-                    <div class="card-body">
-                        <div class="row gy-3">
-                            <div class="col-xl-12">
-                                <label for="blog-title" class="form-label">Tiêu đề</label>
-                                <input type="text" name="title" class="form-control" id="blog-title"
-                                    placeholder="Blog Title">
-                            </div>
-                            <div class="col-xl-12">
-                                <label for="blog-url" class="form-label">URL</label>
-                                <input type="text" name="url" class="form-control" id="blog-url"
-                                    placeholder="Blog Title">
-                            </div>
-                            <div class="col-xl-12">
-                                <label for="blog-category" class="form-label">Chọn danh mục</label>
-                                <select class="form-control" name="category_id" data-trigger name="blog-category"
-                                    id="blog-category">
-                                    <option value="">Select Category</option>
-                                    @foreach ($category as $cate)
-                                        <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="seo-title" class="form-label">Seo Title</label>
-                                <input type="text" name="seo_title" class="form-control" id="seo_title"
-                                    placeholder="Enter Name">
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="seo-description" class="form-label">Seo Description</label>
-                                <input type="text" name="seo_description" class="form-control" id="seo_description"
-                                    placeholder="Enter Name">
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                <input type="text" name="seo_key" class="form-control" id="seo_keyword"
-                                    placeholder="Enter Name">
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="product-status-add" class="form-label">Trạng thái form</label>
-                                <select class="form-control" data-trigger name="form_status" id="form-status">
-                                    <option value="">Select</option>
-                                    <option value="on">Bật</option>
-                                    <option value="off">Tắt</option>
-                                </select>
-                            </div>
-                            <div class="col-xl-6"hidden>
-                                <label for="blog-tags" class="form-label">Blog Tags</label>
-                                <select class="form-control" name="blog-tags" id="blog-tags" multiple>
-                                    <option value="Top Blog" selected>Top Blog</option>
-                                    <option value="Blogger">Blogger</option>
-                                    <option value="Adventure">Adventure</option>
-                                    <option value="Landscape" selected>Landscape</option>
-                                </select>
-                            </div>
-                            <div class="col-xl-8">
-                                <label for="blog-thumbnail" class="form-label">Thumbnail</label>
-                                <input type="file" class="form-control" name="thumbnail" id="thumbnail"
-                                    placeholder="Thumbnail" required>
-                            </div>
-                            <div class="col-xl-2">
-                                <label for="" class="form-label">Ảnh Thumbnail</label><br>
-                                <img id="thumbnailImg" src="" alt=" Chưa Có Ảnh..." class="img-fluid img-thumbnail rounded">
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="publish-date" class="form-label">Ngày xuất bản</label>
-                                <input type="text" name="publish_date" class="form-control" id="publish-date"
-                                    value="" placeholder="Choose date">
-                            </div>
-                            <div class="col-xl-6">
-                                <label for="product-status-add" class="form-label">Trạng thái</label>
-                                <select class="form-control" data-trigger name="status" id="product-status-add">
-                                    <option value="">Select</option>
-                                    <option value="on">Bật</option>
-                                    <option value="off">Tắt</option>
-                                </select>
-                            </div>
-                            <div class="col-xl-12">
-                                <label class="form-label">Blog Content</label>
-                                <div id="blog-content"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="btn-list text-end">
-                            <button type="submit" class="btn btn-sm btn-primary">Post Blog</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                <ul class="pagination justify-content-end">
+                    <button id="submit" type="submit" class="btn btn-primary-light m-1">Tạo Bài Viết<i
+                            class="bi bi-plus-lg ms-2"></i></button>
+                </ul>
+            </form>
         </div>
     </div>
+
+    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+    <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
+    <script src="{{ asset('assets/js/choices.js') }} "></script>
     <script src="{{ asset('assets/js/blog-create.js') }}"></script>
 @endsection
