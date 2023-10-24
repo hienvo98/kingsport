@@ -202,7 +202,7 @@
                                                                 sale</label>
                                                             <input type="text" name="regular_price"
                                                                 class="form-control" id="product-dealer-price"
-                                                                placeholder="Regular Price">
+                                                                placeholder="Regular Price" required>
                                                             <label for="product-description-add"
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                         </div>
@@ -260,7 +260,8 @@
                                                             <input type="number" name="sold" class="form-control"
                                                                 id="product-cost-add" placeholder="to be continued">
                                                             <label for="product-name-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0">Real or fake, it's up to you</label>
+                                                                class="form-label mt-1 fs-12 op-5 text-muted mb-0">Real or
+                                                                fake, it's up to you</label>
                                                         </div>
                                                         <div class="col-xl-12" id="imageList"></div>
                                                     </div>
@@ -316,7 +317,9 @@
                                                                             data-color="avatar"
                                                                             class="product-Images form-control "
                                                                             data-allow-reorder="true"
-                                                                            data-max-file-size="3MB" required>
+                                                                            data-max-file-size="3MB"
+                                                                            accept=".jpeg, .jpg, .png, .webp"
+                                                                            size="3000000" required>
                                                                         <input type="hidden" name="list_color_1"
                                                                             value="">
                                                                     </div>
@@ -341,87 +344,301 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="color-group" data-group-color="color-1"
-                                                            style="display: none">
-                                                            <div class="col-xl-6">
-                                                                <select class="form-select select-color"
-                                                                    data-number-color="color-1"
-                                                                    data-select-color="color-1"
-                                                                    aria-label="Default select example">
-                                                                    <option selected value="">Chọn Màu Sản Phẩm
-                                                                    </option>
-                                                                    <option data-color="red" value="red">red</option>
-                                                                    <option data-color="black" value="black">black
-                                                                    </option>
-                                                                    <option data-color="gray" value="gray">gray</option>
-                                                                    <option data-color="white" value="white">white
-                                                                    </option>
-                                                                    <option data-color="beige" value="beige">beige
-                                                                    </option>
-                                                                    <option data-color="brown" value="brown">brown
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <label for="product-description-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu
-                                                                Trước Khi
-                                                                Upload Ảnh</label>
-                                                            <div class="image mt-1"
-                                                                style="border-bottom:1px solid blueviolet">
-                                                                <div class="form-check d-none">
-                                                                    <div class="card custom-card mb-1">
-                                                                        <div class="card-header d-block">
-                                                                            <div
-                                                                                class="d-sm-flex d-block align-items-center">
-                                                                                <div class="me-2">
-                                                                                    <span>
-                                                                                        <div class="form-check-inline">
-                                                                                            <input type="checkbox"
-                                                                                                data-type=""
-                                                                                                class="form-check-input check-color"
-                                                                                                id="color-1"
-                                                                                                name="color[]"
-                                                                                                value="">
-                                                                                        </div>
-                                                                                    </span>
+                                                        <div class="d-flex flex-column">
+                                                            <div class="color-group" data-group-color="color-1"
+                                                                style="display: none">
+                                                                <div class="col-xl-6 d-flex">
+                                                                    <select class="form-select select-color"
+                                                                        data-number-color="color-1"
+                                                                        data-select-color="color-1"
+                                                                        aria-label="Default select example">
+                                                                        <option selected value="">Chọn Màu Sản
+                                                                            Phẩm
+                                                                        </option>
+                                                                        <option data-color="red" value="red">red
+                                                                        </option>
+                                                                        <option data-color="black" value="black">
+                                                                            black
+                                                                        </option>
+                                                                        <option data-color="gray" value="gray">gray
+                                                                        </option>
+                                                                        <option data-color="white" value="white">
+                                                                            white
+                                                                        </option>
+                                                                        <option data-color="beige" value="beige">
+                                                                            beige
+                                                                        </option>
+                                                                        <option data-color="brown" value="brown">
+                                                                            brown
+                                                                        </option>
+                                                                    </select>
+                                                                    <div>
+                                                                        <a href="javascript:void(0)" data-group-color="color-1"
+                                                                            class="btn btn-icon btn-sm btn-danger-light product-btn trash"><i
+                                                                                class="ri-delete-bin-line"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                                <label for="product-description-add"
+                                                                    class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn
+                                                                    Màu
+                                                                    Trước Khi
+                                                                    Upload Ảnh</label>
+                                                                <div class="image mt-1"
+                                                                    style="border-bottom:1px solid blueviolet">
+                                                                    <div class="form-check d-none">
+                                                                        <div class="card custom-card mb-1">
+                                                                            <div class="card-header d-block">
+                                                                                <div
+                                                                                    class="d-sm-flex d-block align-items-center">
+                                                                                    <div class="me-2">
+                                                                                        <span>
+                                                                                            <div class="form-check-inline">
+                                                                                                <input type="checkbox"
+                                                                                                    data-type=""
+                                                                                                    class="form-check-input check-color"
+                                                                                                    id="color-1"
+                                                                                                    name="color[]"
+                                                                                                    value="">
+                                                                                            </div>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="flex-fill">
+                                                                                        <a href="javascript:void(0)">
+                                                                                            <label for=""
+                                                                                                class="fs-14 fw-semibold text-center"></label>
+                                                                                        </a>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div class="flex-fill">
-                                                                                    <a href="javascript:void(0)">
-                                                                                        <label for=""
-                                                                                            class="fs-14 fw-semibold text-center"></label>
-                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-1">
+                                                                        <div
+                                                                            class="col-xl-12 product-documents-container p-2">
+                                                                            <p class="fw-semibold mb-2 fs-14">Chọn file
+                                                                                ảnh:
+                                                                            </p>
+                                                                            <input type="file" data-ver-color=""
+                                                                                data-color="color-1" id="file-color-1"
+                                                                                name=""
+                                                                                class="product-Images form-control "
+                                                                                multiple data-allow-reorder="true"
+                                                                                data-max-file-size="3MB"
+                                                                                accept=".jpeg, .jpg, .png, .webp"
+                                                                                size="3000000">
+                                                                            <input type="hidden" name="list_color_1"
+                                                                                value="">
+                                                                        </div>
+                                                                        <div class="col-xl-12">
+                                                                            <div class="card custom-card">
+                                                                                <div class="card-header">
+                                                                                    <div class="card-title">
+                                                                                        Danh Sách Ảnh
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <div class="swiper swiper-overflow">
+                                                                                        <div class="swiper-wrapper"
+                                                                                            data-slide="color-1">
+                                                                                        </div>
+                                                                                        <div class="swiper-pagination">
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="mt-1">
-                                                                    <div class="col-xl-12 product-documents-container p-2">
-                                                                        <p class="fw-semibold mb-2 fs-14">Chọn file ảnh:
-                                                                        </p>
-                                                                        <input type="file" data-ver-color=""
-                                                                            data-color="color-1" id="file-color-1"
-                                                                            name=""
-                                                                            class="product-Images form-control " multiple
-                                                                            data-allow-reorder="true"
-                                                                            data-max-file-size="3MB">
-                                                                        <input type="hidden" name="list_color_1"
-                                                                            value="">
+                                                            </div>
+
+                                                            <div class="color-group" data-group-color="color-2"
+                                                                style="display: none">
+                                                                <div class="col-xl-6 d-flex">
+                                                                    <select class="form-select select-color"
+                                                                        data-number-color="color-2"
+                                                                        data-select-color="color-2"
+                                                                        aria-label="Default select example">
+                                                                        <option selected value="">Chọn Màu Sản Phẩm
+                                                                        </option>
+                                                                        <option data-color="red" value="red">red
+                                                                        </option>
+                                                                        <option data-color="black" value="black">black
+                                                                        </option>
+                                                                        <option data-color="gray" value="gray">gray
+                                                                        </option>
+                                                                        <option data-color="white" value="white">white
+                                                                        </option>
+                                                                        <option data-color="beige" value="beige">beige
+                                                                        </option>
+                                                                        <option data-color="brown" value="brown">brown
+                                                                        </option>
+                                                                    </select>
+                                                                    <div>
+                                                                        <a href="javascript:void(0)" data-group-color="color-2"
+                                                                            class="btn btn-icon btn-sm btn-danger-light product-btn trash"><i
+                                                                                class="ri-delete-bin-line"></i></a>
                                                                     </div>
-                                                                    <div class="col-xl-12">
-                                                                        <div class="card custom-card">
-                                                                            <div class="card-header">
-                                                                                <div class="card-title">
-                                                                                    Danh Sách Ảnh
+                                                                </div>
+                                                                <label for="product-description-add"
+                                                                    class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn
+                                                                    Màu
+                                                                    Trước Khi
+                                                                    Upload Ảnh</label>
+                                                                <div class="image mt-1"
+                                                                    style="border-bottom:1px solid blueviolet">
+                                                                    <div class="form-check d-none">
+                                                                        <div class="card custom-card mb-1">
+                                                                            <div class="card-header d-block">
+                                                                                <div
+                                                                                    class="d-sm-flex d-block align-items-center">
+                                                                                    <div class="me-2">
+                                                                                        <span>
+                                                                                            <div class="form-check-inline">
+                                                                                                <input type="checkbox"
+                                                                                                    data-type=""
+                                                                                                    class="form-check-input check-color"
+                                                                                                    id="color-2"
+                                                                                                    name="color[]"
+                                                                                                    value="">
+                                                                                            </div>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="flex-fill">
+                                                                                        <a href="javascript:void(0)">
+                                                                                            <label for=""
+                                                                                                class="fs-14 fw-semibold text-center"></label>
+                                                                                        </a>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="card-body">
-                                                                                <div class="swiper swiper-overflow">
-                                                                                    <div class="swiper-wrapper"
-                                                                                        data-slide="color-1">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-1">
+                                                                        <div
+                                                                            class="col-xl-12 product-documents-container p-2">
+                                                                            <p class="fw-semibold mb-2 fs-14">Chọn file
+                                                                                ảnh:
+                                                                            </p>
+                                                                            <input type="file" data-color="color-2"
+                                                                                id="file-color-2" multiple name=""
+                                                                                class="product-Images form-control"
+                                                                                accept=".jpeg, .jpg, .png, .webp"
+                                                                                size="3000000">
+
+                                                                        </div>
+                                                                        <div class="col-xl-12">
+                                                                            <div class="card custom-card">
+                                                                                <div class="card-header">
+                                                                                    <div class="card-title">
+                                                                                        Danh Sách Ảnh
                                                                                     </div>
-                                                                                    <div class="swiper-pagination"></div>
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <div class="swiper swiper-overflow">
+                                                                                        <div class="swiper-wrapper"
+                                                                                            data-slide="color-2">
+
+                                                                                        </div>
+                                                                                        <div class="swiper-pagination">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="color-group" data-group-color="color-3"
+                                                                style="display: none">
+                                                                <div class="col-xl-6 d-flex">
+                                                                    <select class="form-select select-color"
+                                                                        data-number-color="color-3"
+                                                                        data-select-color="color-3"
+                                                                        aria-label="Default select example">
+                                                                        <option selected value="">Chọn Màu Sản Phẩm
+                                                                        </option>
+                                                                        <option data-color="red" value="red">red
+                                                                        </option>
+                                                                        <option data-color="black" value="black">black
+                                                                        </option>
+                                                                        <option data-color="gray" value="gray">gray
+                                                                        </option>
+                                                                        <option data-color="white" value="white">white
+                                                                        </option>
+                                                                        <option data-color="beige" value="beige">beige
+                                                                        </option>
+                                                                        <option data-color="brown" value="brown">brown
+                                                                        </option>
+                                                                    </select>
+                                                                    <div>
+                                                                        <a href="javascript:void(0)" data-group-color="color-3"
+                                                                            class="btn btn-icon btn-sm btn-danger-light product-btn trash"><i
+                                                                                class="ri-delete-bin-line"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                                <label for="product-description-add"
+                                                                    class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn
+                                                                    Màu
+                                                                    Trước Khi
+                                                                    Upload Ảnh</label>
+                                                                <div class="image mt-1"
+                                                                    style="border-bottom:1px solid blueviolet">
+                                                                    <div class="form-check d-none">
+                                                                        <div class="card custom-card mb-1">
+                                                                            <div class="card-header d-block">
+                                                                                <div
+                                                                                    class="d-sm-flex d-block align-items-center">
+                                                                                    <div class="me-2">
+                                                                                        <span>
+                                                                                            <div class="form-check-inline">
+                                                                                                <input type="checkbox"
+                                                                                                    data-type=""
+                                                                                                    class="form-check-input check-color"
+                                                                                                    id="color-3"
+                                                                                                    name="color[]"
+                                                                                                    value="">
+                                                                                            </div>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="flex-fill">
+                                                                                        <a href="javascript:void(0)">
+                                                                                            <label for=""
+                                                                                                class="fs-14 fw-semibold text-center"></label>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-1">
+                                                                        <div
+                                                                            class="col-xl-12 product-documents-container p-2">
+                                                                            <p class="fw-semibold mb-2 fs-14">Chọn file
+                                                                                ảnh:
+                                                                            </p>
+                                                                            <input type="file" data-color="color-3"
+                                                                                id="file-color-3" multiple name=""
+                                                                                class="product-Images form-control"
+                                                                                name="filepond"
+                                                                                accept=".jpeg, .jpg, .png, .webp"
+                                                                                size="3000000">
+                                                                        </div>
+                                                                        <div class="col-xl-12">
+                                                                            <div class="card custom-card">
+                                                                                <div class="card-header">
+                                                                                    <div class="card-title">
+                                                                                        Danh Sách Ảnh
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <div class="swiper swiper-overflow">
+                                                                                        <div class="swiper-wrapper"
+                                                                                            data-slide="color-3">
+
+                                                                                        </div>
+                                                                                        <div class="swiper-pagination">
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -430,175 +647,10 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="color-group" data-group-color="color-2"
-                                                            style="display: none">
-                                                            <div class="col-xl-6">
-                                                                <select class="form-select select-color"
-                                                                    data-number-color="color-2"
-                                                                    data-select-color="color-2"
-                                                                    aria-label="Default select example">
-                                                                    <option selected value="">Chọn Màu Sản Phẩm
-                                                                    </option>
-                                                                    <option data-color="red" value="red">red</option>
-                                                                    <option data-color="black" value="black">black
-                                                                    </option>
-                                                                    <option data-color="gray" value="gray">gray</option>
-                                                                    <option data-color="white" value="white">white
-                                                                    </option>
-                                                                    <option data-color="beige" value="beige">beige
-                                                                    </option>
-                                                                    <option data-color="brown" value="brown">brown
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <label for="product-description-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu
-                                                                Trước Khi
-                                                                Upload Ảnh</label>
-                                                            <div class="image mt-1"
-                                                                style="border-bottom:1px solid blueviolet">
-                                                                <div class="form-check d-none">
-                                                                    <div class="card custom-card mb-1">
-                                                                        <div class="card-header d-block">
-                                                                            <div
-                                                                                class="d-sm-flex d-block align-items-center">
-                                                                                <div class="me-2">
-                                                                                    <span>
-                                                                                        <div class="form-check-inline">
-                                                                                            <input type="checkbox"
-                                                                                                data-type=""
-                                                                                                class="form-check-input check-color"
-                                                                                                id="color-2"
-                                                                                                name="color[]"
-                                                                                                value="">
-                                                                                        </div>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div class="flex-fill">
-                                                                                    <a href="javascript:void(0)">
-                                                                                        <label for=""
-                                                                                            class="fs-14 fw-semibold text-center"></label>
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mt-1">
-                                                                    <div class="col-xl-12 product-documents-container p-2">
-                                                                        <p class="fw-semibold mb-2 fs-14">Chọn file ảnh:
-                                                                        </p>
-                                                                        <input type="file" data-color="color-2"
-                                                                            id="file-color-2" multiple name=""
-                                                                            class="product-Images form-control">
 
-                                                                    </div>
-                                                                    <div class="col-xl-12">
-                                                                        <div class="card custom-card">
-                                                                            <div class="card-header">
-                                                                                <div class="card-title">
-                                                                                    Danh Sách Ảnh
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="card-body">
-                                                                                <div class="swiper swiper-overflow">
-                                                                                    <div class="swiper-wrapper"
-                                                                                        data-slide="color-2">
 
-                                                                                    </div>
-                                                                                    <div class="swiper-pagination"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="color-group" data-group-color="color-3"
-                                                            style="display: none">
-                                                            <div class="col-xl-6">
-                                                                <select class="form-select select-color"
-                                                                    data-number-color="color-3"
-                                                                    data-select-color="color-3"
-                                                                    aria-label="Default select example">
-                                                                    <option selected value="">Chọn Màu Sản Phẩm
-                                                                    </option>
-                                                                    <option data-color="red" value="red">red</option>
-                                                                    <option data-color="black" value="black">black
-                                                                    </option>
-                                                                    <option data-color="gray" value="gray">gray</option>
-                                                                    <option data-color="white" value="white">white
-                                                                    </option>
-                                                                    <option data-color="beige" value="beige">beige
-                                                                    </option>
-                                                                    <option data-color="brown" value="brown">brown
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <label for="product-description-add"
-                                                                class="form-label mt-1 fs-12 op-5 text-red mb-0">Chọn Màu
-                                                                Trước Khi
-                                                                Upload Ảnh</label>
-                                                            <div class="image mt-1"
-                                                                style="border-bottom:1px solid blueviolet">
-                                                                <div class="form-check d-none">
-                                                                    <div class="card custom-card mb-1">
-                                                                        <div class="card-header d-block">
-                                                                            <div
-                                                                                class="d-sm-flex d-block align-items-center">
-                                                                                <div class="me-2">
-                                                                                    <span>
-                                                                                        <div class="form-check-inline">
-                                                                                            <input type="checkbox"
-                                                                                                data-type=""
-                                                                                                class="form-check-input check-color"
-                                                                                                id="color-3"
-                                                                                                name="color[]"
-                                                                                                value="">
-                                                                                        </div>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div class="flex-fill">
-                                                                                    <a href="javascript:void(0)">
-                                                                                        <label for=""
-                                                                                            class="fs-14 fw-semibold text-center"></label>
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mt-1">
-                                                                    <div class="col-xl-12 product-documents-container p-2">
-                                                                        <p class="fw-semibold mb-2 fs-14">Chọn file ảnh:
-                                                                        </p>
-                                                                        <input type="file" data-color="color-3"
-                                                                            id="file-color-3" multiple name=""
-                                                                            class="product-Images form-control"
-                                                                            name="filepond">
-                                                                    </div>
-                                                                    <div class="col-xl-12">
-                                                                        <div class="card custom-card">
-                                                                            <div class="card-header">
-                                                                                <div class="card-title">
-                                                                                    Danh Sách Ảnh
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="card-body">
-                                                                                <div class="swiper swiper-overflow">
-                                                                                    <div class="swiper-wrapper"
-                                                                                        data-slide="color-3">
 
-                                                                                    </div>
-                                                                                    <div class="swiper-pagination"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
                                                         <div class="col-xl-12" id="addImage"
                                                             data-asset="{{ asset('') }}">
@@ -741,6 +793,6 @@
             </form>
         </div>
     </div>
-      
+
     <script src="{{ asset('assets/js/add-products.js') }}"></script>
 @endsection

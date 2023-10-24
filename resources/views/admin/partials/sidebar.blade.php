@@ -187,7 +187,7 @@
                                 <a href="javascript:void(0)">Bài Viết</a>
                             </li>
                             <li class="slide has-sub">
-                                <a href="javascript:void(0);" class="side-menu__item">Về Sản Phẩm
+                                <a href="javascript:void(0);" class="side-menu__item">Thông Tin Bài Viết
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                 <ul class="slide-menu child2">
                                     <li class="slide">
