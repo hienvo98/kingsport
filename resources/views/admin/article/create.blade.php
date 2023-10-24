@@ -110,16 +110,26 @@
                                                                 class="form-control" id="seo_description"
                                                                 placeholder="Enter Name">
                                                         </div>
-                                                        <div class="col-xl-6">
+                                                        <div class="col-xl-4">
                                                             <label for="seo-keyword" class="form-label">Seo
                                                                 Keyword</label>
                                                             <input type="text" name="seo_key" class="form-control"
                                                                 id="seo_keyword" placeholder="Enter Name">
                                                         </div>
-                                                        <div class="col-xl-6">
+                                                        <div class="col-xl-4">
                                                             <label for="product-status-add" class="form-label">Trạng thái
                                                                 form</label>
                                                             <select class="form-control" data-trigger name="form_status"
+                                                                id="form-status">
+                                                                <option value="">Select</option>
+                                                                <option value="on">Bật</option>
+                                                                <option value="off">Tắt</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xl-4">
+                                                            <label for="product-status-add" class="form-label">Trạng thái
+                                                            </label>
+                                                            <select class="form-control" data-trigger name="status"
                                                                 id="form-status">
                                                                 <option value="">Select</option>
                                                                 <option value="on">Bật</option>
