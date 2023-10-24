@@ -7,7 +7,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
@@ -36,14 +35,14 @@ class ProductController extends Controller
     public function create()
     {
         $cate = Category::with('subCategory')->get();
-        $sorting = DB::table('products')->max('sorting') + 1;
+        $sorting = Product::count()+1;
         return view('admin.product.create', compact('cate', 'sorting'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $desc = $request->desc;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
@@ -152,10 +151,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, string $id)
     {
-        // return response()->json(['data' => $request->except('name')]);
-
         //tìm sản phẩm
         $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
         //sử lý khi không tìm thấy sản phẩm
@@ -309,4 +306,5 @@ class ProductController extends Controller
         Storage::disk('public')->put('uploads/products/' . $title . "/$directory/" . $imageName, $imageData);
         return asset('storage/uploads/products/' . $imageName);
     }
+    
 }
