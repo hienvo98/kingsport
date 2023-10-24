@@ -47,7 +47,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //dd($request->all());
         // $request->validate([
         //     'title' => 'required|max:255',
         //     'url' => 'required|unique:blogs|max:255',
@@ -83,7 +83,7 @@ class ArticleController extends Controller
         $blog->on_form = $request->input('form_status');
         //$blog->publish_date = $request->input('publish_date');
         //$blog->status = $request->input('status');
-        $blogContent = $request->input('blog_content');
+        $blogContent = $request->input('description');
 
         preg_match_all('/<img[^>]+src="([^"]+)"/', $blogContent, $matches);
 
@@ -98,7 +98,7 @@ class ArticleController extends Controller
             $blogContent = str_replace($imagePath, $imageName, $blogContent);
         }
         $blog->content = $blogContent;
-
+        //dd($blog);
         if($blog->save()) {
             return response([
                 'status' => 'success',
