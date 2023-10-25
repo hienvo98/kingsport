@@ -32,6 +32,7 @@ class Product extends Model
         'avatar',
         'sold',
         'url',
+        'subCategory_id'
     ];
     public function category()
     {

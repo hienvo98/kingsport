@@ -26,6 +26,8 @@ $(document).ready(function () {
         const formData = new FormData(this);
         const quillContent = quill.root.innerHTML;
         formData.append('description', quillContent);
+        var productInArticle = $(`select#choices-multiple-groups`).val();
+        formData.append('productInArticle',productInArticle);
         $.ajax({
             type: 'POST',
             url: '/admin/post/store',
@@ -33,7 +35,8 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                $('#success').click();
+                console.log(response);
+                // $('#success').click();
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {
@@ -69,44 +72,44 @@ $(document).ready(function () {
         var formData = new FormData(this);
         // var quillContent = quill.root.innerHTML;
         formData.append('content', quill.root.innerHTML);
-        $.ajax({
-            url: $(this).data('route'),
-            type: 'post',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                $('#success').click();
-            },
-            error: function (error) {
-                if (error.responseJSON && error.responseJSON.errors) {
-                    $("html, body").animate({ scrollTop: 0 }, 'fast')
-                    var errors = error.responseJSON.errors;
-                    console.log("Lỗi cụ thể:");
-                    console.log(errors);
-                    var errorMessages = "";
-                    var typeError = 0;
-                    for (var key in errors) {
-                        if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
-                            for (var keyChild of errors[key]) {
-                                errorMessages += `<div class="alert alert-danger text-capitalize">
-                                    ${keyChild}
-                                </div>`;
-                            }
-                        } else {
-                            typeError++;
-                        }
-                    }
-                    $(`div#errors`).append(errorMessages);
-                }
-            }
-        })
-        console.log(quillContent);
-        console.log(formData);
+        var product_id = $(`select#choices-multiple-groups`).val();
+        console.log(product_id);
+        // $.ajax({
+        //     url: $(this).data('route'),
+        //     type: 'post',
+        //     data: formData,
+        //     processData: false,
+        //     contentType: false,
+        //     success: function (response) {
+        //         $('#success').click();
+        //     },
+        //     error: function (error) {
+        //         if (error.responseJSON && error.responseJSON.errors) {
+        //             $("html, body").animate({ scrollTop: 0 }, 'fast')
+        //             var errors = error.responseJSON.errors;
+        //             console.log("Lỗi cụ thể:");
+        //             console.log(errors);
+        //             var errorMessages = "";
+        //             var typeError = 0;
+        //             for (var key in errors) {
+        //                 if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
+        //                     for (var keyChild of errors[key]) {
+        //                         errorMessages += `<div class="alert alert-danger text-capitalize">
+        //                             ${keyChild}
+        //                         </div>`;
+        //                     }
+        //                 } else {
+        //                     typeError++;
+        //                 }
+        //             }
+        //             $(`div#errors`).append(errorMessages);
+        //         }
+        //     }
+        // })
     })
 
     var deletePost = function () {
-        let route = $(this).data('route');
+        var route = $(this).data('route');
         $.ajax({
             url: route,
             type: 'get',
@@ -140,9 +143,9 @@ $(document).ready(function () {
     $(`.btnPostDelete`).click(deletePost);
 
     $(`input#searchPost`).keyup(function () {
-        let route = $(this).data('route');
-        let keywords = $(this).val();
-        let data = { keywords: keywords };
+        var route = $(this).data('route');
+        var keywords = $(this).val();
+        var data = { keywords: keywords };
         $.ajax({
             url: route,
             type: 'get',
@@ -166,7 +169,7 @@ $(document).ready(function () {
 });
 
 $(`a.list-cat-post`).click(function(){
-    let route = $(this).data('route');
+    var route = $(this).data('route');
     $.ajax({
         url: route,
         type: 'get',

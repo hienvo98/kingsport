@@ -176,7 +176,7 @@
                                                                                                     class="form-check-input"
                                                                                                     id="sub-{{ $sub->id }}"
                                                                                                     name="subCat[]"
-                                                                                                    {{ in_array($sub->id, $product->subCategory->pluck('id')->toArray()) ? 'checked' : '' }}
+                                                                                                    {{ in_array($sub->id, $product->category->subCategory->pluck('id')->toArray()) ? 'checked' : '' }}
                                                                                                     value="{{ $sub->id }}">
                                                                                             </div>
                                                                                         </span>

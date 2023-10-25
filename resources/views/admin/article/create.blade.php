@@ -110,13 +110,18 @@
                                                                 class="form-control" id="seo_description"
                                                                 placeholder="Enter Name">
                                                         </div>
-                                                        <div class="col-xl-4">
+                                                        <div class="col-xl-3">
                                                             <label for="seo-keyword" class="form-label">Seo
                                                                 Keyword</label>
                                                             <input type="text" name="seo_key" class="form-control"
                                                                 id="seo_keyword" placeholder="Enter Name">
                                                         </div>
-                                                        <div class="col-xl-4">
+                                                        <div class="col-xl-3">
+                                                            <label for="publish-date" class="form-label">Ngày xuất bản</label>
+                                                            <input type="text" value="" name="publish_date" class="form-control" id="publish-date"
+                                                                value="" placeholder="Choose date">
+                                                        </div>
+                                                        <div class="col-xl-3">
                                                             <label for="product-status-add" class="form-label">Trạng thái
                                                                 form</label>
                                                             <select class="form-control" data-trigger name="form_status"
@@ -126,7 +131,7 @@
                                                                 <option value="off">Tắt</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-xl-4">
+                                                        <div class="col-xl-3">
                                                             <label for="product-status-add" class="form-label">Trạng thái
                                                             </label>
                                                             <select class="form-control" data-trigger name="status"
@@ -200,76 +205,31 @@
                                                                             <h6 class="card-title">Danh Sách Sản Phẩm</h6>
                                                                         </div>
                                                                         <div class="card-body">
-                                                                            {{-- <p  class="fw-semibold mb-2">Default</p>
-                                                                            <select  class="form-control" data-trigger
-                                                                                name="choices-multiple-default"
-                                                                                id="choices-multiple-default" multiple>
-                                                                                <option value="Choice 1" selected>Choice 1
-                                                                                </option>
-                                                                                <option value="Choice 2">Choice 4</option>
-                                                                                <option value="Choice 3">Choice 5</option>
-                                                                                <option value="Choice 4" disabled>Choice 6
-                                                                                </option>
-                                                                            </select> --}}
-                                                                            {{-- <p  class="fw-semibold mb-2">With Remove Button
-                                                                            </p>
-                                                                            <select   class="form-control" data-trigger
-                                                                                name="choices-multiple-remove-button"
-                                                                                id="choices-multiple-remove-button"
-                                                                                multiple>
-                                                                                <option value="Choice 1" selected>Choice 1
-                                                                                </option>
-                                                                                <option value="Choice 2">Choice 2</option>
-                                                                                <option value="Choice 3">Choice 3</option>
-                                                                                <option value="Choice 4">Choice 4</option>
-                                                                            </select> --}}
-                                                                            <p class="fw-semibold mb-2">Có Thể Chọn Nhiều Sản Phẩm</p>
+
+                                                                            <p class="fw-semibold mb-2">Có Thể Chọn Nhiều
+                                                                                Sản Phẩm</p>
                                                                             <select data-trigger class="form-control"
-                                                                                name="choices-multiple-groups"
+                                                                                name="products[]"
                                                                                 id="choices-multiple-groups" multiple>
+
                                                                                 <option value="">Chọn Sản Phẩm
                                                                                 </option>
-                                                                                <optgroup label="UK">
-                                                                                    <option value="London">London</option>
-                                                                                    <option value="Manchester">Manchester
-                                                                                    </option>
-                                                                                    <option value="Liverpool">Liverpool
-                                                                                    </option>
-                                                                                </optgroup>
-                                                                                <optgroup label="FR">
-                                                                                    <option value="Paris">Paris</option>
-                                                                                    <option value="Lyon">Lyon</option>
-                                                                                    <option value="Marseille">Marseille
-                                                                                    </option>
-                                                                                </optgroup>
-                                                                                <optgroup label="DE" disabled>
-                                                                                    <option value="Hamburg">Hamburg
-                                                                                    </option>
-                                                                                    <option value="Munich">Munich</option>
-                                                                                    <option value="Berlin">Berlin</option>
-                                                                                </optgroup>
-                                                                                <optgroup label="US">
-                                                                                    <option value="New York">New York
-                                                                                    </option>
-                                                                                    <option value="Washington" disabled>
-                                                                                        Washington</option>
-                                                                                    <option value="Michigan">Michigan
-                                                                                    </option>
-                                                                                </optgroup>
-                                                                                <optgroup label="SP">
-                                                                                    <option value="Madrid">Madrid</option>
-                                                                                    <option value="Barcelona">Barcelona
-                                                                                    </option>
-                                                                                    <option value="Malaga">Malaga</option>
-                                                                                </optgroup>
-                                                                                <optgroup label="CA">
-                                                                                    <option value="Montreal">Montreal
-                                                                                    </option>
-                                                                                    <option value="Toronto">Toronto
-                                                                                    </option>
-                                                                                    <option value="Vancouver">Vancouver
-                                                                                    </option>
-                                                                                </optgroup>
+                                                                                @if (!$category->isEmpty())
+                                                                                    @foreach ($category as $cat)
+                                                                                        @if (!$cat->products->isEmpty())
+                                                                                            <optgroup
+                                                                                                label="{{ $cat->name }}">
+                                                                                                @foreach ($cat->products as $product)
+                                                                                                    <option
+                                                                                                        data-value="{{ $product->id }}"
+                                                                                                        value="{{ $product->name }}">
+                                                                                                        {{ $product->name }}
+                                                                                                    </option>
+                                                                                                @endforeach
+                                                                                            </optgroup>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @endif
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -286,7 +246,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <ul class="pagination justify-content-end">
                     <button id="submit" type="submit" class="btn btn-primary-light m-1">Tạo Bài Viết<i
