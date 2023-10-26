@@ -9,12 +9,18 @@ class Article extends Model
 {
     use HasFactory;
     protected $table = 'articles';
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
     public function products(){
-        return $this->belongsToMany(Product::class,'product_article','article_id','product_id');
+        if(isset($this->product_id)&&is_array(unserialize($this->product_id))){
+            return Product::whereIn('id',unserialize($this->product_id))->get();
+        }else{
+            return collect();
+        }
     }
     
 }

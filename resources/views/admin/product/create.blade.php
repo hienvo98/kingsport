@@ -14,11 +14,6 @@
             </nav>
         </div>
     </div>
-    @if (session('message'))
-        <div id="notification" class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
 
     <div id="errors">
 

@@ -11,6 +11,7 @@ use App\Http\Requests\ArticleRequestCreate;
 use Illuminate\Support\Facades\Storage;
 use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -51,7 +52,7 @@ class ArticleController extends Controller
             'category' => $category,
             'blogcompleteds' => $blogcompleteds,
             'blogPendings' => $blogPendings,
-            'trash'=>$request->trash
+            'trash' => $request->trash
         ]);
     }
 
@@ -60,7 +61,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $_category = Category::where('status', 1)->select('id', 'name')->get();
+        $_category = Category::with(['products' => function ($query) {
+            $query->where('status', 'on');
+        }])->where('status', 1)->select('id', 'name')->get();
         return view('admin.article.create', ['category' => $_category]);
     }
 
@@ -70,6 +73,10 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $blog = new Article;
+        if ($request->productInArticle) {
+            $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray());
+            $blog->product_id=$product_id;
+        };
         $blog->user_id = Auth::id();
         $blog->title = $request->input('title');
         $blog->url = $request->input('url');
@@ -131,6 +138,7 @@ class ArticleController extends Controller
     public function edit(string $id)
     {
         $post = Article::find($id);
+        // dd($post->products());
         preg_match_all('/<img[^>]+src="([^"]+)"/', $post->content, $matches);
         foreach ($matches[1] as $img) {
             $post->content = str_replace($img, url("storage/uploads/blog_images/$post->title/content/$img"), $post->content);
@@ -221,6 +229,7 @@ class ArticleController extends Controller
     public function destroy(string $id)
     {
         $post = Article::find($id);
+        
         if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm'], 404);
         $post->status = 'off';
         if ($post->save()) {
@@ -585,17 +594,6 @@ class ArticleController extends Controller
         ], 200);
     }
 
-    private function listArticleByCat(Request $request, $id)
-    {
-        // if (empty(Category::find($id))) abort(404);
-        $blog = Category::with('articles')->find($id)->articles()->paginate(10);
-        $blogcompleteds = $blog->filter(function ($article) {
-            return Carbon::parse($article->publish_date)->isPast();
-        });
-        $blogPendings = $blog->filter(function ($article) {
-            return Carbon::parse($article->publish_date)->isFuture();
-        });
-    }
 
     private function storeImage($imagePath, $title, $folder)
     {

@@ -65,12 +65,12 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td style="text-align: center">
                                                 <span class="badge bg-light text-default">{{ $item->category->name }}</span>
                                             </td>
-                                            <td>
-                                                @if (!empty($item->subCategory))
-                                                    @foreach ($item->subCategory as $subCat)
+                                            <td style="text-align: center" >
+                                                @if (!$item->category->subCategory->isEmpty())
+                                                    @foreach ($item->category->subCategory as $subCat)
                                                         <span
                                                             class="badge bg-light text-default">{{ $subCat->name }}</span><br>
                                                     @endforeach

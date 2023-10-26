@@ -7,14 +7,17 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use Illuminate\Support\Str;
 use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use App\Models\color_version;
 use App\Models\image_service;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use function PHPUnit\Framework\matches;
 
@@ -25,8 +28,28 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->with('subCategory')->with('colors', 'colors.images')->with('images')->orderBy('id', 'desc')->paginate(5);
-        return view('admin.product.list', compact('products'));
+        // $products = Product::with('category')->with('subCategory')->with('colors', 'colors.images')->with('images')->orderBy('id', 'desc')->paginate(5);
+        $products = Product::with('category')->paginate(6);
+        $productsSubquery = $products->map(function ($product) {
+            if (isset($product->subCategory_id) && is_array(unserialize($product->subCategory_id))) {
+                $subCategory_id = unserialize($product->subCategory_id);
+                return Product::with(['category.subCategory' => function ($query) use ($subCategory_id) {
+                    $query->whereIn('id', $subCategory_id);
+                }])->find($product->id);
+            } else {
+                $product->category->subCategory = collect();
+                return $product;
+            };
+        });
+        $filteredProductsPaginated = new LengthAwarePaginator(
+            $productsSubquery,
+            $products->total(),
+            $products->perPage(),
+            $products->currentPage(),
+            ['path' => request()->url()]
+        );
+        // dd($filteredProductsPaginated[5]->category->subCategory[0]->name);
+        return view('admin.product.list', ['products' => $filteredProductsPaginated]);
     }
 
     /**
@@ -35,7 +58,7 @@ class ProductController extends Controller
     public function create()
     {
         $cate = Category::with('subCategory')->get();
-        $sorting = Product::count()+1;
+        $sorting = Product::count() + 1;
         return view('admin.product.create', compact('cate', 'sorting'));
     }
 
@@ -60,10 +83,12 @@ class ProductController extends Controller
         $list_color_image = $request->file();
         $avatarPath = ImageStorageLibrary::storeImage($list_color_image['avatarThumb'], "products/{$request->name}/avatar");
         $request->merge(['avatar' => basename($avatarPath)]);
+        $subCategory_id = serialize($request->subCat);
+        $request->merge(['subCategory_id' => $subCategory_id]);
         $product = Product::create($request->all());
-        if (!empty($request->subCat)) {
-            $product->subCategory()->attach($request->subCat);
-        }
+        // if (!empty($request->subCat)) {
+        //     $product->subCategory()->attach($request->subCat);
+        // }
         $listColor = [
             'red' => '#FF0000',
             'gray' => '#808080',
@@ -120,7 +145,16 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
+        $product = Product::with(['category.subCategory' => function ($query) use ($id) {
+            $product = Product::find($id);
+            if (isset($product->subCategory_id) && is_array(unserialize($product->subCategory_id))) {
+                $subCategory_id = unserialize($product->subCategory_id);
+                $query->whereIn('id', $subCategory_id);
+            } else {
+                $query->whereIn('id', []);
+            }
+        }])->with('colors', 'colors.images')->find($id);
+        if (!$product) abort(404);
         preg_match_all('/<img[^>]+src="([^"]+)"/', $product->description, $matches);
         foreach ($matches[1] as $imagePath) {
             $product->description = str_replace($imagePath, url("storage/uploads/products/$product->name/content/$imagePath"), $product->description);
@@ -142,7 +176,6 @@ class ProductController extends Controller
             }
             $image_ver[] = $html;
         }
-        if (!$product) abort(404);
         $cate = Category::with('subCategory')->get();
         $sorting = $product->sorting;
         return view('admin.product.edit', compact('cate', 'sorting', 'product', 'image_ver'));
@@ -151,10 +184,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, string $id)
+    public function update(ProductUpdateRequest $request, string $id)
     {
         //tìm sản phẩm
-        $product = Product::with('subCategory')->with('colors', 'colors.images')->find($id);
+        $product = Product::with('category')->with('colors', 'colors.images')->find($id);
         //sử lý khi không tìm thấy sản phẩm
         if (!$product) return response()->json(['code' => 404, 'messages' => 'Không Tìm Thấy Sản Phẩm'], 404);
         //xử lý khi tên sản phẩm thay đổi
@@ -269,15 +302,9 @@ class ProductController extends Controller
                 }
             }
         }
-        //xử lý danh mục sản phẩm thay đổi
-        if($request->category_id != $product->category_id){
-            $product->subCategory()->sync([]);
-            $product->subCategory()->sync(array_diff($request->subCat,$product->subCategory->pluck('id')->toArray()));
-        }else{
-            $product->subCategory()->sync($request->subCat);
-        }
-        //xử lý khi danh mục thuộc tính thay đổi
-        $product->update($request->except(['name','avatar']));
+        $subCategory_id = serialize($request->subCat);
+        $request->merge(['subCategory_id' => $subCategory_id]);
+        $product->update($request->except(['name', 'avatar']));
         return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
     }
 
@@ -306,5 +333,4 @@ class ProductController extends Controller
         Storage::disk('public')->put('uploads/products/' . $title . "/$directory/" . $imageName, $imageData);
         return asset('storage/uploads/products/' . $imageName);
     }
-    
 }
