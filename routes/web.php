@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Article;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
@@ -11,7 +13,6 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
-use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[ShowroomController::class,'edit'])->name('showroom.edit');
         Route::post('/update',[ShowroomController::class,'update'])->name('showroom.update');
         Route::get('/delete/{id}',[ShowroomController::class,'destroy'])->name('showroom.destroy');
+
+    });
+
+    Route::prefix('/faq')->group(function(){
+        Route::get('/index',[FAQController::class,'index'])->name('faq.index');
+        Route::get('/create',[FAQController::class,'create'])->name('faq.create');
+        Route::post('/store',[FAQController::class,'store'])->name('faq.store');
+        Route::get('/edit/{id}',[FAQController::class,'edit'])->name('faq.edit');
+        Route::post('/update',[FAQController::class,'update'])->name('faq.update');
+        Route::get('/delete/{id}',[FAQController::class,'destroy'])->name('faq.destroy');
 
     });
 
