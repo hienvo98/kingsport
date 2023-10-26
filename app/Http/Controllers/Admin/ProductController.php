@@ -48,7 +48,6 @@ class ProductController extends Controller
             $products->currentPage(),
             ['path' => request()->url()]
         );
-        // dd($filteredProductsPaginated[5]->category->subCategory[0]->name);
         return view('admin.product.list', ['products' => $filteredProductsPaginated]);
     }
 
@@ -86,9 +85,6 @@ class ProductController extends Controller
         $subCategory_id = serialize($request->subCat);
         $request->merge(['subCategory_id' => $subCategory_id]);
         $product = Product::create($request->all());
-        // if (!empty($request->subCat)) {
-        //     $product->subCategory()->attach($request->subCat);
-        // }
         $listColor = [
             'red' => '#FF0000',
             'gray' => '#808080',
