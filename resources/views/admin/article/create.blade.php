@@ -23,7 +23,7 @@
     <!-- Start::row-1 -->
     <div class="row">
         <div class="col-xl-12">
-            <form id="blog-form" method="POST" enctype="multipart/form-data">
+            <form class="form-create" data-route="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf()
                 <div class="row">
                     <div class="col-xl-12">
@@ -113,7 +113,7 @@
                                                         <div class="col-xl-3">
                                                             <label for="seo-keyword" class="form-label">Seo
                                                                 Keyword</label>
-                                                            <input type="text" name="seo_key" class="form-control"
+                                                            <input type="text" name="seo_keywords" class="form-control"
                                                                 id="seo_keyword" placeholder="Enter Name">
                                                         </div>
                                                         <div class="col-xl-3">
@@ -124,7 +124,7 @@
                                                         <div class="col-xl-3">
                                                             <label for="product-status-add" class="form-label">Trạng thái
                                                                 form</label>
-                                                            <select class="form-control" data-trigger name="form_status"
+                                                            <select class="form-control" data-trigger name="on_form"
                                                                 id="form-status">
                                                                 <option value="">Select</option>
                                                                 <option value="on">Bật</option>
@@ -144,7 +144,7 @@
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control" name="thumbnail"
+                                                            <input type="file" class="form-control thumbnail" name="thumbnailArticle"
                                                                 id="thumbnail" placeholder="Thumbnail" required>
                                                         </div>
                                                         <div class="col-xl-2">

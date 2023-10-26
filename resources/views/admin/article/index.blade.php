@@ -100,8 +100,8 @@
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
                             </li>
-                            <li class="active">
-                                <a class="list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory") }}" href="javascript:void(0)">
+                            <li class="{{ empty($id)&&$trash!='on'?'active':'' }}">
+                                <a class="filter" data-update-url="{{ url('admin/post/index') }}" data-route-filter="{{ url("admin/post/filterArticlesAjax") }}" href="javascript:void(0)">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-task-line align-middle fs-14"></i>
@@ -109,12 +109,12 @@
                                         <span class="flex-fill text-nowrap">
                                             Tất cả bài viết
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->count()) ;?></span>
+                                        <span class="badge bg-success-transparent rounded-pill">{{ $count['allArticles'] }}</span>
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <a href="javascript:void(0)" class="list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory/0") }}"  >
+                            <li class="{{ $trash=='on'?'active':'' }}" >
+                                <a href="javascript:void(0)" class="filter" data-update-url="{{ url('admin/post/index')."?trash=on" }}"  data-route-filter="{{ url("admin/post/filterArticlesAjax/trash") }}"  >
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-delete-bin-5-line align-middle fs-14"></i>
@@ -122,13 +122,13 @@
                                         <span class="flex-fill text-nowrap">
                                             Trash
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($blog->where('status','off')->count()) ;?></span>
+                                        <span class="badge bg-success-transparent rounded-pill">{{ $count['deleteArticles'] }}</span>
                                     </div>
                                 </a>
                             </li>
                             @foreach ($category as $_category)
-                            <li>
-                                <a href="javascript:void(0)" data-id="{{ $_category->id }}" class="category-item list-cat-post" data-route="{{ url("admin/post/getArticlesByCategory/$_category->id") }}">
+                            <li class="{{ $_category->id == $id?'active':'' }}" >
+                                <a href="javascript:void(0)" data-update-url="{{ url('admin/post/index',['id'=>$_category->id]) }}" class="category-item filter" data-route-filter="{{ url("admin/post/filterArticlesAjax/$_category->id") }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
@@ -195,13 +195,13 @@
                 <nav aria-label="..." id="nav">
                     <ul class="pagination mb-0">
                         {{-- Nút "Previous" --}}
-                        @if ($blog->onFirstPage())
+                        @if ($articles->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link">Previous</span>
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{!empty($trash)?$blog->appends(['trash'=>'on'])->previousPageUrl():$blog->previousPageUrl() }}"
+                                <a class="page-link" href="{{!empty($trash)?$articles->appends(['trash'=>'on'])->previousPageUrl():$articles->previousPageUrl() }}"
                                     aria-label="Previous">
                                     <span aria-hidden="true">Previous</span>
                                 </a>
@@ -209,16 +209,16 @@
                         @endif
 
                         {{-- Danh sách các trang --}}
-                        @for ($i = 1; $i <= $blog->lastPage(); $i++)
-                            <li class="page-item {{ $i === $blog->currentPage() ? 'active' : '' }}">
-                                <a class="page-link  {{ $i === $blog->currentPage() ? 'disable-link' : '' }}" href="{{!empty($trash)?$blog->appends(['trash'=>'on'])->url($i):$blog->url($i) }}">{{ $i }}</a>
+                        @for ($i = 1; $i <= $articles->lastPage(); $i++)
+                            <li class="page-item {{ $i === $articles->currentPage() ? 'active' : '' }}">
+                                <a class="page-link  {{ $i === $articles->currentPage() ? 'disable-link' : '' }}" href="{{!empty($trash)?$articles->appends(['trash'=>'on'])->url($i):$articles->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 
                         {{-- Nút "Next" --}}
-                        @if ($blog->hasMorePages())
+                        @if ($articles->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ !empty($trash)?$blog->appends(['trash'=>'on'])->nextPageUrl():$blog->nextPageUrl() }}" aria-label="Next">
+                                <a class="page-link" href="{{ !empty($trash)?$articles->appends(['trash'=>'on'])->nextPageUrl():$articles->nextPageUrl() }}" aria-label="Next">
                                     <span aria-hidden="true">Next</span>
                                 </a>
                             </li>

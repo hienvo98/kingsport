@@ -28,25 +28,24 @@ $(document).ready(function() {
         $urlInput.val(url);
     });
 
+    $(`input.thumbnail`).change(function () {
+        $('img#thumbnailImg').attr('src', URL.createObjectURL(this.files[0]));
+    })
+
     $('#images_detail').on('change', function(e) {
         var files = e.target.files;
         if (files.length > 11) {
             alert("Chỉ được phép tải lên tối đa 11 ảnh.");
             return;
         }
+        var slide = ``;
+        for (var i = 0; i < this.files.length; i++) {
+            slide += `<div class="swiper-slide" style="position:relative">
+                <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
+            </div>`;
+        };
         $('#image-list').empty();
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            if (file.type.match('image.*')) {
-                var reader = new FileReader();
-                loadImage(file,function (img) {
-                        var image = $('<img>').attr('src', img.toDataURL('image/jpeg'));
-                        $('#image-list').append(image);
-                    },
-                    { maxWidth: 300, maxHeight: 150, canvas: true, orientation: true }
-                );
-            }
-        }
+        $('#image-list').append(slide);
     });
 
 
