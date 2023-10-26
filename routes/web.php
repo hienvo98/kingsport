@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::post('/update/{id}',[ArticleController::class,'update'])->name('post.update');
         Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
         Route::get('/search',[ArticleController::class,'search']);
-        Route::get('/getArticlesByCategory/{id?}',[ArticleController::class,'getArticlesByCategory']);
+        Route::get('/filterArticlesAjax/{flag?}',[ArticleController::class,'filterArticlesAjax']);
     });
 
     Route::prefix('/showroom')->group(function(){

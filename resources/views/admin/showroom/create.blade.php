@@ -59,9 +59,17 @@
                                 <label for="blog-category" class="form-label">Số điện thoại</label>
                                 <input type="text" name="phone" class="form-control" id="phone" placeholder="0969696979" require>
                             </div>
-                            <div class="col-xl-12">
-                                <label for="blog-thumbnail" class="form-label">Thumbnail</label>
-                                <input type="file" class="form-control" name="thumbnail" id="thumbnail" placeholder="Thumbnail" required >
+                            <div class="col-xl-8">
+                                <label for="blog-thumbnail"
+                                    class="form-label">Thumbnail</label>
+                                <input type="file" class="form-control thumbnail" name="thumbnailArticle"
+                                    id="thumbnail" placeholder="Thumbnail" required>
+                            </div>
+                            <div class="col-xl-2">
+                                <label for="" class="form-label">Ảnh
+                                    Thumbnail</label><br>
+                                <img id="thumbnailImg" src="" alt=" Chưa Có Ảnh..."
+                                    class="img-fluid img-thumbnail rounded">
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-thumbnail" class="form-label">Images Detail</label>

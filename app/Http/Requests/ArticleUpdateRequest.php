@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleRequestCreate extends FormRequest
+class ArticleUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,10 @@ class ArticleRequestCreate extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255|unique:articles',
-            'url' => 'required|max:255|unique:articles',
+            'title' => 'required|max:255',
+            'url' => 'required|max:255',
             'category_id' => 'required|integer',
+            'thumbnailArticle'=>'image|mimes:jpeg,png,jpg,webp|max:3072',
             'seo_title' => 'nullable|max:255',
             'seo_description' => 'nullable|max:255',
             'seo_key' => 'nullable|max:255',
@@ -34,17 +35,18 @@ class ArticleRequestCreate extends FormRequest
             'description' => 'min:12',
         ];
     }
-
     public function messages()
     {
         return [
             'title.required' => 'Bạn Chưa Nhập Tiêu Đề Cho Bài Viết',
             'title.max' => 'Tiêu đề tối đa 255 ký tự',
-            'title.unique' => 'tiêu đề bài viết đã tồn tại',
             'category_id.required' => 'bạn chưa chọn danh mục cho bài viết',
             'seo_title.max'=> 'seo title tối đa 255 ký tự',
             'seo_description' => 'seo_description tối đa 255 ký tự',
-            'description.min' => 'bạn chưa viết blog content'
+            'description.min' => 'bạn chưa viết blog content',
+            'thumbnailArticle.image' => 'Thumbnail tải lên không phải tệp ảnh',
+            'thumbnailArticle.mimes' => 'Thumbnail tải lên phải có dạng jpeg,png,jpg,webp',
+            'thumbnailArticle.max'=>'Thumbnail tải lên tối đa 3MB'
         ];
     }
 }
