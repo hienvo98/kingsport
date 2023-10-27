@@ -91,7 +91,7 @@
                     </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" id="searchPost" data-route="{{ url('/admin/post/search') }}" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
+                            <input type="text" id="search" data-route="{{ url('/admin/post/search') }}" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>

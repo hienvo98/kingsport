@@ -146,7 +146,7 @@
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control thumbnail" name="thumbnailArticle"
+                                                            <input type="file" class="form-control thumbnail" name="thumbnail"
                                                                 id="thumbnail" placeholder="Thumbnail">
                                                         </div>
                                                         <div class="col-xl-2">
@@ -155,6 +155,10 @@
                                                             <img id="thumbnailImg" src="{{ url("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail") }}" alt=" Chưa Có Ảnh..."
                                                                 class="img-fluid img-thumbnail rounded">
                                                         </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô tả Ngắn</label>
+                                                            <textarea class="form-control" name="description"  id="exampleFormControlTextarea1" rows="3">{{ $post->description }}</textarea>
+                                                          </div>
                                                     </div>
                                                 </div>
                                             </div>

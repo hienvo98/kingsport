@@ -3,7 +3,7 @@
         <div class="row" id="tasks-container">
             @if ($articles)
                 @foreach ($articles as $article)
-                    <div class="col-xl-4 task-card">
+                    <div class="col-xl-4 task-card current">
                         <div class="card custom-card <?php if ($article->status == 'off') {
                             echo 'task-pending-card';
                         } else {
@@ -41,7 +41,7 @@
                                                 class="btn btn-icon btn-sm btn-info-light"><i
                                                     class="ri-edit-line"></i></a>
                                             <button
-                                                class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
+                                                class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete"
                                                 data-id="{{ $article->id }}" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                                 {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                     class="ri-delete-bin-line"></i></button>
@@ -59,7 +59,7 @@
     <div class="tab-pane p-0" id="pending" role="tabpanel">
         <div class="row">
             @foreach ($unpublished_article_list as $article)
-                <div class="col-xl-4">
+                <div class="col-xl-4 current">
                     <div class="card custom-card task-pending-card" style="height: 290px">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">
@@ -85,7 +85,7 @@
                                         <a href="{{ route('admin.post.edit',['id'=>$article->id]) }}"
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
-                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
+                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete"
                                             data-id="{{ $article->id }}" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                             {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>
@@ -101,7 +101,7 @@
     <div class="tab-pane p-0" id="completed" role="tabpanel">
         <div class="row">
             @foreach ($published_article_list as $article)
-                <div class="col-xl-4">
+                <div class="col-xl-4 current">
                     <div class="card custom-card task-pending-card" style="height: 290px">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">
@@ -127,7 +127,7 @@
                                         <a href="{{ route('admin.post.edit',['id'=>$article->id]) }}"
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
-                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete" data-route="{{ url("/admin/post/delete/$article->id") }}"
+                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                             data-id="{{ $article->id }}"
                                             {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>

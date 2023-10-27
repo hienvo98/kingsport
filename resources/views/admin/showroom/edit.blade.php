@@ -36,17 +36,17 @@
                         <div class="row gy-3">
                             <div class="col-xl-12">
                                 <label for="blog-title" class="form-label">Tên Showroom</label>
-                                <input type="text" name="title" class="form-control" id="blog-title"
+                                <input type="text" name="title" value="{{ $showroom->name }}" class="form-control" id="blog-title"
                                     placeholder="Kingsport quận 7">
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-url" class="form-label">URL</label>
-                                <input type="text" name="url" class="form-control" id="blog-url"
+                                <input type="text" name="url" value="{{ $showroom->url }}" class="form-control" id="blog-url"
                                     placeholder="king-sport-quan-7">
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-url" class="form-label">Địa chỉ</label>
-                                <input type="text" name="address" class="form-control" id="address"
+                                <input type="text" name="address" value="{{ $showroom->address }}" class="form-control" id="address"
                                     placeholder="98A Nguyễn Văn Linh, Phường Tân Phú, Quận 7">
                             </div>
                             <div class="col-xl-6">
@@ -54,13 +54,13 @@
                                 <select class="form-control" name="region_id" data-trigger name="region_id" id="region_id">
                                     <option value="">Select Region</option>
                                     @foreach ($regions as $region)
-                                        <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                        <option {{ $showroom->region_id==$region->id?'selected':'' }} value="{{ $region->id }}">{{ $region->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-xl-6">
                                 <label for="blog-category" class="form-label">Số điện thoại</label>
-                                <input type="text" name="phone" class="form-control" id="phone"
+                                <input type="text" name="phone" value="{{ $showroom->phone }}" class="form-control" id="phone"
                                     placeholder="0969696979" require>
                             </div>
                             <div class="col-xl-8">
@@ -71,7 +71,7 @@
                             <div class="col-xl-2">
                                 <label for="" class="form-label">Ảnh
                                     Thumbnail</label><br>
-                                <img style="display: none" id="thumbnailImg" src="" alt=""
+                                <img style="display: {{ $showroom->thumbnail?'block':'none' }}" id="thumbnailImg" src="{{ url("storage/uploads/showroom-images/$showroom->name/thumbnail/$showroom->thumbnail") }}" alt=""
                                     class="img-fluid img-thumbnail rounded">
                             </div>
                             <div class="col-xl-12">
@@ -90,7 +90,6 @@
                                     <div class="card-body">
                                         <div class="swiper swiper-overflow">
                                             <div class="swiper-wrapper" id="image-list" data-slide="color-1">
-                                                
                                             </div>
                                             <div class="swiper-pagination"></div>
                                         </div>
@@ -113,34 +112,25 @@
                             </div> --}}
                             <div class="col-xl-6">
                                 <label for="seo-title" class="form-label">Seo Title</label>
-                                <input type="text" name="seo_title" class="form-control" id="seo_title"
+                                <input type="text" name="seo_title" value="{{ $showroom->seo_title }}" class="form-control" id="seo_title"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-description" class="form-label">Seo Description</label>
-                                <input type="text" name="seo_description" class="form-control" id="seo_description"
+                                <input type="text" name="seo_description" value="{{ $showroom->seo_description }}"  class="form-control" id="seo_description"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                <input type="text" name="seo_key" class="form-control" id="seo_keyword"
+                                <input type="text" name="seo_key" value="{{ $showroom->seo_keywords }}"  class="form-control" id="seo_keyword"
                                     placeholder="Enter Name">
-                            </div>
-                            <div class="col-xl-6"hidden>
-                                <label for="blog-tags" class="form-label">Blog Tags</label>
-                                <select class="form-control" name="blog-tags" id="blog-tags" multiple>
-                                    <option value="Top Blog" selected>Top Blog</option>
-                                    <option value="Blogger">Blogger</option>
-                                    <option value="Adventure">Adventure</option>
-                                    <option value="Landscape" selected>Landscape</option>
-                                </select>
                             </div>
                             <div class="col-xl-6">
                                 <label for="product-status-add" class="form-label">Trạng thái</label>
                                 <select class="form-control" data-trigger name="status" id="showroom-status-add">
                                     <option value="">Select</option>
-                                    <option value="on">Bật</option>
-                                    <option value="off">Tắt</option>
+                                    <option {{ $showroom->status=='on'?'selected':'' }} value="on">Bật</option>
+                                    <option {{ $showroom->status=='off'?'selected':'' }} value="off">Tắt</option>
                                 </select>
                             </div>
                             <div class="col-xl-12">
@@ -149,6 +139,7 @@
                                     style="
                                     height: 500px !important;
                                 ">
+                                {!! $showroom->content !!}
                                 </div>
                             </div>
                         </div>

@@ -25,7 +25,7 @@
                 <div class="card-body p-0">
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Search Task Here"
+                            <input type="text" id="search" data-route="{{ url('/admin/showroom/search') }}" class="form-control bg-light border-0" placeholder="Search Task Here"
                                 aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i
                                     class="ri-search-line text-muted"></i></button>
@@ -39,7 +39,7 @@
                             @if ($regions)
                                 @foreach ($regions as $region)
                                     <li>
-                                        <a href="javascript:void(0);" class="category-item">
+                                        <a href="javascript:void(0);" class="category-item filter">
                                             <div class="d-flex align-items-center">
                                                 <span class="me-2 lh-1">
                                                     <i
@@ -107,4 +107,5 @@
         </div>
     </div>
     <!--End::row-1 -->
+    
 @endsection
