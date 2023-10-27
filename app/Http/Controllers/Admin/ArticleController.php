@@ -224,9 +224,9 @@ class ArticleController extends Controller
         $articles = Article::with('category')->where('title', 'like', "%$keywords%")->paginate(9);
         $published_article_list = $this->get_published_article_list($articles); //lấy ds các bài viết đã xuất bản
         $unpublished_article_list = $this->get_unpublished_article_list($articles); //lấy ds các bài viết chưa xuất bản
-        $articles_html = $this->get_articles_html($articles); //lấy mã html của tất cả bài viết để render ra giao diện
-        $published_article_html = $this->get_published_article_html($published_article_list); //lấy mã html của bài viết chưa xuất bản
-        $unpublished_article_html = $this->get_unpublished_article_html($unpublished_article_list); // lấy mã html của bài viết đã xuất bản
+        $articles_html = $this->get_card_html($articles,'search'); //lấy mã html của tất cả bài viết để render ra giao diện
+        $published_article_html = $this->get_card_html($published_article_list,'search'); //lấy mã html của bài viết chưa xuất bản
+        $unpublished_article_html = $this->get_card_html($unpublished_article_list,'search'); // lấy mã html của bài viết đã xuất bản
         return response()->json([
             'code' => 200,
             'blogs' => $articles_html,
@@ -254,9 +254,9 @@ class ArticleController extends Controller
                 $published_article_list = $this->get_published_article_list($articles);
             }
         }
-        $articles_html = $this->get_articles_html($articles);
-        $published_article_html = $this->get_published_article_html($published_article_list);
-        $unpublished_article_html = $this->get_unpublished_article_html($unpublished_article_list);
+        $articles_html = $this->get_card_html($articles,'current');
+        $published_article_html = $this->get_card_html($published_article_list,'current');
+        $unpublished_article_html = $this->get_card_html($unpublished_article_list,'current');
         $nav = $this->get_nav($articles, $flag);
         return response()->json([
             'code' => 200,
@@ -283,7 +283,7 @@ class ArticleController extends Controller
         return $unpublished_article_list;
     }
 
-    private function get_articles_html($articles)
+    private function get_card_html($articles,$flag)
     {
         $articles_html = '';
         foreach ($articles as $article) {
@@ -293,7 +293,7 @@ class ArticleController extends Controller
             $disabled = $article->status == 'off' ? 'disabled' : '';
             $title = Helper::customName($article->title,15);
             $articles_html .=
-                "<div class='col-xl-4'>
+                "<div class='col-xl-4 $flag'>
             <div class='card custom-card task-pending-card' style='height: 290px'>
                 <div class='card-body'>
                     <div class='d-flex justify-content-between flex-wrap gap-2'>
@@ -333,105 +333,6 @@ class ArticleController extends Controller
         return $articles_html;
     }
 
-    private function get_published_article_html($published_article_list)
-    {
-        $published_article_html = '';
-        foreach ($published_article_list as $article) {
-            $pathThumbnail = url("storage/uploads/blog_images/$article->title/thumbnail/$article->thumbnail");
-            $routeEdit = route('admin.post.edit', ['id' => $article->id]);
-            $disabled = $article->status == 'off' ? 'disabled' : '';
-            $routeDelete = url("/admin/post/delete/$article->id");
-            $title = Helper::customName($article->title,15);
-            $published_article_html .=
-                "<div class='col-xl-4'>
-            <div class='card custom-card task-pending-card' style='height:290px'>
-                <div class='card-body'>
-                    <div class='d-flex justify-content-between flex-wrap gap-2'>
-                        <div>
-                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
-                                    href='javascript:void(0);'></i></a> $title 
-                            </p>
-                            <p class='mb-3'>Ngày tạo : <span
-                                    class='fs-12 mb-1 text-muted'>$article->created_at</span></p>
-                            <p class='mb-3'>Ngày xuất bản : <span
-                                    class='fs-12 mb-1 text-muted'>$article->publish_date</span></p>
-                            <p class='mb-0'>Người tạo :
-                                <span class='avatar-list-stacked ms-1'>
-                                    <span class='avatar avatar-sm avatar-rounded'>
-                                        <img src='$pathThumbnail'
-                                            alt='img'>
-                                    </span>
-                                </span>
-                            </p>
-                        </div>
-                        <div>
-                            <div class='btn-list'>
-                                <a href='$routeEdit'
-                                    class='btn btn-icon btn-sm btn-info-light'><i
-                                        class='ri-edit-line'></i></a>
-                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
-                                    data-id='$article->id'
-                                    $disabled data-route='$routeDelete'><i
-                                        class='ri-delete-bin-line'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>";
-        }
-        return $published_article_html;
-    }
-
-    private function get_unpublished_article_html($unpublished_article_list)
-    {
-        $unpublished_article_html = '';
-        foreach ($unpublished_article_list as $article) {
-            $pathThumbnail = url("storage/uploads/blog_images/$article->title/thumbnail/$article->thumbnail");
-            $routeEdit = route('admin.post.edit', ['id' => $article->id]);
-            $disabled = $article->status == 'off' ? 'disabled' : '';
-            $routeDelete = url("/admin/post/delete/$article->id");
-            $title = Helper::customName($article->title,15);
-            $unpublished_article_html .=
-                "<div class='col-xl-4'>
-            <div class='card custom-card task-pending-card' style='height:290px'>
-                <div class='card-body'>
-                    <div class='d-flex justify-content-between flex-wrap gap-2'>
-                        <div>
-                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
-                                    href='javascript:void(0);'></i></a> $title 
-                            </p>
-                            <p class='mb-3'>Ngày tạo : <span
-                                    class='fs-12 mb-1 text-muted'>$article->created_at</span></p>
-                            <p class='mb-3'>Ngày xuất bản : <span
-                                    class='fs-12 mb-1 text-muted'>$article->publish_date</span></p>
-                            <p class='mb-0'>Người tạo :
-                                <span class='avatar-list-stacked ms-1'>
-                                    <span class='avatar avatar-sm avatar-rounded'>
-                                        <img src='$pathThumbnail'
-                                            alt='img'>
-                                    </span>
-                                </span>
-                            </p>
-                        </div>
-                        <div>
-                            <div class='btn-list'>
-                                <a href='$routeEdit'
-                                    class='btn btn-icon btn-sm btn-info-light'><i
-                                        class='ri-edit-line'></i></a>
-                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
-                                    data-id='$article->id'
-                                     $disabled data-route='$routeDelete'><i
-                                        class='ri-delete-bin-line'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>";
-        }
-        return $unpublished_article_html;
-    }
 
     private function get_nav($articles, $flag)
     {

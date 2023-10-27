@@ -3,7 +3,7 @@
         <div class="row" id="tasks-container">
             @if ($articles)
                 @foreach ($articles as $article)
-                    <div class="col-xl-4 task-card">
+                    <div class="col-xl-4 task-card current">
                         <div class="card custom-card <?php if ($article->status == 'off') {
                             echo 'task-pending-card';
                         } else {
@@ -59,7 +59,7 @@
     <div class="tab-pane p-0" id="pending" role="tabpanel">
         <div class="row">
             @foreach ($unpublished_article_list as $article)
-                <div class="col-xl-4">
+                <div class="col-xl-4 current">
                     <div class="card custom-card task-pending-card" style="height: 290px">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">
@@ -101,7 +101,7 @@
     <div class="tab-pane p-0" id="completed" role="tabpanel">
         <div class="row">
             @foreach ($published_article_list as $article)
-                <div class="col-xl-4">
+                <div class="col-xl-4 current">
                     <div class="card custom-card task-pending-card" style="height: 290px">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">

@@ -146,7 +146,7 @@
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control thumbnail" name="thumbnailArticle"
+                                                            <input type="file" class="form-control thumbnail" name="thumbnail"
                                                                 id="thumbnail" placeholder="Thumbnail">
                                                         </div>
                                                         <div class="col-xl-2">

@@ -21,10 +21,10 @@ $(document).ready(function () {
         $urlInput.val(url);
     });
 
-    $(`ul.task-main-nav li`).click(function(){
+    $(`ul.task-main-nav li`).click(function () {
         $(`ul.task-main-nav li`).removeClass('active');
         $(this).addClass('active');
-    })    
+    })
 
     $('form.form-create').submit(function (event) {
         event.preventDefault();
@@ -115,28 +115,34 @@ $(document).ready(function () {
     $(`.btnPostDelete`).click(deleteFunction);
 
     $(`input#searchPost`).keyup(function () {
-        var route = $(this).data('route');
         var keywords = $(this).val();
-        var data = { keywords: keywords };
-        $.ajax({
-            url: route,
-            type: 'get',
-            data: data,
-            success: function (response) {
-                $(`div#all-tasks`).children('div').empty();
-                $(`div#all-tasks`).children('div').html(response.blogs);
-                $(`div#pending`).children('div').html(response.blogPendings);
-                $(`div#completed`).children('div').html(response.blogCompleteds);
-                $(`.btnPostDelete`).click(deleteFunction);
-            },
-            error: function (error) {
-                if (error.responseJSON && error.responseJSON.errors) {
-                    var errors = error.responseJSON.errors;
-                    console.log("Lỗi cụ thể:");
-                    console.log(errors);
+        if (keywords.length > 0) {
+            $(`div.current`).hide();
+            var route = $(this).data('route');
+            var data = { keywords: keywords };
+            $.ajax({
+                url: route,
+                type: 'get',
+                data: data,
+                success: function (response) {
+                    $(`div.search`).remove();
+                    $(`div#all-tasks`).children('div').append(response.blogs);
+                    $(`div#pending`).children('div').append(response.blogPendings);
+                    $(`div#completed`).children('div').append(response.blogCompleteds);
+                    $(`.btnPostDelete`).click(deleteFunction);
+                },
+                error: function (error) {
+                    if (error.responseJSON && error.responseJSON.errors) {
+                        var errors = error.responseJSON.errors;
+                        console.log("Lỗi cụ thể:");
+                        console.log(errors);
+                    }
                 }
-            }
-        })
+            })
+        }else{
+            $(`div.search`).remove()
+            $(`div.current`).show();
+        }
     })
 });
 
