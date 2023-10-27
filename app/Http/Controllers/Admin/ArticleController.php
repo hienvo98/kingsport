@@ -141,23 +141,23 @@ class ArticleController extends Controller
             $post->save();
         }
         //xử lý khi thay đổi thumbnail
-        if ($request->thumbnailArticle) {
+        if ($request->thumbnail) {
             $oldThumbNail = public_path("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail");
             if (File::exists($oldThumbNail)) {
                 unlink($oldThumbNail);
-                $newThumbPath = ImageStorageLibrary::storeImage($request->thumbnailArticle, "blog_images/$post->title/thumbnail");
+                $newThumbPath = ImageStorageLibrary::storeImage($request->thumbnail, "blog_images/$post->title/thumbnail");
                 $newThumbName = basename($newThumbPath);
                 $post->thumbnail = $newThumbName;
             }
         }
-
         //xử lý khi thay đổi content
         if (!File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content2"))) {
             File::makeDirectory(public_path("storage/uploads/blog_images/$post->title/content2"), 0755, true);
         }
-
         $content = $request->content;
         preg_match_all('/<img[^>]+src="([^"]+)"/', $content, $matches);
+        $stt = 0;
+
         foreach ($matches[1] as $key => $path) {
             $basename = basename($path);
             $oldPath = public_path("storage/uploads/blog_images/$post->title/content/$basename");
@@ -167,7 +167,7 @@ class ArticleController extends Controller
                 File::copy($oldPath, $newPath);
                 //thay thế đường dẫn bằng tên hình ảnh
                 $content = str_replace($path, $basename, $content);
-                // unset($matches[1][$key]);
+                unset($matches[1][$key]);
             } else {
                 //lưu ảnh mới có trong content
                 $pathNewImage =  $this->storeImage($path, $post->title, 'content2');
@@ -193,11 +193,10 @@ class ArticleController extends Controller
         $post->publish_date = Carbon::parse($request->input('publish_date'));
         $post->status = $request->input('status');
         $post->on_form = $request->input('on_form');
-         //kiểm tra bài viết có sản phẩm liên quan không
-         if ($request->productInArticle) {
+        if ($request->productInArticle) {
             $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-            $post->product_id = $product_id;
-        };        
+           $post->product_id = $product_id;
+        };
         $post->save();
         return response()->json(['code' => 200, 'messages' => $post], 200);
     }
