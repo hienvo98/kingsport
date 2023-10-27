@@ -28,7 +28,6 @@
 @include('admin.partials.custom_switcherjs')
 
 <!-- Custom JS -->
-{# <script src="{{asset('assets/js/custom.js')}}"></script> #}
 <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></script>
 {{-- <script src="{{asset('/assets/js/category.js')}}"></script> --}}
 <script src="{{asset('/assets/libs/simplebar/simplebar.min.js')}}"></script>
@@ -52,10 +51,7 @@
 <script src="{{asset('assets/libs/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js')}}"></script>
 <script src="{{asset('assets/libs/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js')}}"></script>
 <script src="{{asset('assets/libs/filepond-plugin-image-transform/filepond-plugin-image-transform.min.js')}}"></script>
+{# <script src="{{asset('assets/js/custom.js')}}"></script> #}
 
-<!-- Internal Add Products JS -->
-{{-- <script src="{{asset('assets/js/add-products.js')}}"></script> --}}
-<!-- Internal Create Blog JS -->
-{{-- <script src="{{asset('assets/js/blog-create.js')}}"></script> --}}
 <script src="{{ asset('assets/js/quill-editor.js') }}"></script>
 </body>

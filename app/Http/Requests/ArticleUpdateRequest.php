@@ -32,7 +32,7 @@ class ArticleUpdateRequest extends FormRequest
             'form_status' => 'nullable|in:on,off',
             'publish_date' => 'nullable|date',
             'status' => 'nullable|in:on,off',
-            'description' => 'min:12',
+            'content' => 'min:12',
         ];
     }
     public function messages()

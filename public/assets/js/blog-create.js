@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     const $titleInput = $('#blog-title');
     const $urlInput = $('#blog-url');
@@ -21,16 +20,16 @@ $(document).ready(function () {
         $urlInput.val(url);
     });
 
-    $(`ul.task-main-nav li`).click(function(){
+    $(`ul.task-main-nav li`).click(function () {
         $(`ul.task-main-nav li`).removeClass('active');
         $(this).addClass('active');
-    })    
+    })
 
     $('form.form-create').submit(function (event) {
         event.preventDefault();
         const formData = new FormData(this);
         const quillContent = quill.root.innerHTML;
-        formData.append('description', quillContent);
+        formData.append('content', quillContent);
         var productInArticle = $(`select#choices-multiple-groups`).val();
         formData.append('productInArticle', productInArticle);
         $.ajax({
@@ -112,22 +111,54 @@ $(document).ready(function () {
         })
     })
 
-    $(`.btnPostDelete`).click(deleteFunction);
+    $(`.btnDelete`).click(deleteFunction);
 
-    $(`input#searchPost`).keyup(function () {
-        var route = $(this).data('route');
+    $(`input#search`).keyup(function () {
         var keywords = $(this).val();
-        var data = { keywords: keywords };
+        if (keywords.length > 0) {
+            $(`div.current`).hide();
+            var route = $(this).data('route');
+            var data = { keywords: keywords };
+            $.ajax({
+                url: route,
+                type: 'get',
+                data: data,
+                success: function (response) {
+                    $(`div.search`).remove();
+                    $(`div#all-tasks`).children('div').append(response.blogs);
+                    $(`div#pending`).children('div').append(response.blogPendings);
+                    $(`div#completed`).children('div').append(response.blogCompleteds);
+                    $(`.btnDelete`).click(deleteFunction);
+                },
+                error: function (error) {
+                    if (error.responseJSON && error.responseJSON.errors) {
+                        var errors = error.responseJSON.errors;
+                        console.log("Lỗi cụ thể:");
+                        console.log(errors);
+                    }
+                }
+            })
+        }else{
+            $(`div.search`).remove()
+            $(`div.current`).show();
+        }
+    })
+
+    $(`a.filter`).click(function () {
+        // Tạo một URL mới dựa trên ID của danh mục
+        var newUrl = $(this).data('update-url');
+        // Sử dụng pushState để cập nhật URL
+        window.history.pushState({}, '', newUrl);
+        var route = $(this).data('route-filter');
         $.ajax({
             url: route,
             type: 'get',
-            data: data,
             success: function (response) {
-                $(`div#all-tasks`).children('div').empty();
                 $(`div#all-tasks`).children('div').html(response.blogs);
                 $(`div#pending`).children('div').html(response.blogPendings);
                 $(`div#completed`).children('div').html(response.blogCompleteds);
-                $(`.btnPostDelete`).click(deleteFunction);
+                $(`.btnDelete`).click(deleteFunction);
+                $('nav#nav').html(response.nav);
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {
@@ -138,33 +169,10 @@ $(document).ready(function () {
             }
         })
     })
+
 });
 
-$(`a.filter`).click(function () {
-    // Tạo một URL mới dựa trên ID của danh mục
-    var newUrl = $(this).data('update-url');
-    // Sử dụng pushState để cập nhật URL
-    window.history.pushState({}, '', newUrl);
-    var route = $(this).data('route-filter');
-    $.ajax({
-        url: route,
-        type: 'get',
-        success: function (response) {
-            $(`div#all-tasks`).children('div').html(response.blogs);
-            $(`div#pending`).children('div').html(response.blogPendings);
-            $(`div#completed`).children('div').html(response.blogCompleteds);
-            $(`.btnPostDelete`).click(deleteFunction);
-            $('nav#nav').html(response.nav);
-        },
-        error: function (error) {
-            if (error.responseJSON && error.responseJSON.errors) {
-                var errors = error.responseJSON.errors;
-                console.log("Lỗi cụ thể:");
-                console.log(errors);
-            }
-        }
-    })
-})
+
 
 
 var deleteFunction = function () {
