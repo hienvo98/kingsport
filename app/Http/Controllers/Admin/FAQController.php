@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\FAQRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use App\Models\FAQS;
 
 class FAQController extends Controller
 {
@@ -12,8 +16,18 @@ class FAQController extends Controller
      */
     public function index()
     {
+        // $cate = Category::with('faq')->select('name')->get();
+        // dd($cate);
+        // foreach ($cate as $c) {
+        //     dd($c);
+        //     foreach($c->faq as $faq) {
+        //         dd($faq);
+        //     }
+        // }
         
-        return view('admin.faq.index');
+        $category = Category::select('id','name')->get();
+        
+        return view('admin.faq.index',['category' => $category]);
     }
 
     /**
@@ -21,15 +35,29 @@ class FAQController extends Controller
      */
     public function create()
     {
-        return view('admin.faq.create');
+        $cate = Category::select('id','name')->get();
+
+        return view('admin.faq.create',['category' => $cate]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FAQRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+    
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Có lỗi xảy ra trong dữ liệu đầu vào.');
+        }
+        
+        $faq = FAQS::create($validatedData);
+    
+        return redirect()->back()->with('message', 'Tạo thành công.');
     }
 
     /**
