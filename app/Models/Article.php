@@ -22,7 +22,8 @@ class Article extends Model
         'status',
         'publish_date',
         'user_id',
-        'product_id'
+        'product_id',
+        'description'
     ];
     public function category()
     {

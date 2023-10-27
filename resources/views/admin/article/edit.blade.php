@@ -155,6 +155,10 @@
                                                             <img id="thumbnailImg" src="{{ url("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail") }}" alt=" Chưa Có Ảnh..."
                                                                 class="img-fluid img-thumbnail rounded">
                                                         </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô tả Ngắn</label>
+                                                            <textarea class="form-control" name="description"  id="exampleFormControlTextarea1" rows="3">{{ $post->description }}</textarea>
+                                                          </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,12 +1,4 @@
 $(document).ready(function() {
-
-    const multipleCancelButton1 = new Choices(
-        '#blog-tags',
-        {
-            allowHTML: true,
-            removeItemButton: true,
-        }
-    );
     const $titleInput = $('#blog-title');
     const $urlInput = $('#blog-url');
 
@@ -28,20 +20,24 @@ $(document).ready(function() {
         $urlInput.val(url);
     });
 
+
+
     $(`input.thumbnail`).change(function () {
         $('img#thumbnailImg').attr('src', URL.createObjectURL(this.files[0]));
+        $('img#thumbnailImg').show();
     })
 
     $('#images_detail').on('change', function(e) {
         var files = e.target.files;
         if (files.length > 11) {
             alert("Chỉ được phép tải lên tối đa 11 ảnh.");
-            return;
+            $(this).val('');
+            return false;
         }
         var slide = ``;
         for (var i = 0; i < this.files.length; i++) {
             slide += `<div class="swiper-slide" style="position:relative">
-                <img class="img-fluid thumbnail" data-num="${$(this).attr('data-color')}-${i}" src="${URL.createObjectURL(this.files[i])}" alt="img">
+                <img class="img-fluid thumbnail" src="${URL.createObjectURL(this.files[i])}" alt="img">
             </div>`;
         };
         $('#image-list').empty();
@@ -65,16 +61,56 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function (response) {
-                location.reload();
-                $('#successAlertContainer').removeClass('d-none');
-                setTimeout(function () {
-                    $('#successAlertContainer').addClass('d-none');
-                    
-                }, 3000);
+                $(`#success`).click();
             },
             error: function (error) {
                 console.error(error);
             }
         });
     });
+
+    $(`.btnDelete`).click(deleteFunction);
+    
+    
 });
+var deleteFunction = function () {
+    var route = $(this).data('route');
+    $.ajax({
+        url: route,
+        type: 'get',
+        success: function (response) {
+            $('#success').click();
+        },
+        error: function (error) {
+            if (error.responseJSON && error.responseJSON.errors) {
+                $("html, body").animate({ scrollTop: 0 }, 'fast')
+                var errors = error.responseJSON.errors;
+                console.log("Lỗi cụ thể:");
+                console.log(errors);
+                var errorMessages = "";
+                var typeError = 0;
+                for (var key in errors) {
+                    if (errors.hasOwnProperty(key) && key.split('.').length != 3) {
+                        for (var keyChild of errors[key]) {
+                            errorMessages += `<div class="alert alert-danger text-capitalize">
+                                ${keyChild}
+                            </div>`;
+                        }
+                    } else {
+                        typeError++;
+                    }
+                }
+                $(`div#errors`).append(errorMessages);
+            }
+        }
+    })
+};
+
+const multipleCancelButton1 = new Choices(
+    '#blog-tags',
+    {
+        allowHTML: true,
+        removeItemButton: true,
+    }
+);
+

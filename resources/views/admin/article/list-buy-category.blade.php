@@ -41,7 +41,7 @@
                                                 class="btn btn-icon btn-sm btn-info-light"><i
                                                     class="ri-edit-line"></i></a>
                                             <button
-                                                class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
+                                                class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete"
                                                 data-id="{{ $article->id }}" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                                 {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                     class="ri-delete-bin-line"></i></button>
@@ -85,7 +85,7 @@
                                         <a href="{{ route('admin.post.edit',['id'=>$article->id]) }}"
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
-                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete"
+                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete"
                                             data-id="{{ $article->id }}" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                             {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>
@@ -127,7 +127,7 @@
                                         <a href="{{ route('admin.post.edit',['id'=>$article->id]) }}"
                                             class="btn btn-icon btn-sm btn-info-light"><i
                                                 class="ri-edit-line"></i></a>
-                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete" data-route="{{ url("/admin/post/delete/$article->id") }}"
+                                        <button class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete" data-route="{{ url("/admin/post/delete/$article->id") }}"
                                             data-id="{{ $article->id }}"
                                             {{ $article->status == 'off' ? 'disabled' : '' }}><i
                                                 class="ri-delete-bin-line"></i></button>

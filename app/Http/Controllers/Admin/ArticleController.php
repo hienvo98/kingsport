@@ -68,6 +68,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+        // return response() -> json('messages'=>$request->)
         //kiểm tra bài viết có sản phẩm liên quan không
         if ($request->productInArticle) {
             $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
@@ -83,7 +84,7 @@ class ArticleController extends Controller
             $request->merge(['thumbnail'=>basename($imagePath)]); //lưu tên ảnh vào request
         }
 
-        $ArticleContent = $request->description;// content của bài viết chưa xử lý
+        $ArticleContent = $request->content;// content của bài viết chưa xử lý
         $title = $request->title; //tiêu để bài viết
         //xử lý, tất cả ảnh trong bài viết và trả về nội dung bài viết đã xử lý.
         $content = $this->imageStorage->processAndSaveImagesInContent($ArticleContent,'blog_images',$title); //nội dung đã xử lý
@@ -185,6 +186,7 @@ class ArticleController extends Controller
             File::move(public_path("storage/uploads/blog_images/$post->title/content2"), public_path("storage/uploads/blog_images/$post->title/content"));
         };
         $post->content = $content;
+        $post->description = $request->description;
         $post->url = $request->input('url');
         $post->category_id = $request->input('category_id');
         $post->seo_title = $request->input('seo_title');
@@ -319,7 +321,7 @@ class ArticleController extends Controller
                                 <a href='$routeEdit'
                                     class='btn btn-icon btn-sm btn-info-light'><i
                                         class='ri-edit-line'></i></a>
-                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnPostDelete'
+                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete'
                                     data-id='$article->id'
                                     $disabled data-route='$routeDelete'><i
                                         class='ri-delete-bin-line'></i></button>

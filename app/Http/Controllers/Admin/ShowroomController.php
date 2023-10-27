@@ -41,6 +41,7 @@ class ShowroomController extends Controller
      */
     public function store(Request $request)
     {
+        // return response() -> json(['messages'=>$request->all()]);
         $request->validate([
             'title' => 'required|max:255',
             'url' => 'required|unique:showroom|max:255',
@@ -86,7 +87,7 @@ class ShowroomController extends Controller
                 $count++; 
             }
 
-            $showroom->images = json_encode($imageList);
+            $showroom->images = serialize($imageList);
         }
 
         $showroomContent = $request->input('blog_content');
@@ -115,7 +116,11 @@ class ShowroomController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $showroom = ShowRoom::find($id);
+        if(empty($showroom)) abort(404);
+        $showroom->images=unserialize($showroom->images);
+        $regions = Regions::get();
+        return view('admin.showroom.edit',compact('showroom','regions'));
     }
 
     /**
@@ -131,6 +136,15 @@ class ShowroomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $showroom = ShowRoom::find($id);
+        if(empty($showroom)) return response() -> json(['code'=>404,'messages'=>'không tìm thấy showroom'],404);
+        $showroom->status = 'off';
+        $showroom->save();
+        return response(['code'=>200,'messages'=>'đã xoá showroom thành công'],200);
     }
+
+    // public function get_list_image_html(image){
+    //     $html = '';
+
+    // }
 }
