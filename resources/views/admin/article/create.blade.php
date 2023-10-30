@@ -262,5 +262,5 @@
     <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
     <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
     <script src="{{ asset('assets/js/choices.js') }} "></script>
-    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
 @endsection

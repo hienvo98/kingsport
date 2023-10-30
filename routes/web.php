@@ -84,14 +84,14 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     });
 
     Route::prefix('/showroom')->group(function(){
-        Route::get('/index',[ShowroomController::class,'index'])->name('showroom.index');
+        Route::get('/index/{id?}',[ShowroomController::class,'index'])->name('showroom.index');
         Route::get('/create',[ShowroomController::class,'create'])->name('showroom.create');
         Route::post('/store',[ShowroomController::class,'store'])->name('showroom.store');
         Route::get('/edit/{id}',[ShowroomController::class,'edit'])->name('showroom.edit');
-        Route::post('/update',[ShowroomController::class,'update'])->name('showroom.update');
+        Route::post('/update/{id}',[ShowroomController::class,'update'])->name('showroom.update');
         Route::get('/delete/{id}',[ShowroomController::class,'destroy'])->name('showroom.destroy');
-        Route::get('/search',[ArticleController::class,'search']);
-        Route::get('/filterArticlesAjax/{flag?}',[ArticleController::class,'filterArticlesAjax']);
+        Route::get('/search',[ShowroomController::class,'search']);
+        Route::get('/filterShowroomAjax/{flag?}',[ShowroomController::class,'filterShowroomAjax']);
     });
 
     Route::prefix('/faq')->group(function(){
@@ -101,7 +101,6 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[FAQController::class,'edit'])->name('faq.edit');
         Route::post('/update',[FAQController::class,'update'])->name('faq.update');
         Route::get('/delete/{id}',[FAQController::class,'destroy'])->name('faq.destroy');
-
     });
 
     Route::prefix('/event')->group(function(){
