@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -55,7 +56,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
-        Route::post('/store',[ProductController::class,'store'])->name('product.store');
+        Route::post('/storesssssssssssssssss',[ProductController::class,'store'])->name('product.store');
         Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
         Route::post('/update/{id}',[ProductController::class,'update'])->name('product.update');
         Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
@@ -100,6 +101,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[FAQController::class,'edit'])->name('faq.edit');
         Route::post('/update',[FAQController::class,'update'])->name('faq.update');
         Route::get('/delete/{id}',[FAQController::class,'destroy'])->name('faq.destroy');
+
+    });
+
+    Route::prefix('/event')->group(function(){
+        Route::get('/index',[EventController::class,'index'])->name('event.index');
+        Route::get('/create',[EventController::class,'create'])->name('event.create');
+        Route::post('/store',[EventController::class,'store'])->name('event.store');
+        Route::get('/edit/{id}',[EventController::class,'edit'])->name('event.edit');
+        Route::post('/update',[EventController::class,'update'])->name('event.update');
+        Route::get('/delete/{id}',[EventController::class,'destroy'])->name('event.destroy');
 
     });
 

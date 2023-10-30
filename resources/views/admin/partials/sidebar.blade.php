@@ -85,7 +85,6 @@
                 <!-- Start::slide__category -->
                 <li class="slide__category"><span class="category-name">Pages</span></li>
                 <!-- End::slide__category -->
-
                 @can('Super Admin')
                     <li class="slide has-sub">
                         <a href="javascript:void(0);" class="side-menu__item">
@@ -128,7 +127,6 @@
                         </ul>
                     </li>
                 @endcan
-
                 <!-- Start::slide -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
@@ -202,8 +200,7 @@
                         </ul>
                     </li>
                 @endcanany
-                <!-- showrooms -->
-                
+                <!-- showrooms -->              
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class='bx bxl-blogger side-menu__icon'></i>
@@ -222,8 +219,7 @@
                 </li>
                 <!-- End::slide -->
 
-                <!-- FAQ -->
-                
+                <!-- FAQ -->            
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class='bx bxl-blogger side-menu__icon'></i>
@@ -242,6 +238,24 @@
                 </li>
                 <!-- End::slide -->
 
+                <!-- Event -->
+                <li class="slide has-sub">
+                        <a href="javascript:void(0);" class="side-menu__item">
+                            <i class='bx bxl-blogger side-menu__icon'></i>
+                            <span class="side-menu__label">Sự Kiện</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+
+                        <ul class="slide-menu child1">
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.event.index') }}" class="side-menu__item">Danh Sách</a>
+                            </li>
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.event.create') }}" class="side-menu__item">Tạo Sự Kiện</a>
+                            </li>
+                        </ul>
+                    </li>
+                <!-- end event -->
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                     width="24" height="24" viewBox="0 0 24 24">
