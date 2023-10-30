@@ -25,7 +25,8 @@
                 <div class="card-body p-0">
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" id="search" data-route="{{ url('/admin/showroom/search') }}" class="form-control bg-light border-0" placeholder="Search Task Here"
+                            <input type="text" id="search" data-route="{{ url('/admin/showroom/search') }}"
+                                class="form-control bg-light border-0" placeholder="Search Task Here"
                                 aria-describedby="button-addon2">
                             <button class="btn btn-light" type="button" id="button-addon2"><i
                                     class="ri-search-line text-muted"></i></button>
@@ -39,7 +40,10 @@
                             @if ($regions)
                                 @foreach ($regions as $region)
                                     <li>
-                                        <a href="javascript:void(0);" class="category-item filter">
+                                        <a href="javascript:void(0);"
+                                            data-update-url="{{ url('admin/showroom/index', ['id' => $region->id]) }}"
+                                            data-route-filter="{{ url("admin/showroom/filterShowroomAjax/$region->id") }}"
+                                            class="category-item filter">
                                             <div class="d-flex align-items-center">
                                                 <span class="me-2 lh-1">
                                                     <i
@@ -49,7 +53,8 @@
                                                 <span class="flex-fill text-nowrap">
                                                     {{ $region->name }}
                                                 </span>
-                                                <span class="badge bg-success-transparent rounded-pill"><?php echo(count($region->showroom)) ;?></span>
+                                                <span
+                                                    class="badge bg-success-transparent rounded-pill"><?php echo count($region->showroom); ?></span>
                                             </div>
                                         </a>
                                     </li>
@@ -104,8 +109,53 @@
                 </div>
                 @include('admin.showroom.list-showroom')
             </div>
+            <div class="d-flex pagination justify-content-end flex-wrap">
+                <nav aria-label="..." id="nav">
+                    <ul class="pagination mb-0">
+                        {{-- Nút "Previous" --}}
+                        @if ($showrooms->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ !empty($trash) ? $showrooms->appends(['trash' => 'on'])->previousPageUrl() : $showrooms->previousPageUrl() }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Danh sách các trang --}}
+                        @for ($i = 1; $i <= $showrooms->lastPage(); $i++)
+                            <li class="page-item {{ $i === $showrooms->currentPage() ? 'active' : '' }}">
+                                <a class="page-link  {{ $i === $showrooms->currentPage() ? 'disable-link' : '' }}"
+                                    href="{{ !empty($trash) ? $showrooms->appends(['trash' => 'on'])->url($i) : $showrooms->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        {{-- Nút "Next" --}}
+                        @if ($showrooms->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ !empty($trash) ? $showrooms->appends(['trash' => 'on'])->nextPageUrl() : $showrooms->nextPageUrl() }}"
+                                    aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <!-- Modal add -->
+                {{-- @include('admin/category/create') --}}
+            </div>
         </div>
     </div>
     <!--End::row-1 -->
-    
+
 @endsection

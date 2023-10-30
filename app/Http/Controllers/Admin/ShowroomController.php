@@ -7,8 +7,14 @@ use App\Models\ShowRoom;
 use Illuminate\Http\Request;
 use App\Libraries\MimeChecker;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShowroomCreateRequest;
+use App\Http\Requests\ShowroomUpdateRequest;
+use App\Libraries\Helper;
 use Illuminate\Support\Facades\Storage;
 use App\Libraries\ImageStorageLibrary;
+use Illuminate\Support\Facades\File;
+
+use function PHPUnit\Framework\matches;
 
 class ShowroomController extends Controller
 {
@@ -21,10 +27,11 @@ class ShowroomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id = '')
     {
-        $regions = Regions::with('showroom')->get();
-        return view('admin.showroom.index')->with(['regions' => $regions]);
+        $showrooms = !$id ? ShowRoom::paginate(9) : ShowRoom::where('region_id', $id)->paginate(9);
+        $regions = Regions::all();
+        return view('admin.showroom.index', compact('showrooms', 'regions'));
     }
 
     /**
@@ -39,66 +46,33 @@ class ShowroomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ShowroomCreateRequest $request)
     {
-        // return response() -> json(['messages'=>$request->all()]);
-        $request->validate([
-            'title' => 'required|max:255',
-            'url' => 'required|unique:showroom|max:255',
-            'region_id' => 'required|integer',
-            'seo_title' => 'nullable|max:255',
-            'seo_description' => 'nullable|max:255',
-            'seo_key' => 'nullable|max:255',
-            'status' => 'nullable|in:on,off',
-            'phone' => ['required', 'regex:/^[0-9]{10}$/'],
-        ]);
-        $showroom = new ShowRoom;
-        $showroom->name = $request->input('title');
-        $showroom->url = $request->input('url');
-        $showroom->address = $request->input('address');
-        $showroom->phone = $request->input('phone');
-        $showroom->region_id = $request->input('region_id');
-        $showroom->seo_title = $request->input('seo_title');
-        $showroom->seo_description = $request->input('seo_description');
-        $showroom->seo_keywords = $request->input('seo_key');
-        $thumbnail = $request->file('thumbnail');
-        
-        if($thumbnail){
+        $thumbnail = $request->file('imageThumb');
+        if ($thumbnail) {
             if (!MimeChecker::isImage($thumbnail->getPathname())) {
                 return response()->json(['message' => 'Tệp không hợp lệ. Chỉ cho phép tải lên hình ảnh dưới 3MB.'], 400);
-            }else{           
-                $imagePath = $this->imageStorage->storeImage($thumbnail, 'showroom-images/'.$request->input('title').'/'.'thumbnail');
+            } else {
+                $imagePath = $this->imageStorage->storeImage($thumbnail, 'showroom-images/' . $request->input('name') . '/' . 'thumbnail');
                 $fileName = basename($imagePath);
-                $showroom->thumbnail = $fileName;
+                $request->merge(['thumbnail' => $fileName]);
             }
         }
-        
         if ($request->hasFile('images_detail')) {
             $images = $request->file('images_detail');
             $imageList = [];
-            $count = 1;
-
             foreach ($images as $image) {
-                $originalName = $image->getClientOriginalName();
-                $fileName = $request->input('url') . '-hinh-' . $count;
-                $imagePath = $this->imageStorage->storeImage($image, 'showroom-images/' . $request->input('url') . '/images-detail', $fileName);
-                $imageList[] = $fileName;
-
-                $count++; 
+                $imagePath = $this->imageStorage->storeImage($image, 'showroom-images/' . $request->input('name') . '/images-detail', $fileName);
+                $imageList[] =  basename($imagePath);
             }
-
-            $showroom->images = serialize($imageList);
+            $request->merge(['images' => serialize($imageList)]);
         }
 
-        $showroomContent = $request->input('blog_content');
-        $showroom->status = $request->input('status');
-
-        $showroom->content = $showroomContent;
-        if($showroom->save()) {
+        if (ShowRoom::create($request->all())) {
             return response([
                 'status' => 'success',
                 'code' => 200,
-                'data' => $showroom
+                'messages' => 'đã thêm showroom thành công'
             ]);
         }
     }
@@ -117,18 +91,42 @@ class ShowroomController extends Controller
     public function edit(string $id)
     {
         $showroom = ShowRoom::find($id);
-        if(empty($showroom)) abort(404);
-        $showroom->images=unserialize($showroom->images);
+        if (empty($showroom)) abort(404);
+        $showroom->images = unserialize($showroom->images);
+        $images = $showroom->images;
+        $showroom->list_images = $this->get_list_image_html($showroom->name, $images);
         $regions = Regions::get();
-        return view('admin.showroom.edit',compact('showroom','regions'));
+        return view('admin.showroom.edit', compact('showroom', 'regions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ShowroomUpdateRequest $request, string $id)
     {
-        //
+        $showroom = ShowRoom::find($id);
+        if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
+        if ($request->title != $showroom->name) {
+            //đổi tên thư mục lưu ảnh
+            ImageStorageLibrary::updateNameFolder('showroom-images', $showroom->name, $request->name);
+        }
+        if ($request->imageThumb) {
+            //xoá và lưu thumbnail mới
+            $newPath = ImageStorageLibrary::processImageUpdate($request->imageThumb, 'showroom-images', $request->name, 'thumbnail', $showroom->thumbnail);
+            $request->merge(["thumbnail" => basename($newPath)]);
+        }
+        if ($request->images_detail) {
+            $directoryImagesDetail = public_path("storage/uploads/showroom-images/$request->name/images-detail"); //lấy đường dẫn thư mục
+            ImageStorageLibrary::deleteFolder($directoryImagesDetail); //xoá thư mục lưu ảnh hiện tại
+            $listImagesName = [];
+            foreach ($request->images_detail as $image) {
+                $path = ImageStorageLibrary::storeImage($image, "showroom-images/$request->name/images-detail"); // tạo thư mục và cập nhật ảnh mới
+                $listImagesName[] = basename($path);
+            }
+            $request->merge(['images' => serialize($listImagesName)]);
+        }
+        $showroom->update($request->all());
+        return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
     }
 
     /**
@@ -137,14 +135,134 @@ class ShowroomController extends Controller
     public function destroy(string $id)
     {
         $showroom = ShowRoom::find($id);
-        if(empty($showroom)) return response() -> json(['code'=>404,'messages'=>'không tìm thấy showroom'],404);
+        if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
         $showroom->status = 'off';
         $showroom->save();
-        return response(['code'=>200,'messages'=>'đã xoá showroom thành công'],200);
+        return response(['code' => 200, 'messages' => 'đã xoá showroom thành công'], 200);
     }
 
-    // public function get_list_image_html(image){
-    //     $html = '';
+    public function filterShowroomAjax($id)
+    {
+        $region = Regions::find($id);
+        if (empty($region)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy khu vực'], 404);
+        $showrooms = ShowRoom::where('region_id', $id)->paginate(9);
+        $showrooms_on_html = $showrooms->where('status', 'on');
+        $showrooms_off_html = $showrooms->where('status', 'off');
+        return response()->json([
+            'code' => '200',
+            'all' =>  $this->get_card_html($showrooms, 'current'),
+            'on' => $this->get_card_html($showrooms_on_html, 'current'),
+            'off' => $this->get_card_html($showrooms_off_html, 'current'),
+            'nav' => $this->get_nav($showrooms,$id)
+        ], 200);
+    }
 
-    // }
+    public function search(Request $request){
+        $keywords = $request->keywords;
+        $showrooms = ShowRoom::where('name','like',"%$keywords%")->get();
+        $showrooms_on_html = $showrooms->where('status', 'on');
+        $showrooms_off_html= $showrooms->where('status', 'off');
+        return response()->json([
+            'code' => '200',
+            'all' =>  $this->get_card_html($showrooms, 'search'),
+            'on' => $this->get_card_html($showrooms_on_html, 'search'),
+            'off' => $this->get_card_html($showrooms_off_html, 'search'),
+        ], 200);
+    }
+
+
+    private function get_list_image_html($name, $images)
+    {
+        $html = '';
+        foreach ($images as $image) {
+            $url = url("storage/uploads/showroom-images/$name/images-detail/$image");
+            $html .=  "<div class='swiper-slide' style='position:relative'>
+            <img class='img-fluid thumbnail' src='$url' alt='img'>
+        </div>";
+        };
+        return $html;
+    }
+
+    private function get_card_html($showrooms, $flag)
+    {
+        $showroom_html = '';
+        foreach ($showrooms as $showroom) {
+            $pathThumbnail = url("storage/uploads/showroom-images/$showroom->name/thumbnail/$showroom->thumbnail");
+            $routeEdit = url("/admin/showroom/edit/$showroom->id");
+            $routeDelete = url("/admin/showroom/delete/$showroom->id");
+            $disabled = $showroom->status == 'off' ? 'disabled' : '';
+            $name = Helper::customName($showroom->name, 15);
+            $showroom_html .=
+                "<div class='col-xl-4 $flag'>
+            <div class='card custom-card task-pending-card'>
+                <div class='card-body'>
+                    <div class='d-flex justify-content-between flex-wrap gap-2'>
+                        <div>
+                            <p class='fw-semibold mb-3 d-flex align-items-center'><a
+                                    href='javascript:void(0);'></i></a> $name 
+                            </p>
+                            <p class='mb-3'>Địa Chỉ : <span
+                                    class='fs-12 mb-1 text-muted'>$showroom->address</span></p>
+                            <p class='mb-3'>Số điện thoại : <span
+                                    class='fs-12 mb-1 text-muted'>$showroom->phone</span></p>
+                            <p class='mb-0'>Người tạo :
+                                <span class='avatar-list-stacked ms-1'>
+                                    <span class='avatar avatar-sm avatar-rounded'>
+                                        <img src='$pathThumbnail'
+                                            alt='img'>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class='btn-list'>
+                                <a href='$routeEdit'
+                                    class='btn btn-icon btn-sm btn-info-light'><i
+                                        class='ri-edit-line'></i></a>
+                                <button class='btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete'
+                                    data-id='$showroom->id'
+                                    $disabled data-route='$routeDelete'><i
+                                        class='ri-delete-bin-line'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
+        }
+        return $showroom_html;
+    }
+
+    private function get_nav($showrooms, $id)
+    {
+        $nav = "<ul class='pagination mb-0'>";
+        //nút previous
+        $nav .= "<li class='page-item disabled'>
+            <span class='page-link'>Previous</span>
+        </li>";
+        // danh sách các trang
+        for ($i = 1; $i <= $showrooms->lastPage(); $i++) {
+            $active = $i === $showrooms->currentPage() ? 'active' : '';
+            $disabled =  $i === $showrooms->currentPage() ? 'disable-link' : '';
+            $link = route('admin.showroom.index', ['id' => $id]) . "?page=$i";
+            $nav .= "<li class='page-item $active'>
+            <a class='page-link  $disabled' href='$link'> $i </a>
+        </li>";
+        }
+        //nút next
+        if ($showrooms->hasMorePages()) {
+            $link = route('admin.showroom.index', ['id' => $id]) . "?page=2";
+            $nav .=  "<li class='page-item'>
+            <a class='page-link' href='$link' aria-label='Next'>
+                <span aria-hidden='true'>Next</span>
+            </a>
+        </li>";
+        } else {
+            $nav .= "<li class='page-item disabled'>
+            <span class='page-link'>Next</span>
+        </li>";
+        }
+        $nav .= "</ul>";
+        return $nav;
+    }
 }

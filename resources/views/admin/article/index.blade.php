@@ -12,7 +12,7 @@
             </nav>
         </div>
     </div>
-    @if(session('message'))
+    @if (session('message'))
         <div id="notification" class="alert alert-success">
             {{ session('message') }}
         </div>
@@ -91,8 +91,11 @@
                     </div> --}}
                     <div class="p-3 border-bottom border-block-end-dashed">
                         <div class="input-group">
-                            <input type="text" id="search" data-route="{{ url('/admin/post/search') }}" class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết" aria-describedby="button-addon2">
-                            <button class="btn btn-light" type="button" id="button-addon2"><i class="ri-search-line text-muted"></i></button>
+                            <input type="text" id="search" data-route="{{ url('/admin/post/search') }}"
+                                class="form-control bg-light border-0" placeholder="Tìm Tên Bài Viết"
+                                aria-describedby="button-addon2">
+                            <button class="btn btn-light" type="button" id="button-addon2"><i
+                                    class="ri-search-line text-muted"></i></button>
                         </div>
                     </div>
                     <div class="p-3 task-navigation border-bottom border-block-end-dashed">
@@ -100,8 +103,10 @@
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Danh mục</span>
                             </li>
-                            <li class="{{ empty($id)&&$trash!='on'?'active':'' }}">
-                                <a class="filter" data-update-url="{{ url('admin/post/index') }}" data-route-filter="{{ url("admin/post/filterArticlesAjax") }}" href="javascript:void(0)">
+                            <li class="{{ empty($id) && $trash != 'on' ? 'active' : '' }}">
+                                <a class="filter" data-update-url="{{ url('admin/post/index') }}"
+                                    data-route-filter="{{ url('admin/post/filterArticlesAjax') }}"
+                                    href="javascript:void(0)">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-task-line align-middle fs-14"></i>
@@ -109,12 +114,15 @@
                                         <span class="flex-fill text-nowrap">
                                             Tất cả bài viết
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill">{{ $count['allArticles'] }}</span>
+                                        <span
+                                            class="badge bg-success-transparent rounded-pill">{{ $count['allArticles'] }}</span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="{{ $trash=='on'?'active':'' }}" >
-                                <a href="javascript:void(0)" class="filter" data-update-url="{{ url('admin/post/index')."?trash=on" }}"  data-route-filter="{{ url("admin/post/filterArticlesAjax/trash") }}"  >
+                            <li class="{{ $trash == 'on' ? 'active' : '' }}">
+                                <a href="javascript:void(0)" class="filter"
+                                    data-update-url="{{ url('admin/post/index') . '?trash=on' }}"
+                                    data-route-filter="{{ url('admin/post/filterArticlesAjax/trash') }}">
                                     <div class="d-flex align-items-center">
                                         <span class="me-2 lh-1">
                                             <i class="ri-delete-bin-5-line align-middle fs-14"></i>
@@ -122,26 +130,32 @@
                                         <span class="flex-fill text-nowrap">
                                             Trash
                                         </span>
-                                        <span class="badge bg-success-transparent rounded-pill">{{ $count['deleteArticles'] }}</span>
+                                        <span
+                                            class="badge bg-success-transparent rounded-pill">{{ $count['deleteArticles'] }}</span>
                                     </div>
                                 </a>
                             </li>
                             @foreach ($category as $_category)
-                            <li class="{{ $_category->id == $id?'active':'' }}" >
-                                <a href="javascript:void(0)" data-update-url="{{ url('admin/post/index',['id'=>$_category->id]) }}" class="category-item filter" data-route-filter="{{ url("admin/post/filterArticlesAjax/$_category->id") }}">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-2 lh-1">
-                                            <i class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
-                                        </span>
-                                        
-                                        <span class="flex-fill text-nowrap">
-                                            {{$_category->name}}
-                                        </span>
-                                        
-                                        <span class="badge bg-success-transparent rounded-pill"><?php echo($_category->articles->count()) ;?></span>
-                                    </div>
-                                </a>
-                            </li>
+                                <li class="{{ $_category->id == $id ? 'active' : '' }}">
+                                    <a href="javascript:void(0)"
+                                        data-update-url="{{ url('admin/post/index', ['id' => $_category->id]) }}"
+                                        class="category-item filter"
+                                        data-route-filter="{{ url("admin/post/filterArticlesAjax/$_category->id") }}">
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2 lh-1">
+                                                <i
+                                                    class="ri-price-tag-line align-middle fs-14 fw-semibold text-primary"></i>
+                                            </span>
+
+                                            <span class="flex-fill text-nowrap">
+                                                {{ $_category->name }}
+                                            </span>
+
+                                            <span
+                                                class="badge bg-success-transparent rounded-pill"><?php echo $_category->articles->count(); ?></span>
+                                        </div>
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
@@ -160,22 +174,23 @@
                                 <div>
                                     <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
                                         <li class="nav-item m-1">
-                                            <a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#all-tasks" aria-selected="true">Tất Cả</a>
+                                            <a class="nav-link active" data-bs-toggle="tab" role="tab"
+                                                aria-current="page" href="#all-tasks" aria-selected="true">Tất Cả</a>
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#pending" aria-selected="true">Chưa xuất bản</a>
+                                                href="#pending" aria-selected="true">Chưa xuất bản</a>
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                            href="#completed" aria-selected="true">Đã xuất bản</a>
+                                                href="#completed" aria-selected="true">Đã xuất bản</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
                                     <div class="dropdown">
-                                        <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-icon btn-sm btn-light btn-wave waves-light waves-effect"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ti ti-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -189,7 +204,7 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.article.list-buy-category')      
+                @include('admin.article.list-buy-category')
             </div>
             <div class="d-flex pagination justify-content-end flex-wrap">
                 <nav aria-label="..." id="nav">
@@ -201,7 +216,8 @@
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{!empty($trash)?$articles->appends(['trash'=>'on'])->previousPageUrl():$articles->previousPageUrl() }}"
+                                <a class="page-link"
+                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->previousPageUrl() : $articles->previousPageUrl() }}"
                                     aria-label="Previous">
                                     <span aria-hidden="true">Previous</span>
                                 </a>
@@ -211,14 +227,17 @@
                         {{-- Danh sách các trang --}}
                         @for ($i = 1; $i <= $articles->lastPage(); $i++)
                             <li class="page-item {{ $i === $articles->currentPage() ? 'active' : '' }}">
-                                <a class="page-link  {{ $i === $articles->currentPage() ? 'disable-link' : '' }}" href="{{!empty($trash)?$articles->appends(['trash'=>'on'])->url($i):$articles->url($i) }}">{{ $i }}</a>
+                                <a class="page-link  {{ $i === $articles->currentPage() ? 'disable-link' : '' }}"
+                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->url($i) : $articles->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 
                         {{-- Nút "Next" --}}
                         @if ($articles->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ !empty($trash)?$articles->appends(['trash'=>'on'])->nextPageUrl():$articles->nextPageUrl() }}" aria-label="Next">
+                                <a class="page-link"
+                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->nextPageUrl() : $articles->nextPageUrl() }}"
+                                    aria-label="Next">
                                     <span aria-hidden="true">Next</span>
                                 </a>
                             </li>
@@ -234,6 +253,6 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
     <!--End::row-1 -->
-    @endsection
+@endsection

@@ -24,19 +24,23 @@
             {{ session('message') }}
         </div>
     @endif
+
+    <div id="errors">
+
+    </div>
     <div class="row">
         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title">New Showroom</div>
                 </div>
-                <form id="showroom-form" enctype="multipart/form-data">
+                <form id="showroom-form" class="form-update" data-route="{{ route('admin.showroom.update',['id'=>$showroom->id]) }}" enctype="multipart/form-data">
                     @csrf()
                     <div class="card-body">
                         <div class="row gy-3">
                             <div class="col-xl-12">
                                 <label for="blog-title" class="form-label">Tên Showroom</label>
-                                <input type="text" name="title" value="{{ $showroom->name }}" class="form-control" id="blog-title"
+                                <input type="text" name="name" value="{{ $showroom->name }}" class="form-control" id="blog-title"
                                     placeholder="Kingsport quận 7">
                             </div>
                             <div class="col-xl-12">
@@ -65,8 +69,8 @@
                             </div>
                             <div class="col-xl-8">
                                 <label for="blog-thumbnail" class="form-label">Thumbnail</label>
-                                <input type="file" class="form-control thumbnail" name="thumbnail" id="thumbnail"
-                                    placeholder="Thumbnail" required>
+                                <input type="file" class="form-control thumbnail" name="imageThumb" id="thumbnail"
+                                    placeholder="Thumbnail">
                             </div>
                             <div class="col-xl-2">
                                 <label for="" class="form-label">Ảnh
@@ -78,7 +82,7 @@
                                 <label for="blog-thumbnail" class="form-label">Images Detail</label>
                                 <input type="file" class="form-control" multiple name="images_detail[]"
                                     id="images_detail" accept=".jpg, .jpeg, .png, .webp" placeholder="Hình ảnh chi tiết"
-                                    required>
+                                    >
                             </div>
                             <div class="col-xl-12">
                                 <div class="card custom-card">
@@ -89,7 +93,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="swiper swiper-overflow">
-                                            <div class="swiper-wrapper" id="image-list" data-slide="color-1">
+                                            <div class="swiper-wrapper" data-images="{{ $showroom->list_images }}" id="image-list" data-slide="color-1">
                                             </div>
                                             <div class="swiper-pagination"></div>
                                         </div>
@@ -122,7 +126,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                <input type="text" name="seo_key" value="{{ $showroom->seo_keywords }}"  class="form-control" id="seo_keyword"
+                                <input type="text" name="seo_keywords" value="{{ $showroom->seo_keywords }}"  class="form-control" id="seo_keyword"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6">
@@ -146,12 +150,12 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-list text-end">
-                            <button type="submit" class="btn btn-sm btn-primary">Tạo Showroom</button>
+                            <button type="submit" class="btn btn-sm btn-primary">Cập Nhật</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/showroom.js') }}"></script>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
 @endsection

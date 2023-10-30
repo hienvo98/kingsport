@@ -146,7 +146,7 @@
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control thumbnail" name="thumbnail"
+                                                            <input type="file" class="form-control thumbnail" name="thumbnailImage"
                                                                 id="thumbnail" placeholder="Thumbnail">
                                                         </div>
                                                         <div class="col-xl-2">
@@ -261,5 +261,5 @@
     <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
     <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
     <script src="{{ asset('assets/js/choices.js') }} "></script>
-    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
 @endsection
