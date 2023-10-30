@@ -24,19 +24,23 @@
             {{ session('message') }}
         </div>
     @endif
+    
+    <div id="errors">
+
+    </div>
     <div class="row">
         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title">New Showroom</div>
                 </div>
-                <form id="showroom-form" enctype="multipart/form-data">
+                <form id="showroom-form" class="form-create" data-route="{{ route('admin.showroom.store') }}" enctype="multipart/form-data">
                     @csrf()
                     <div class="card-body">
                         <div class="row gy-3">
                             <div class="col-xl-12">
                                 <label for="blog-title" class="form-label">Tên Showroom</label>
-                                <input type="text" name="title" class="form-control" id="blog-title"
+                                <input type="text" name="name" class="form-control" id="blog-title"
                                     placeholder="Kingsport quận 7">
                             </div>
                             <div class="col-xl-12">
@@ -65,7 +69,7 @@
                             </div>
                             <div class="col-xl-8">
                                 <label for="blog-thumbnail" class="form-label">Thumbnail</label>
-                                <input type="file" class="form-control thumbnail" name="thumbnail" id="thumbnail"
+                                <input type="file" class="form-control thumbnail" name="imageThumb" id="thumbnail"
                                     placeholder="Thumbnail" required>
                             </div>
                             <div class="col-xl-2">
@@ -90,7 +94,7 @@
                                     <div class="card-body">
                                         <div class="swiper swiper-overflow">
                                             <div class="swiper-wrapper" id="image-list" data-slide="color-1">
-                                                
+                                               
                                             </div>
                                             <div class="swiper-pagination"></div>
                                         </div>
@@ -123,7 +127,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                <input type="text" name="seo_key" class="form-control" id="seo_keyword"
+                                <input type="text" name="seo_keywords" class="form-control" id="seo_keyword"
                                     placeholder="Enter Name">
                             </div>
                             <div class="col-xl-6"hidden>
@@ -162,5 +166,5 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/showroom.js') }}"></script>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
 @endsection

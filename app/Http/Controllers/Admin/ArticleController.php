@@ -47,9 +47,9 @@ class ArticleController extends Controller
         $category = Category::get(); // lấy tất cả danh mục
         $count = [
             'allArticles' => Article::count(), // số lượng tất cả bài viết
-            'deleteArticles'=>Article::where('status','off')->count() // số lượng bài đã xoá
+            'deleteArticles' => Article::where('status', 'off')->count() // số lượng bài đã xoá
         ];
-        return view('admin.article.index', compact('articles', 'published_article_list', 'unpublished_article_list', 'trash', 'category','count','id'));
+        return view('admin.article.index', compact('articles', 'published_article_list', 'unpublished_article_list', 'trash', 'category', 'count', 'id'));
     }
 
     /**
@@ -76,19 +76,19 @@ class ArticleController extends Controller
         };
         $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
         //kiểm tra,xử lý và lưu ngày xuất bản bài viết
-        $request->publish_date?$request->merge(['publish_date'=>Carbon::parse($request->input('publish_date'))]):'';
+        $request->publish_date ? $request->merge(['publish_date' => Carbon::parse($request->input('publish_date'))]) : '';
         //kiểm tra có thumbnail bài viết
-        if($request->thumbnailArticle){
+        if ($request->thumbnailArticle) {
             //xử lý và lưu ảnh thumbnail
             $imagePath = $this->imageStorage->storeImage($request->thumbnailArticle, 'blog_images/' . $request->input('title') . '/' . 'thumbnail');
-            $request->merge(['thumbnail'=>basename($imagePath)]); //lưu tên ảnh vào request
+            $request->merge(['thumbnail' => basename($imagePath)]); //lưu tên ảnh vào request
         }
 
-        $ArticleContent = $request->content;// content của bài viết chưa xử lý
+        $ArticleContent = $request->content; // content của bài viết chưa xử lý
         $title = $request->title; //tiêu để bài viết
         //xử lý, tất cả ảnh trong bài viết và trả về nội dung bài viết đã xử lý.
-        $content = $this->imageStorage->processAndSaveImagesInContent($ArticleContent,'blog_images',$title); //nội dung đã xử lý
-        $request->merge(['content'=>$content]); // lưu nội dung vào $request
+        $content = $this->imageStorage->processAndSaveImagesInContentCreate($ArticleContent, 'blog_images', $title); //nội dung đã xử lý
+        $request->merge(['content' => $content]); // lưu nội dung vào $request
         //tạo bài viết
         if (Article::create($request->all())) {
             return response([
@@ -117,7 +117,7 @@ class ArticleController extends Controller
         $content = $post->content;
         $title = $post->title;
         //cập nhật url để hiển thị ảnh trong bài viết
-        $contentUpdatedUrl = $this->imageStorage->updateUrlContent($content,'blog_images',$title);
+        $contentUpdatedUrl = $this->imageStorage->updateUrlContent($content, 'blog_images', $title);
         $post->content = $contentUpdatedUrl;
         $category = Category::with('products')->get();
         return view('admin.article.edit', compact('post', 'category'));
@@ -130,76 +130,25 @@ class ArticleController extends Controller
     {
         $post = Article::find($id);
         if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
-        //sử lý thay đổi title bài viết
+        //sử lý thay đổi title bài viết;
         if ($request->title != $post->title) {
-            //lấy tên thư mục cũ
-            $oldPathTitle = public_path("storage/uploads/blog_images/$post->title");
-            $newPathTitle = public_path("storage/uploads/blog_images/$request->title");
-            if (File::isDirectory($oldPathTitle)) {
-                File::move($oldPathTitle, $newPathTitle);
-            }
-            $post->title = $request->title;
-            $post->save();
+            //đổi tên thư mục lưu ảnh ki title thay đổi
+            $this->imageStorage->updateNameFolder('blog_images', $post->title, $request->title);
         }
         //xử lý khi thay đổi thumbnail
-        if ($request->thumbnail) {
-            $oldThumbNail = public_path("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail");
-            if (File::exists($oldThumbNail)) {
-                unlink($oldThumbNail);
-                $newThumbPath = ImageStorageLibrary::storeImage($request->thumbnail, "blog_images/$post->title/thumbnail");
-                $newThumbName = basename($newThumbPath);
-                $post->thumbnail = $newThumbName;
-            }
+        if ($request->thumbnailImage) {
+            $newThumbPath = $this->imageStorage->processImageUpdate($request->thumbnailImage, 'blog_images', $request->title, 'thumbnail', $post->thumbnail);
+            $request->merge(['thumbnail' => basename($newThumbPath)]);
         }
-        //xử lý khi thay đổi content
-        if (!File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content2"))) {
-            File::makeDirectory(public_path("storage/uploads/blog_images/$post->title/content2"), 0755, true);
-        }
-        $content = $request->content;
-        preg_match_all('/<img[^>]+src="([^"]+)"/', $content, $matches);
-        $stt = 0;
+        //xử lý bài viết và lưu ảnh mới 
+        $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
 
-        foreach ($matches[1] as $key => $path) {
-            $basename = basename($path);
-            $oldPath = public_path("storage/uploads/blog_images/$post->title/content/$basename");
-            if (File::exists($oldPath)) {
-                $newPath = public_path("storage/uploads/blog_images/$post->title/content2/$basename");
-                //copy ảnh sang thư mục tạm thời
-                File::copy($oldPath, $newPath);
-                //thay thế đường dẫn bằng tên hình ảnh
-                $content = str_replace($path, $basename, $content);
-                unset($matches[1][$key]);
-            } else {
-                //lưu ảnh mới có trong content
-                $pathNewImage =  $this->storeImage($path, $post->title, 'content2');
-                $imageName = pathinfo($pathNewImage, PATHINFO_BASENAME);
-                //thay thế đường dẫn bằng tên hình ảnh
-                $content = str_replace($path, $imageName, $content);
-            }
-        }
-        //xoá thư mục content cũ
-        if (File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content"))) {
-            File::deleteDirectory(public_path("storage/uploads/blog_images/$post->title/content"));
-        }
-        //đổi tên thư mục tạm thời content2 thành content
-        if (File::isDirectory(public_path("storage/uploads/blog_images/$post->title/content2"))) {
-            File::move(public_path("storage/uploads/blog_images/$post->title/content2"), public_path("storage/uploads/blog_images/$post->title/content"));
-        };
-        $post->content = $content;
-        $post->description = $request->description;
-        $post->url = $request->input('url');
-        $post->category_id = $request->input('category_id');
-        $post->seo_title = $request->input('seo_title');
-        $post->seo_description = $request->input('seo_description');
-        $post->seo_keywords = $request->input('seo_keywords');
-        $post->publish_date = Carbon::parse($request->input('publish_date'));
-        $post->status = $request->input('status');
-        $post->on_form = $request->input('on_form');
+        $request->merge(['content' => $processedContent]);
         if ($request->productInArticle) {
             $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-           $post->product_id = $product_id;
+            $request->merge(['product_id' => $product_id]);
         };
-        $post->save();
+        $post->update($request->all());
         return response()->json(['code' => 200, 'messages' => $post], 200);
     }
 
@@ -223,17 +172,14 @@ class ArticleController extends Controller
     public function search(Request $request)
     {
         $keywords = $request->keywords;
-        $articles = Article::with('category')->where('title', 'like', "%$keywords%")->paginate(9);
+        $articles = Article::with('category')->where('title', 'like', "%$keywords%")->get();
         $published_article_list = $this->get_published_article_list($articles); //lấy ds các bài viết đã xuất bản
         $unpublished_article_list = $this->get_unpublished_article_list($articles); //lấy ds các bài viết chưa xuất bản
-        $articles_html = $this->get_card_html($articles,'search'); //lấy mã html của tất cả bài viết để render ra giao diện
-        $published_article_html = $this->get_card_html($published_article_list,'search'); //lấy mã html của bài viết chưa xuất bản
-        $unpublished_article_html = $this->get_card_html($unpublished_article_list,'search'); // lấy mã html của bài viết đã xuất bản
         return response()->json([
             'code' => 200,
-            'blogs' => $articles_html,
-            'blogPendings' => $unpublished_article_html,
-            'blogCompleteds' => $published_article_html
+            'all' =>  $this->get_card_html($articles, 'search'),
+            'off' => $this->get_card_html($unpublished_article_list, 'search'),
+            'on' => $this->get_card_html($published_article_list, 'search')
         ], 200);
     }
 
@@ -244,28 +190,24 @@ class ArticleController extends Controller
             $unpublished_article_list = $this->get_unpublished_article_list($articles);
             $published_article_list = $this->get_published_article_list($articles);
         } else {
-            if($flag=='trash'){
+            if ($flag == 'trash') {
                 $articles = Article::with('category')->where('status', 'off')->paginate(9);
                 $unpublished_article_list = $this->get_unpublished_article_list($articles);
                 $published_article_list = $this->get_published_article_list($articles);
-            }else{
+            } else {
                 $category = Category::find($flag);
-                if(empty($category)) return response()->json(['code'=>404,'messages'=>'không tìm thấy danh mục'],404);
+                if (empty($category)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy danh mục'], 404);
                 $articles = $category->articles()->paginate(9);
                 $unpublished_article_list = $this->get_unpublished_article_list($articles);
                 $published_article_list = $this->get_published_article_list($articles);
             }
         }
-        $articles_html = $this->get_card_html($articles,'current');
-        $published_article_html = $this->get_card_html($published_article_list,'current');
-        $unpublished_article_html = $this->get_card_html($unpublished_article_list,'current');
-        $nav = $this->get_nav($articles, $flag);
         return response()->json([
             'code' => 200,
-            'blogs' => $articles_html,
-            'blogPendings' => $unpublished_article_html,
-            'blogCompleteds' => $published_article_html,
-            'nav' => $nav
+            'all' => $this->get_card_html($articles, 'current'),
+            'on' => $this->get_card_html($published_article_list, 'current'),
+            'off' => $this->get_card_html($unpublished_article_list, 'current'),
+            'nav' =>  $this->get_nav($articles, $flag)
         ], 200);
     }
 
@@ -285,15 +227,15 @@ class ArticleController extends Controller
         return $unpublished_article_list;
     }
 
-    private function get_card_html($articles,$flag)
+    private function get_card_html($articles, $flag)
     {
         $articles_html = '';
         foreach ($articles as $article) {
             $pathThumbnail = url("storage/uploads/blog_images/$article->title/thumbnail/$article->thumbnail");
-            $routeEdit = route('admin.post.edit', ['id' => $article->id]);
+            $routeEdit = url("/admin/post/edit/$article->id");
             $routeDelete = url("/admin/post/delete/$article->id");
             $disabled = $article->status == 'off' ? 'disabled' : '';
-            $title = Helper::customName($article->title,15);
+            $title = Helper::customName($article->title, 15);
             $articles_html .=
                 "<div class='col-xl-4 $flag'>
             <div class='card custom-card task-pending-card' style='height: 290px'>
@@ -335,7 +277,6 @@ class ArticleController extends Controller
         return $articles_html;
     }
 
-
     private function get_nav($articles, $flag)
     {
         $nav = "<ul class='pagination mb-0'>";
@@ -376,13 +317,5 @@ class ArticleController extends Controller
         }
         $nav .= "</ul>";
         return $nav;
-    }
-
-    private function storeImage($imagePath, $title, $folder)
-    {
-        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagePath));
-        $imageName = time() . '_' . Str::random(10) . '.png';
-        Storage::disk('public')->put('uploads/blog_images/' . $title . "/$folder/" . $imageName, $imageData);
-        return asset('storage/uploads/blog_images/' . $imageName);
     }
 }
