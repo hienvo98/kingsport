@@ -19,6 +19,11 @@ $(document).ready(function () {
             .replace(/--+/g, '-').replace(/^-+|-+$/g, '');
         $urlInput.val(url);
     });
+    $(`ul.task-main-nav li`).click(function () {
+        $(`ul.task-main-nav li`).removeClass('active');
+        $(this).addClass('active');
+    })
+
     //cập nhật ảnh detail của showroom
     var html = $(`#image-list`).data('images');
     if (html) $(`#image-list`).html(html);

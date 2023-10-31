@@ -46,6 +46,7 @@ class FAQController extends Controller
     public function store(FAQRequest $request)
     {
         $validatedData = $request->validated();
+
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
     
         if ($validator->fails()) {
