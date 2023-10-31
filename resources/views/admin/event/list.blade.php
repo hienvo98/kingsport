@@ -8,7 +8,7 @@
                             echo 'task-pending-card';
                         } else {
                             echo 'task-completed-card';
-                        } ?>" style="height: 290px">
+                        } ?>">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <div>
@@ -17,15 +17,9 @@
                                         </p>
                                         <p class="mb-3">Ngày tạo : <span
                                                 class="fs-12 mb-1 text-muted">{{ $event->created_at }}</span></p>
-                                        {{-- <p class="mb-3">Ngày xuất bản : <span
-                                                class="fs-12 mb-1 text-muted">{{ $event->publish_date }}</span></p> --}}
-                                        <p class="mb-3">Người tạo :
-                                            <span class="avatar-list-stacked ms-1">
-                                                <span class="avatar avatar-sm avatar-rounded">
-                                                    <img src="{{ url("storage/uploads/event/$event->name/banner/$event->banner") }}"
-                                                        alt="img">
-                                                </span>
-                                            </span>
+                                        <p class="mb-3">Banner :
+                                            <img src="{{ url("storage/uploads/event/$event->name/banners/$event->banners") }}"
+                                            alt="img" class="img-fluid img-thumbnail height-auto">
                                         </p>
                                         @if ($event->status == 'on')
                                             <p class="mb-0">Trạng Thái: <span class="text-primary bg-light">Hiển
@@ -57,26 +51,26 @@
     </div>
     <div class="tab-pane p-0" id="pending" role="tabpanel">
         <div class="row">
-            @foreach ($unpublished_event_list as $event)
+            @foreach ($events->where('status','off') as $event)
                 <div class="col-xl-4 current">
-                    <div class="card custom-card task-pending-card" style="height: 290px">
+                    <div class="card custom-card task-pending-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">
                                 <div>
                                     <p class="fw-semibold mb-3 d-flex align-items-center"><a
-                                            href="javascript:void(0);"></i></a>{{ CustomHelper::customName($event->title, 15) }}
+                                            href="javascript:void(0);"></i></a>{{ CustomHelper::customName($event->name, 15) }}
                                     </p>
                                     <p class="mb-3">Ngày tạo : <span
                                             class="fs-12 mb-1 text-muted">{{ $event->created_at }}</span></p>
-                                    <p class="mb-3">Ngày xuất bản : <span
-                                            class="fs-12 mb-1 text-muted">{{ $event->publish_date }}</span></p>
                                     <p class="mb-0">Người tạo :
-                                        <span class="avatar-list-stacked ms-1">
+                                        {{-- <span class="avatar-list-stacked ms-1">
                                             <span class="avatar avatar-sm avatar-rounded">
-                                                <img src="{{ url("storage/uploads/blog_images/$event->title/thumbnail/$event->thumbnail") }}"
+                                                <img src="{{ url("storage/uploads/event/$event->name/banner/$event->banners") }}"
                                                     alt="img">
                                             </span>
-                                        </span>
+                                        </span> --}}
+                                        <img src="{{ url("storage/uploads/event/$event->name/banners/$event->banners") }}"
+                                        alt="img" class="img-fluid img-thumbnail height-auto">
                                     </p>
                                 </div>
                                 <div>
@@ -99,26 +93,28 @@
     </div>
     <div class="tab-pane p-0" id="completed" role="tabpanel">
         <div class="row">
-            @foreach ($published_event_list as $event)
+            @foreach ($events->where('status','on') as $event)
                 <div class="col-xl-4 current">
-                    <div class="card custom-card task-pending-card" style="height: 290px">
+                    <div class="card custom-card task-pending-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-wrap gap-2">
                                 <div>
                                     <p class="fw-semibold mb-3 d-flex align-items-center"><a
-                                            href="javascript:void(0);"></a>{{ CustomHelper::customName($event->title, 15) }}
+                                            href="javascript:void(0);"></a>{{ CustomHelper::customName($event->name, 15) }}
                                     </p>
                                     <p class="mb-3">Ngày tạo : <span
                                             class="fs-12 mb-1 text-muted">{{ $event->created_at }}</span></p>
                                     <p class="mb-3">Ngày xuất bản : <span
                                             class="fs-12 mb-1 text-muted">{{ $event->publish_date }}</span></p>
                                     <p class="mb-0">Người tạo :
-                                        <span class="avatar-list-stacked ms-1">
+                                        {{-- <span class="avatar-list-stacked ms-1">
                                             <span class="avatar avatar-sm avatar-rounded">
-                                                <img src="{{ url("storage/uploads/blog_images/$event->title/thumbnail/$event->thumbnail") }}"
+                                                <img src="{{ url("storage/uploads/event/$event->name/banner/$event->banners") }}"
                                                     alt="img">
                                             </span>
-                                        </span>
+                                        </span> --}}
+                                        <img src="{{ url("storage/uploads/event/$event->name/banners/$event->banners") }}"
+                                        alt="img" class="img-fluid img-thumbnail height-auto">
                                     </p>
                                 </div>
                                 <div>

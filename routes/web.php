@@ -108,9 +108,9 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/create',[EventController::class,'create'])->name('event.create');
         Route::post('/store',[EventController::class,'store'])->name('event.store');
         Route::get('/edit/{id}',[EventController::class,'edit'])->name('event.edit');
-        Route::post('/update',[EventController::class,'update'])->name('event.update');
+        Route::post('/update/{id}',[EventController::class,'update'])->name('event.update');
         Route::get('/delete/{id}',[EventController::class,'destroy'])->name('event.destroy');
-
+        Route::get('/search',[EventController::class,'search']);
     });
 
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);
