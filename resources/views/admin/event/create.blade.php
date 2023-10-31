@@ -78,21 +78,21 @@
                                                                         </div>
                                                                     @enderror
                                                                 </div>
-                                                                <div class="col-xl-8">
+                                                                <div class="col-xl-12">
                                                                     <label for="blog-thumbnail"
                                                                         class="form-label">Banner</label>
                                                                     <input type="file" class="form-control thumbnail"
                                                                         name="imageThumb" id="thumbnail"
                                                                         placeholder="Thumbnail" required>
                                                                 </div>
-                                                                <div class="col-xl-2">
+                                                                <div class="col-xl-12">
                                                                     <label for=""
-                                                                        class="form-label">Banner</label><br>
+                                                                        class="form-label">Ảnh Banner:</label><br>
                                                                     <img style="display: none" id="thumbnailImg"
                                                                         src="" alt=""
                                                                         class="img-fluid img-thumbnail rounded">
                                                                 </div>
-                                                                <div class="col-xl-12">
+                                                                {{-- <div class="col-xl-12">
                                                                     <label for="blog-thumbnail" class="form-label">Ảnh Chi
                                                                         Tiết</label>
                                                                     <input type="file" class="form-control" multiple
@@ -117,7 +117,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="col-xl-12">
                                                                     <p class="fw-semibold mb-2">Sản Phẩm</p>
                                                                     <select data-trigger class="form-control"
