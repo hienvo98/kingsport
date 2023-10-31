@@ -37,9 +37,25 @@
                             <li class="px-0 pt-2">
                                 <span class="fs-11 text-muted op-7 fw-semibold">Vùng Miền</span>
                             </li>
+                            <li class="{{ empty($id) ? 'active' : '' }}">
+                                <a class="filter" data-update-url="{{ url('admin/showroom/index') }}"
+                                    data-route-filter="{{ url('admin/showroom/filterShowroomAjax') }}"
+                                    href="javascript:void(0)">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2 lh-1">
+                                            <i class="ri-task-line align-middle fs-14"></i>
+                                        </span>
+                                        <span class="flex-fill text-nowrap">
+                                            Tất cả showroom
+                                        </span>
+                                        <span
+                                            class="badge bg-success-transparent rounded-pill">{{ $total }}</span>
+                                    </div>
+                                </a>
+                            </li>
                             @if ($regions)
                                 @foreach ($regions as $region)
-                                    <li>
+                                    <li  class=" {{ $id==$region->id?'active':'' }} ">
                                         <a href="javascript:void(0);"
                                             data-update-url="{{ url('admin/showroom/index', ['id' => $region->id]) }}"
                                             data-route-filter="{{ url("admin/showroom/filterShowroomAjax/$region->id") }}"

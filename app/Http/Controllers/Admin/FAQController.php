@@ -16,17 +16,7 @@ class FAQController extends Controller
      */
     public function index()
     {
-        // $cate = Category::with('faq')->select('name')->get();
-        // dd($cate);
-        // foreach ($cate as $c) {
-        //     dd($c);
-        //     foreach($c->faq as $faq) {
-        //         dd($faq);
-        //     }
-        // }
-        
-        $category = Category::select('id','name')->get();
-        
+        $category = Category::select('id','name')->get(); 
         return view('admin.faq.index',['category' => $category]);
     }
 
@@ -44,20 +34,8 @@ class FAQController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(FAQRequest $request)
-    {
-        $validatedData = $request->validated();
-        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
-    
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('error', 'Có lỗi xảy ra trong dữ liệu đầu vào.');
-        }
-        
-        $faq = FAQS::create($validatedData);
-    
-        return redirect()->back()->with('message', 'Tạo thành công.');
+    {   
+        if(FAQS::create($request->all())) return redirect()->back()->with('message', 'Tạo thành công.');
     }
 
     /**
@@ -73,15 +51,20 @@ class FAQController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $faq = FAQS::find($id);
+        if(empty($faq)) abort(404);
+        $category = Category::select('id','name')->get();
+        return view('admin.faq.edit',compact('faq','category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FAQRequest $request, string $id)
     {
-        //
+        $faq = FAQS::find($id);
+        if(empty($faq)) return response() -> json(['code'=>404,'message'=>'Không tìm thấy câu hỏi'],404);
+        if($faq->update($request->all())) return response() -> json(['code'=>200,'messages'=>'đã cập nhật thành công'],200);
     }
 
     /**
@@ -89,6 +72,9 @@ class FAQController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $faq = FAQS::find($id);
+        if(empty($faq)) return response() -> json(['code'=>404,'message'=>'Không tìm thấy câu hỏi'],404);
+        $faq->update(['status'=>'off']);
+        if($faq->update(['status'=>'off'])) return response() -> json(['code'=>200,'messages'=>'đã cập nhật thành công'],200);  
     }
 }

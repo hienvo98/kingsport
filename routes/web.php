@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/create',[FAQController::class,'create'])->name('faq.create');
         Route::post('/store',[FAQController::class,'store'])->name('faq.store');
         Route::get('/edit/{id}',[FAQController::class,'edit'])->name('faq.edit');
-        Route::post('/update',[FAQController::class,'update'])->name('faq.update');
+        Route::post('/update/{id}',[FAQController::class,'update'])->name('faq.update');
         Route::get('/delete/{id}',[FAQController::class,'destroy'])->name('faq.destroy');
     });
 

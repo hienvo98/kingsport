@@ -9,9 +9,9 @@ class Event extends Model
 {
     use HasFactory;
     protected $table = 'event';
-    protected $fillable = ['name', 'banners', 'product_id'];
-    public function product()
+    protected $fillable = ['name', 'banners', 'product_id','images','url','seo_title','seo_description','seo_keywords','status'];
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class);
     }
 }

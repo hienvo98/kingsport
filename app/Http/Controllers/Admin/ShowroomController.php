@@ -30,8 +30,9 @@ class ShowroomController extends Controller
     public function index($id = '')
     {
         $showrooms = !$id ? ShowRoom::paginate(9) : ShowRoom::where('region_id', $id)->paginate(9);
+        $total = ShowRoom::count();
         $regions = Regions::all();
-        return view('admin.showroom.index', compact('showrooms', 'regions'));
+        return view('admin.showroom.index', compact('showrooms', 'regions', 'id', 'total'));
     }
 
     /**
@@ -141,11 +142,15 @@ class ShowroomController extends Controller
         return response(['code' => 200, 'messages' => 'đã xoá showroom thành công'], 200);
     }
 
-    public function filterShowroomAjax($id)
+    public function filterShowroomAjax($id='')
     {
-        $region = Regions::find($id);
-        if (empty($region)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy khu vực'], 404);
-        $showrooms = ShowRoom::where('region_id', $id)->paginate(9);
+        if($id){
+            $region = Regions::find($id);
+            if (empty($region)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy khu vực'], 404);
+            $showrooms = ShowRoom::where('region_id', $id)->paginate(9);
+        }else{
+            $showrooms = ShowRoom::paginate(9);
+        }
         $showrooms_on_html = $showrooms->where('status', 'on');
         $showrooms_off_html = $showrooms->where('status', 'off');
         return response()->json([
@@ -153,15 +158,16 @@ class ShowroomController extends Controller
             'all' =>  $this->get_card_html($showrooms, 'current'),
             'on' => $this->get_card_html($showrooms_on_html, 'current'),
             'off' => $this->get_card_html($showrooms_off_html, 'current'),
-            'nav' => $this->get_nav($showrooms,$id)
+            'nav' => $this->get_nav($showrooms, $id)
         ], 200);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords = $request->keywords;
-        $showrooms = ShowRoom::where('name','like',"%$keywords%")->get();
+        $showrooms = ShowRoom::where('name', 'like', "%$keywords%")->get();
         $showrooms_on_html = $showrooms->where('status', 'on');
-        $showrooms_off_html= $showrooms->where('status', 'off');
+        $showrooms_off_html = $showrooms->where('status', 'off');
         return response()->json([
             'code' => '200',
             'all' =>  $this->get_card_html($showrooms, 'search'),
@@ -244,14 +250,14 @@ class ShowroomController extends Controller
         for ($i = 1; $i <= $showrooms->lastPage(); $i++) {
             $active = $i === $showrooms->currentPage() ? 'active' : '';
             $disabled =  $i === $showrooms->currentPage() ? 'disable-link' : '';
-            $link = route('admin.showroom.index', ['id' => $id]) . "?page=$i";
+            $link = $id ? route('admin.showroom.index', ['id' => $id]) . "?page=$i" : route('admin.showroom.index') . "?page=$i";
             $nav .= "<li class='page-item $active'>
             <a class='page-link  $disabled' href='$link'> $i </a>
         </li>";
         }
         //nút next
         if ($showrooms->hasMorePages()) {
-            $link = route('admin.showroom.index', ['id' => $id]) . "?page=2";
+            $link = $id ? route('admin.showroom.index', ['id' => $id]) . "?page=2" : route('admin.showroom.index') . "?page=2";
             $nav .=  "<li class='page-item'>
             <a class='page-link' href='$link' aria-label='Next'>
                 <span aria-hidden='true'>Next</span>
