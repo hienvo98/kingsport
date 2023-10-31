@@ -63,12 +63,16 @@
                                                     {{$faq->question}}
                                                 </div>
                                                 <div class="text-end mt-3 mb-2">
-                                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">
-                                                        Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">
-                                                        Remove
-                                                    </button>
+                                                    <div class="btn-list">
+                                                        <a href="{{ route('admin.faq.edit',['id'=>$faq->id]) }}"
+                                                            class="btn btn-icon btn-sm btn-info-light"><i
+                                                                class="ri-edit-line"></i></a>
+                                                        <button
+                                                            class="btn btn-sm btn-icon btn-wave btn-danger-light me-0 btnDelete"
+                                                             data-route="{{ url("/admin/faq/delete/$faq->id") }}"
+                                                            {{ $faq->status == 'off' ? 'disabled' : '' }}><i
+                                                                class="ri-delete-bin-line"></i></button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>     
@@ -86,4 +90,5 @@
         </div>
     </div>
     <!--End::row-1 -->
+    <script src="{{ asset('assets/js/blog-create.js') }}"></script>
 @endsection

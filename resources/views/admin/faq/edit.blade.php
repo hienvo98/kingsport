@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-xl-12">
                     <!--code -->
-                    <form class="form-create" data-route="{{ route('admin.faq.store') }}" method="POST"
+                    <form class="form-update" data-route="{{ route('admin.faq.update',['id'=>$faq->id]) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf()
                         <div class="row">
@@ -58,7 +58,7 @@
                                                                 <div class="col-xl-12">
                                                                     <label for="blog-title" class="form-label">Tiêu
                                                                         đề</label>
-                                                                    <input type="text" name="title"
+                                                                    <input type="text" value="{{ $faq->title }}" name="title"
                                                                         class="form-control" id="blog-title"
                                                                         placeholder="FAQ title" required>
 
@@ -67,19 +67,19 @@
                                                                 <div class="col-xl-12">
                                                                     <label for="faq-title" class="form-label">Câu
                                                                         hỏi</label>
-                                                                    <textarea name="answer" class="form-control" id="ask" placeholder="Hướng dẫn điều khiển ghế massage B6" required></textarea>
+                                                                    <textarea name="answer" class="form-control" id="ask" placeholder="Hướng dẫn điều khiển ghế massage B6" required>{{ $faq->answer }}</textarea>
                                                                 </div>
 
                                                                 <div class="col-xl-12">
                                                                     <label for="faq-title" class="form-label">Câu trả
                                                                         lời</label>
                                                                     <textarea name="question" class="form-control" id="question"
-                                                                        placeholder="Nhấn nút khởi động trên bảng điều khiển để ..." required></textarea>
+                                                                        placeholder="Nhấn nút khởi động trên bảng điều khiển để ..." required>{{ $faq->question }}</textarea>
                                                                 </div>
 
                                                                 <div class="col-xl-12">
                                                                     <label for="faq-url" class="form-label">URL</label>
-                                                                    <input type="text" name="url"
+                                                                    <input type="text" name="url" value="{{ $faq->url }}"
                                                                         class="form-control" id="blog-url"
                                                                         placeholder="FAQ Title" required>
                                                                 </div>
@@ -91,7 +91,7 @@
                                                                         data-trigger name="faq-category" id="faq-category" required>
                                                                         <option value="">Select Category</option>
                                                                         @foreach ($category as $cate)
-                                                                            <option value="{{ $cate->id }}">
+                                                                            <option {{ $faq->category_id==$cate->id?'selected':'' }} value="{{ $cate->id }}">
                                                                                 {{ $cate->name }}
                                                                             </option>
                                                                         @endforeach
@@ -101,7 +101,7 @@
                                                                 <div class="col-xl-6">
                                                                     <label for="seo-title" class="form-label">Seo
                                                                         Title</label>
-                                                                    <input type="text" name="meta_title"
+                                                                    <input type="text" value="{{ $faq->meta_title }}" name="meta_title"
                                                                         class="form-control" id="meta_title"
                                                                         placeholder="Enter Name" required>
                                                                 </div>
@@ -109,7 +109,7 @@
                                                                 <div class="col-xl-6">
                                                                     <label for = "seo-description" class="form-label">Seo
                                                                         Description</label>
-                                                                    <input type="text" name="meta_description"
+                                                                    <input type="text" value="{{ $faq->meta_description }}" name="meta_description"
                                                                         class="form-control" id="meta_description"
                                                                         placeholder="Enter Name" required>
                                                                 </div>
@@ -117,7 +117,7 @@
                                                                 <div class="col-xl-6">
                                                                     <label for="seo-keyword" class="form-label">Seo
                                                                         Keyword</label>
-                                                                    <input type="text" name="meta_keywords"
+                                                                    <input type="text" value="{{ $faq->meta_keywords }}" name="meta_keywords"
                                                                         class="form-control" id="meta_keyword"
                                                                         placeholder="Enter Name" required>
                                                                 </div>
@@ -128,8 +128,8 @@
                                                                     <select class="form-control" data-trigger
                                                                         name="status" id="form-status" required>
                                                                         <option value="">Select</option>
-                                                                        <option value="on">Bật</option>
-                                                                        <option value="off">Tắt</option>
+                                                                        <option {{ $faq->status=='on'?'selected':'' }} value="on">Bật</option>
+                                                                        <option  {{ $faq->status=='off'?'selected':'' }} value="off">Tắt</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <ul class="pagination justify-content-end">
-                            <button type="submit" class="btn btn-primary-light m-1">Tạo FAQ<i
+                            <button type="submit" class="btn btn-primary-light m-1">Cập nhật FAQ<i
                                     class="bi bi-plus-lg ms-2"></i></button>
                         </ul>
                     </form>

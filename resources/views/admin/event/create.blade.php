@@ -1,10 +1,11 @@
 @extends('layouts.appAdmin')
 <!-- Prism CSS -->
-<link rel="stylesheet" href="{{asset('/assets/libs/prismjs/themes/prism-coy.min.css')}}">
+<link rel="stylesheet" href="{{ asset('/assets/libs/prismjs/themes/prism-coy.min.css') }}">
 
-<link rel="stylesheet" href="{{asset('/assets/libs/filepond/filepond.min.css')}}">
-<link rel="stylesheet" href="{{asset('/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css')}}">
-<link rel="stylesheet" href="{{asset('/assets/libs/filepond-plugin-image-edit/filepond-plugin-image-edit.min.css')}}">
+<link rel="stylesheet" href="{{ asset('/assets/libs/filepond/filepond.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/assets/libs/filepond-plugin-image-edit/filepond-plugin-image-edit.min.css') }}">
 @section('content')
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -31,7 +32,8 @@
             <div class="row justify-content-center mb-5">
                 <div class="col-xl-12">
                     <!--code -->
-                    <form class="form-create" action="{{ route('admin.event.store') }}" method="POST" enctype="multipart/form-data">
+                    <form class="form-create" data-route="{{ route('admin.event.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf()
                         <div class="row">
                             <div class="tab-content task-tabs-container">
@@ -44,13 +46,17 @@
                                                         <div class="card-body p-0">
                                                             <div class="row gy-3 p-3">
                                                                 <div class="col-xl-12">
-                                                                    <label for="event-title" class="form-label">Tiêu đề</label>
-                                                                    <input type="text" name="title" class="form-control" id="event-title" placeholder="Tên sự kiện">
+                                                                    <label for="event-title" class="form-label">Tiêu
+                                                                        đề</label>
+                                                                    <input type="text" id="blog-title" name="name"
+                                                                        class="form-control" id="event-title"
+                                                                        placeholder="Tên sự kiện">
                                                                     @error('title')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                                        <div class="alert alert-danger">{{ $message }}
+                                                                        </div>
                                                                     @enderror
                                                                 </div>
-                                                                <div class="col-xl-12">
+                                                                {{-- <div class="col-xl-12">
                                                                     <div class="card custom-card">
                                                                         <div class="card-header">
                                                                             <div class="card-title">
@@ -61,63 +67,120 @@
                                                                             <input type="file" class="multiple-filepond" name="filepond" multiple data-allow-reorder="true" data-max-file-size="3MB" data-max-files="6">
                                                                         </div>
                                                                     </div>
+                                                                </div> --}}
+                                                                <div class="col-xl-12">
+                                                                    <label for="event-url" class="form-label">URL</label>
+                                                                    <input type="text" id="blog-url" name="url"
+                                                                        class="form-control" id="event-url"
+                                                                        placeholder="Liên kết">
+                                                                    @error('url')
+                                                                        <div class="alert alert-danger">{{ $message }}
+                                                                        </div>
+                                                                    @enderror
+                                                                </div>
+                                                                <div class="col-xl-8">
+                                                                    <label for="blog-thumbnail"
+                                                                        class="form-label">Banner</label>
+                                                                    <input type="file" class="form-control thumbnail"
+                                                                        name="imageThumb" id="thumbnail"
+                                                                        placeholder="Thumbnail" required>
+                                                                </div>
+                                                                <div class="col-xl-2">
+                                                                    <label for=""
+                                                                        class="form-label">Banner</label><br>
+                                                                    <img style="display: none" id="thumbnailImg"
+                                                                        src="" alt=""
+                                                                        class="img-fluid img-thumbnail rounded">
+                                                                </div>
+                                                                <div class="col-xl-12">
+                                                                    <label for="blog-thumbnail" class="form-label">Ảnh Chi
+                                                                        Tiết</label>
+                                                                    <input type="file" class="form-control" multiple
+                                                                        name="images_detail[]" id="images_detail"
+                                                                        accept=".jpg, .jpeg, .png, .webp"
+                                                                        placeholder="Hình ảnh chi tiết" required>
+                                                                </div>
+                                                                <div class="col-xl-12">
+                                                                    <div class="card custom-card">
+                                                                        <div class="card-header">
+                                                                            <div class="card-title">
+                                                                                Danh Sách Ảnh
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <div class="swiper swiper-overflow">
+                                                                                <div class="swiper-wrapper" id="image-list"
+                                                                                    data-slide="color-1">
+
+                                                                                </div>
+                                                                                <div class="swiper-pagination"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="col-xl-12">
                                                                     <p class="fw-semibold mb-2">Sản Phẩm</p>
-                                                                    <select class="form-control" data-trigger name="choices-single-groups" id="choices-single-groups">
-                                                                        <option value="">Choose a city</option>
-                                                                        <optgroup label="UK">
-                                                                            <option value="London">London</option>
-                                                                            <option value="Manchester">Manchester</option>
-                                                                            <option value="Liverpool">Liverpool</option>
-                                                                        </optgroup>
+                                                                    <select data-trigger class="form-control"
+                                                                    name="products[]"
+                                                                    id="choices-multiple-groups" multiple>
+                                                                        <option value="">Chọn sản phẩm</option>
+                                                                        @foreach ($category as $cate)
+                                                                            @if ($cate->products->count()>0)
+                                                                                <optgroup label="{{ $cate->name }}">
+                                                                                    @foreach ($cate->products as $product)
+                                                                                        <option value="{{ $product->name }}">{{ $product->name }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </optgroup>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </select>
-                                                                </div>                                                      
-                                                                <div class="col-xl-12">
-                                                                    <label for="event-url" class="form-label">URL</label>
-                                                                    <input type="text" name="url" class="form-control" id="event-url" placeholder="Liên kết">
-                                                                    @error('url')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                                    @enderror
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <label for="seo-title" class="form-label">Seo Title</label>
-                                                                    <input type="text" name="meta_title" class="form-control" id="meta_title" placeholder="Enter Name">
+                                                                    <label for="seo-title" class="form-label">Seo
+                                                                        Title</label>
+                                                                    <input type="text" name="seo_title"
+                                                                        class="form-control" id="meta_title"
+                                                                        placeholder="Enter Name">
                                                                     @error('seo_title')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                                        <div class="alert alert-danger">{{ $message }}
+                                                                        </div>
                                                                     @enderror
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <label for "seo-description" class="form-label">Seo Description</label>
-                                                                    <input type="text" name="meta_description" class="form-control" id="meta_description" placeholder="Enter Name">
-                                                                    @error('seo_description')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                                    @enderror
+                                                                    <label for= "seo-description" class="form-label">Seo
+                                                                        Description</label>
+                                                                    <input type="text" name="seo_description"
+                                                                        class="form-control" id="seo_description"
+                                                                        placeholder="Enter Name">
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <label for="seo-keyword" class="form-label">Seo Keyword</label>
-                                                                    <input type="text" name="meta_keywords" class="form-control" id="meta_keyword" placeholder="Enter Name">
-                                                                    @error('seo_key')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                                    @enderror
+                                                                    <label for="seo-keyword" class="form-label">Seo
+                                                                        Keyword</label>
+                                                                    <input type="text" name="seo_keywords"
+                                                                        class="form-control" id="meta_keyword"
+                                                                        placeholder="Enter Name">
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <label for="product-status-add" class="form-label">Trạng thái</label>
-                                                                    <select class="form-control" data-trigger name="status" id="form-status">
+                                                                    <label for="product-status-add"
+                                                                        class="form-label">Trạng thái</label>
+                                                                    <select class="form-control" data-trigger
+                                                                        name="status" id="form-status">
                                                                         <option value="">Select</option>
                                                                         <option value="on">Bật</option>
                                                                         <option value="off">Tắt</option>
                                                                     </select>
                                                                     @error('status')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                                        <div class="alert alert-danger">{{ $message }}
+                                                                        </div>
                                                                     @enderror
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <ul class="pagination justify-content-end">
-                                                        <button type="submit" class="btn btn-primary-light m-1">Tạo Sự Kiện<i
-                                                            class="bi bi-plus-lg ms-2"></i></button>
+                                                        <button type="submit" class="btn btn-primary-light m-1">Tạo Sự
+                                                            Kiện<i class="bi bi-plus-lg ms-2"></i></button>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -125,17 +188,17 @@
                                         <meta name="csrf-token" content="AcZvC4Ep2iOctTacuhptFZLPpd3Bjl7gxsSNnTPH">
                                     </div>
                                 </div>
-                            </div>               
-                        </div>            
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
             <!--End::row-1 -->
         </div>
     </div>
+    <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>
     <!--End::row-1 -->
-@endsection
-<script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></script>
+    {{-- <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></script>
 <script src="{{asset('assets/js/event.js')}}"></script>
 <!-- Prism JS -->
 <script src="{{asset('assets/libs/prismjs/prism.js')}}"></script>
@@ -152,6 +215,5 @@
 <script src="{{asset('assets/libs/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js')}}"></script>
 <script src="{{asset('assets/libs/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js')}}"></script>
 <script src="{{asset('assets/libs/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js')}}"></script>
-<script src="{{asset('assets/libs/filepond-plugin-image-transform/filepond-plugin-image-transform.min.js')}}"></script>
-
-
+<script src="{{asset('assets/libs/filepond-plugin-image-transform/filepond-plugin-image-transform.min.js')}}"></script> --}}
+@endsection

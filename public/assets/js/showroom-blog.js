@@ -19,11 +19,6 @@ $(document).ready(function () {
             .replace(/--+/g, '-').replace(/^-+|-+$/g, '');
         $urlInput.val(url);
     });
-    $(`ul.task-main-nav li`).click(function () {
-        $(`ul.task-main-nav li`).removeClass('active');
-        $(this).addClass('active');
-    })
-
     //cập nhật ảnh detail của showroom
     var html = $(`#image-list`).data('images');
     if (html) $(`#image-list`).html(html);
@@ -35,10 +30,10 @@ $(document).ready(function () {
     //xử lý upload image-detail của showroom
     $('#images_detail').on('change', function (e) {
         var files = e.target.files;
-        if (files.length > 11) {
-            alert("Chỉ được phép tải lên tối đa 11 ảnh.");
-            $(this).val('');
-            return false;
+        if($(this).hasClass('showroom') && files.length > 11){
+                alert("Chỉ được phép tải lên tối đa 11 ảnh.");
+                $(this).val('');
+                return false;
         }
         var slide = ``;
         for (var i = 0; i < this.files.length; i++) {
@@ -53,8 +48,10 @@ $(document).ready(function () {
     $(`form.form-update`).submit(function (e) {
         e.preventDefault();
         const formData = new FormData(this);
-        const quillContent = quill.root.innerHTML;
-        formData.append('content', quillContent);
+        if($(`div#blog-content`).text()) {
+            var quillContent = quill.root.innerHTML;
+            formData.append('content', quillContent);
+        }
         var productInArticle = $(`select#choices-multiple-groups`).val(); //dùng cho article
         formData.append('productInArticle', productInArticle);
         $.ajax({
@@ -64,15 +61,12 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-
                 $('#success').click();
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {
                     $("html, body").animate({ scrollTop: 0 }, 'fast')
                     var errors = error.responseJSON.errors;
-                    console.log("Lỗi cụ thể:");
-                    console.log(errors);
                     var errorMessages = "";
                     var typeError = 0;
                     for (var key in errors) {
@@ -95,9 +89,11 @@ $(document).ready(function () {
     $('form.form-create').submit(function (event) {
         event.preventDefault();
         const formData = new FormData(this);
-        const quillContent = quill.root.innerHTML;
-        formData.append('content', quillContent);
-        var productInArticle = $(`select#choices-multiple-groups`).val(); //dùng cho article
+        if($(`div#blog-content`).text()) {
+            var quillContent = quill.root.innerHTML;
+            formData.append('content', quillContent);
+        }
+        var productInArticle = $(`select#choices-multiple-groups`).val(); //dùng cho article, event
         formData.append('productInArticle', productInArticle);
         $.ajax({
             type: 'POST',
@@ -112,8 +108,6 @@ $(document).ready(function () {
                 if (error.responseJSON && error.responseJSON.errors) {
                     $("html, body").animate({ scrollTop: 0 }, 'fast')
                     var errors = error.responseJSON.errors;
-                    console.log("Lỗi cụ thể:");
-                    console.log(errors);
                     var errorMessages = "";
                     var typeError = 0;
                     for (var key in errors) {
@@ -196,7 +190,7 @@ $(document).ready(function () {
         }, 500); // Đợi 0.5 giây trước khi thực hiện tìm kiếm
     });
 
-    $(`.btnDelete`).click(deleteFunction);
+    $(`button.btnDelete`).click(deleteFunction);
 
 
 });

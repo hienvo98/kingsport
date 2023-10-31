@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-xl-12">
                                 <label for="blog-thumbnail" class="form-label">Images Detail</label>
-                                <input type="file" class="form-control" multiple name="images_detail[]"
+                                <input type="file" class="form-control showroom" multiple name="images_detail[]"
                                     id="images_detail" accept=".jpg, .jpeg, .png, .webp" placeholder="Hình ảnh chi tiết"
                                     required>
                             </div>

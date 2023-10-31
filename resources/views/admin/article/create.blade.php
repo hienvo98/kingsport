@@ -150,7 +150,7 @@
                                                         <div class="col-xl-2">
                                                             <label for="" class="form-label">Ảnh
                                                                 Thumbnail</label><br>
-                                                            <img id="thumbnailImg" src="" alt=" Chưa Có Ảnh..."
+                                                            <img id="thumbnailImg" style="display: none" src="" alt=" Chưa Có Ảnh..."
                                                                 class="img-fluid img-thumbnail rounded">
                                                         </div>
                                                         <div class="col-xl-12">
