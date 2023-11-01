@@ -24,6 +24,11 @@
             {{ session('message') }}
         </div>
     @endif
+
+    <div id="errors">
+
+    </div>
+
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
     <div class="main-content">
@@ -50,7 +55,7 @@
                                                                         đề</label>
                                                                     <input type="text" id="blog-title" name="name"
                                                                         class="form-control" id="event-title"
-                                                                        placeholder="Tên sự kiện">
+                                                                        placeholder="Tên sự kiện" required>
                                                                     @error('title')
                                                                         <div class="alert alert-danger">{{ $message }}
                                                                         </div>
@@ -72,7 +77,7 @@
                                                                     <label for="event-url" class="form-label">URL</label>
                                                                     <input type="text" id="blog-url" name="url"
                                                                         class="form-control" id="event-url"
-                                                                        placeholder="Liên kết">
+                                                                        placeholder="Liên kết" required>
                                                                     @error('url')
                                                                         <div class="alert alert-danger">{{ $message }}
                                                                         </div>
@@ -122,7 +127,7 @@
                                                                     <p class="fw-semibold mb-2">Sản Phẩm</p>
                                                                     <select data-trigger class="form-control"
                                                                     name="products[]"
-                                                                    id="choices-multiple-groups" multiple>
+                                                                    id="choices-multiple-groups" multiple required>
                                                                         <option value="">Chọn sản phẩm</option>
                                                                         @foreach ($category as $cate)
                                                                             @if ($cate->products->count()>0)
@@ -141,7 +146,7 @@
                                                                         Title</label>
                                                                     <input type="text" name="seo_title"
                                                                         class="form-control" id="meta_title"
-                                                                        placeholder="Enter Name">
+                                                                        placeholder="Enter Name" required>
                                                                     @error('seo_title')
                                                                         <div class="alert alert-danger">{{ $message }}
                                                                         </div>
@@ -152,20 +157,20 @@
                                                                         Description</label>
                                                                     <input type="text" name="seo_description"
                                                                         class="form-control" id="seo_description"
-                                                                        placeholder="Enter Name">
+                                                                        placeholder="Enter Name" required>
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <label for="seo-keyword" class="form-label">Seo
                                                                         Keyword</label>
                                                                     <input type="text" name="seo_keywords"
                                                                         class="form-control" id="meta_keyword"
-                                                                        placeholder="Enter Name">
+                                                                        placeholder="Enter Name" required>
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <label for="product-status-add"
                                                                         class="form-label">Trạng thái</label>
                                                                     <select class="form-control" data-trigger
-                                                                        name="status" id="form-status">
+                                                                        name="status" id="form-status" required>
                                                                         <option value="">Select</option>
                                                                         <option value="on">Bật</option>
                                                                         <option value="off">Tắt</option>

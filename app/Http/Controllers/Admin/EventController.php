@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventCreateRequest;
+use App\Http\Requests\EventUpdateRequest;
 use App\Libraries\Helper;
 use App\Libraries\ImageStorageLibrary;
 use App\Models\Category;
@@ -38,7 +40,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EventCreateRequest $request)
     {
         //xử lý sản phẩm liên quan sự kiện
         if ($request->productInArticle) {
@@ -74,7 +76,7 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EventUpdateRequest $request, string $id)
     {
         $event = Event::find($id);
         if (empty($event)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sự kiện'], 404);
@@ -120,7 +122,7 @@ class EventController extends Controller
     {
         $event_html = '';
         foreach ($events as $event) {
-            $pathBanner = url("storage/uploads/event/$event->name/banner/$event->banners");
+            $pathBanner = url("storage/uploads/event/$event->name/banners/$event->banners");
             $routeEdit = url("/admin/event/edit/$event->id");
             $routeDelete = url("/admin/event/delete/$event->id");
             $disabled = $event->status == 'off' ? 'disabled' : '';
