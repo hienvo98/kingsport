@@ -2,12 +2,12 @@
 @section('content')
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-        <h1 class="page-title fw-semibold fs-18 mb-0">Bài viết</h1>
+        <h1 class="page-title fw-semibold fs-18 mb-0">Sự Kiện</h1>
         <div class="ms-md-1 ms-0">
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Bài viết</li>
+                    <li class="breadcrumb-item active" aria-current="page">Sự Kiện</li>
                 </ol>
             </nav>
         </div>
@@ -36,7 +36,7 @@
                         <div class="card-body p-0">
                             <div class="d-flex p-3 align-items-center justify-content-between">
                                 <div>
-                                    <h6 class="fw-semibold mb-0">Bài viết</h6>
+                                    <h6 class="fw-semibold mb-0">Sự Kiện</h6>
                                 </div>
                                 <div>
                                     <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">

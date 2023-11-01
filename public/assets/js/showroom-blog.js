@@ -61,6 +61,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
+                $("html, body").animate({ scrollTop: 0 }, 'fast');
                 $('#success').click();
             },
             error: function (error) {

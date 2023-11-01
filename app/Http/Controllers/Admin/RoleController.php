@@ -18,13 +18,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('Super Admin')) {
+        if (!Gate::allows('Super Admin')) {
             abort(403);
         }
 
         $roles = Role::where('name', '<>', 'Super Admin')->get();
         $users = User::where('id', '<>', Auth::id())->get();
-        return view('admin.roles.index',compact('roles','users'));
+        return view('admin.roles.index', compact('roles', 'users'));
     }
 
     /**
@@ -32,7 +32,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('Super Admin')) {
+        if (!Gate::allows('Super Admin')) {
             abort(403);
         }
         $permissions = Permission::all()->groupBy(function ($per) {
@@ -47,23 +47,28 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if (! Gate::allows('Super Admin')) {
-            abort(403);
+        try {
+            if (!Gate::allows('Super Admin')) {
+                abort(403);
+            }
+            $request->validate(
+                [
+                    'name' => 'required|unique:roles,name',
+                    'permission' => 'required'
+                ],
+                [
+                    'name.required' => 'Tên Quyền không được để trống',
+                    'name.unique' => 'Tên quyền đã tồn tại',
+                    'permission.required' => 'Vui lòng chọn ít nhất 1 quyền',
+                ]
+            );
+            $role = Role::create(['name' => $request->name]);
+            $role->permissions()->attach($request->permission);
+            return redirect()->back()->with('status', 'Đã tạo quyền thành công');
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $request->validate(
-            [
-                'name' => 'required|unique:roles,name',
-                'permission' => 'required'
-            ],
-            [
-                'name.required' => 'Tên Quyền không được để trống',
-                'name.unique' => 'Tên quyền đã tồn tại',
-                'permission.required' => 'Vui lòng chọn ít nhất 1 quyền',
-            ]
-        );
-        $role = Role::create(['name' => $request->name]);
-        $role->permissions()->attach($request->permission);
-        return redirect()->back()->with('status', 'Đã tạo quyền thành công');
     }
 
     /**
@@ -71,11 +76,11 @@ class RoleController extends Controller
      */
     public function show()
     {
-        if (! Gate::allows('Super Admin')) {
+        if (!Gate::allows('Super Admin')) {
             abort(403);
         }
-        $roles = Role::where('name','<>','Super Admin')->get();
-        return view('admin.roles.show',compact('roles'));
+        $roles = Role::where('name', '<>', 'Super Admin')->get();
+        return view('admin.roles.show', compact('roles'));
     }
 
     /**
@@ -83,17 +88,21 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        if (! Gate::allows('Super Admin')) {
-            abort(403);
+        try {
+            if (!Gate::allows('Super Admin')) {
+                abort(403);
+            }
+            $role = Role::find($id);
+            if (!$role) return view('auth.404');
+            $permissions = Permission::all()->groupBy(function ($per) {
+                return explode('.', $per)[1];
+            });
+            $listPerRole = $role->permissions->pluck('id')->toArray();
+            return view('admin.roles.edit', compact('role', 'permissions', 'listPerRole'));
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $role = Role::find($id);
-        if(!$role) return view('auth.404');
-        $permissions = Permission::all()->groupBy(function($per){
-            return explode('.',$per)[1];
-        });
-        $listPerRole = $role->permissions->pluck('id')->toArray();
-        
-        return view('admin.roles.edit',compact('role','permissions','listPerRole'));
     }
 
     /**
@@ -101,13 +110,18 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
-        if (! Gate::allows('Super Admin')) {
-            abort(403);
+        try {
+            if (!Gate::allows('Super Admin')) {
+                abort(403);
+            }
+            $role = Role::find($request->role);
+            $role->update(['name' => $request->name]);
+            $role->permissions()->sync($request->permission);
+            return redirect()->back()->with('status', 'Đã Cập Nhật Quyền Thành Công');
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $role = Role::find($request->role);
-        $role->update(['name'=>$request->name]);
-        $role->permissions()->sync($request->permission);
-        return redirect() -> back() -> with('status','Đã Cập Nhật Quyền Thành Công');
     }
 
     /**
@@ -115,13 +129,18 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        if (! Gate::allows('Super Admin')) {
-            abort(403);
+        try {
+            if (!Gate::allows('Super Admin')) {
+                abort(403);
+            }
+            $role = Role::find($id)->delete();
+            return response()->json([
+                'code' => 200,
+                'data' => 'ok'
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $role = Role::find($id)->delete();
-        return response()->json([
-            'code'=>200,
-            'data'=>'ok'
-        ]);
     }
 }

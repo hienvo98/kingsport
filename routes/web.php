@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
-        Route::post('/storesssssssssssssssss',[ProductController::class,'store'])->name('product.store');
+        Route::post('/store',[ProductController::class,'store'])->name('product.store');
         Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
         Route::post('/update/{id}',[ProductController::class,'update'])->name('product.update');
         Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');

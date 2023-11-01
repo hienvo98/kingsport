@@ -16,8 +16,9 @@ class FAQController extends Controller
      */
     public function index()
     {
-        $category = Category::select('id','name')->get(); 
-        return view('admin.faq.index',['category' => $category]);
+
+        $category = Category::select('id', 'name')->get();
+        return view('admin.faq.index', ['category' => $category]);
     }
 
     /**
@@ -25,17 +26,21 @@ class FAQController extends Controller
      */
     public function create()
     {
-        $cate = Category::select('id','name')->get();
-
-        return view('admin.faq.create',['category' => $cate]);
+        $cate = Category::select('id', 'name')->get();
+        return view('admin.faq.create', ['category' => $cate]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(FAQRequest $request)
-    {   
-        if(FAQS::create($request->all())) return redirect()->back()->with('message', 'Tạo thành công.');
+    {
+        try {
+            if (FAQS::create($request->all())) return redirect()->back()->with('message', 'Tạo thành công.');
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -52,9 +57,9 @@ class FAQController extends Controller
     public function edit(string $id)
     {
         $faq = FAQS::find($id);
-        if(empty($faq)) abort(404);
-        $category = Category::select('id','name')->get();
-        return view('admin.faq.edit',compact('faq','category'));
+        if (empty($faq)) abort(404);
+        $category = Category::select('id', 'name')->get();
+        return view('admin.faq.edit', compact('faq', 'category'));
     }
 
     /**
@@ -62,9 +67,14 @@ class FAQController extends Controller
      */
     public function update(FAQRequest $request, string $id)
     {
-        $faq = FAQS::find($id);
-        if(empty($faq)) return response() -> json(['code'=>404,'message'=>'Không tìm thấy câu hỏi'],404);
-        if($faq->update($request->all())) return response() -> json(['code'=>200,'messages'=>'đã cập nhật thành công'],200);
+        try {
+            $faq = FAQS::find($id);
+            if (empty($faq)) return response()->json(['code' => 404, 'message' => 'Không tìm thấy câu hỏi'], 404);
+            if ($faq->update($request->all())) return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -72,9 +82,14 @@ class FAQController extends Controller
      */
     public function destroy(string $id)
     {
-        $faq = FAQS::find($id);
-        if(empty($faq)) return response() -> json(['code'=>404,'message'=>'Không tìm thấy câu hỏi'],404);
-        $faq->update(['status'=>'off']);
-        if($faq->update(['status'=>'off'])) return response() -> json(['code'=>200,'messages'=>'đã cập nhật thành công'],200);  
+        try {
+            $faq = FAQS::find($id);
+            if (empty($faq)) return response()->json(['code' => 404, 'message' => 'Không tìm thấy câu hỏi'], 404);
+            $faq->update(['status' => 'off']);
+            if ($faq->update(['status' => 'off'])) return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
