@@ -24,7 +24,6 @@
             {{ session('message') }}
         </div>
     @endif
-
     <div id="errors">
 
     </div>
@@ -37,7 +36,7 @@
             <div class="row justify-content-center mb-5">
                 <div class="col-xl-12">
                     <!--code -->
-                    <form class="form-create" data-route="{{ route('admin.event.store') }}" method="POST"
+                    <form class="form-update" data-route="{{ route('admin.event.update',['id'=>$event->id]) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf()
                         <div class="row">
@@ -53,7 +52,7 @@
                                                                 <div class="col-xl-12">
                                                                     <label for="event-title" class="form-label">Tiêu
                                                                         đề</label>
-                                                                    <input type="text" id="blog-title" name="name"
+                                                                    <input type="text" id="blog-title" value="{{ $event->name }}" name="name"
                                                                         class="form-control" id="event-title"
                                                                         placeholder="Tên sự kiện" required>
                                                                     @error('title')
@@ -75,13 +74,9 @@
                                                                 </div> --}}
                                                                 <div class="col-xl-12">
                                                                     <label for="event-url" class="form-label">URL</label>
-                                                                    <input type="text" id="blog-url" name="url"
+                                                                    <input type="text" id="blog-url" value="{{ $event->url }}" name="url"
                                                                         class="form-control" id="event-url"
                                                                         placeholder="Liên kết" required>
-                                                                    @error('url')
-                                                                        <div class="alert alert-danger">{{ $message }}
-                                                                        </div>
-                                                                    @enderror
                                                                 </div>
                                                                 <div class="col-xl-12">
                                                                     <label for="blog-thumbnail"
@@ -92,9 +87,9 @@
                                                                 </div>
                                                                 <div class="col-xl-12">
                                                                     <label for=""
-                                                                        class="form-label">Ảnh Banner:</label><br>
-                                                                    <img style="display: none" id="thumbnailImg"
-                                                                        src="" alt=""
+                                                                        class="form-label">Ảnh Banner: </label><br>
+                                                                    <img style="" id="thumbnailImg"
+                                                                        src="{{ url("storage/uploads/event/$event->name/banners/$event->banners") }}" alt=""
                                                                         class="img-fluid img-thumbnail rounded">
                                                                 </div>
                                                                 {{-- <div class="col-xl-12">
@@ -133,7 +128,7 @@
                                                                             @if ($cate->products->count()>0)
                                                                                 <optgroup label="{{ $cate->name }}">
                                                                                     @foreach ($cate->products as $product)
-                                                                                        <option value="{{ $product->name }}">{{ $product->name }}
+                                                                                        <option {{ in_array($product->id,unserialize($event->product_id))?'selected':'' }} value="{{ $product->name }}">{{ $product->name }}
                                                                                         </option>
                                                                                     @endforeach
                                                                                 </optgroup>
@@ -144,7 +139,7 @@
                                                                 <div class="col-xl-6">
                                                                     <label for="seo-title" class="form-label">Seo
                                                                         Title</label>
-                                                                    <input type="text" name="seo_title"
+                                                                    <input type="text" value="{{ $event->seo_title }}" name="seo_title"
                                                                         class="form-control" id="meta_title"
                                                                         placeholder="Enter Name" required>
                                                                     @error('seo_title')
@@ -155,14 +150,14 @@
                                                                 <div class="col-xl-6">
                                                                     <label for= "seo-description" class="form-label">Seo
                                                                         Description</label>
-                                                                    <input type="text" name="seo_description"
+                                                                    <input type="text" value="{{ $event->seo_description }}" name="seo_description"
                                                                         class="form-control" id="seo_description"
                                                                         placeholder="Enter Name" required>
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <label for="seo-keyword" class="form-label">Seo
                                                                         Keyword</label>
-                                                                    <input type="text" name="seo_keywords"
+                                                                    <input type="text" value="{{ $event->seo_keywords }}" name="seo_keywords"
                                                                         class="form-control" id="meta_keyword"
                                                                         placeholder="Enter Name" required>
                                                                 </div>
@@ -172,8 +167,8 @@
                                                                     <select class="form-control" data-trigger
                                                                         name="status" id="form-status" required>
                                                                         <option value="">Select</option>
-                                                                        <option value="on">Bật</option>
-                                                                        <option value="off">Tắt</option>
+                                                                        <option {{ $event->status=='on'?'selected':'' }} value="on">Bật</option>
+                                                                        <option  {{ $event->status=='off'?'selected':'' }} value="off">Tắt</option>
                                                                     </select>
                                                                     @error('status')
                                                                         <div class="alert alert-danger">{{ $message }}
@@ -184,8 +179,7 @@
                                                         </div>
                                                     </div>
                                                     <ul class="pagination justify-content-end">
-                                                        <button type="submit" class="btn btn-primary-light m-1">Tạo Sự
-                                                            Kiện<i class="bi bi-plus-lg ms-2"></i></button>
+                                                        <button type="submit" class="btn btn-primary-light m-1">Cập nhật<i class="bi bi-plus-lg ms-2"></i></button>
                                                     </ul>
                                                 </div>
                                             </div>

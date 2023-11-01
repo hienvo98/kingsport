@@ -103,7 +103,7 @@ class ShowroomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ShowroomUpdateRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $showroom = ShowRoom::find($id);
         if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);

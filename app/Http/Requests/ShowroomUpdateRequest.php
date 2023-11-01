@@ -22,8 +22,8 @@ class ShowroomUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:showroom|max:255',
-            'url' => 'required|unique:showroom|max:255',
+            'name' => 'required|max:255',
+            'url' => 'required|max:255',
             'imageThumb' => 'image|mimes:png,jpg,webp,jpeg|max:3072',
             'images*' => 'image|mimes:png,jpg,webp,jpeg|max:3072',
             'region_id' => 'required|integer',

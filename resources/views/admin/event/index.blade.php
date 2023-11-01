@@ -21,7 +21,15 @@
     <!-- Page Header Close -->
     <!-- Start::row-1 -->
     <div class="row">
+        {{-- <div class="col-xl-3"></div> --}}
         <div class="col-xl-12">
+            <div class="input-group mb-3">
+                <input type="text" id="search" data-route="{{ url('/admin/event/search') }}"
+                    class="form-control bg-light border-0" placeholder="Tìm Tên Sự Kiện"
+                    aria-describedby="button-addon2">
+                <button class="btn btn-light" type="button" id="button-addon2"><i
+                        class="ri-search-line text-muted"></i></button>
+            </div>
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card custom-card">
@@ -38,11 +46,11 @@
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                                href="#pending" aria-selected="true">Chưa xuất bản</a>
+                                                href="#completed" aria-selected="true">Hiện tại</a>
                                         </li>
                                         <li class="nav-item m-1">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
-                                                href="#completed" aria-selected="true">Đã xuất bản</a>
+                                                href="#pending" aria-selected="true">Đã hết</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -63,20 +71,20 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.article.list-buy-category')
+                @include('admin.event.list')
             </div>
             <div class="d-flex pagination justify-content-end flex-wrap">
                 <nav aria-label="..." id="nav">
                     <ul class="pagination mb-0">
                         {{-- Nút "Previous" --}}
-                        @if ($articles->onFirstPage())
+                        @if ($events->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link">Previous</span>
                             </li>
                         @else
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->previousPageUrl() : $articles->previousPageUrl() }}"
+                                    href="{{ !empty($trash) ? $events->appends(['trash' => 'on'])->previousPageUrl() : $events->previousPageUrl() }}"
                                     aria-label="Previous">
                                     <span aria-hidden="true">Previous</span>
                                 </a>
@@ -84,18 +92,18 @@
                         @endif
 
                         {{-- Danh sách các trang --}}
-                        @for ($i = 1; $i <= $articles->lastPage(); $i++)
-                            <li class="page-item {{ $i === $articles->currentPage() ? 'active' : '' }}">
-                                <a class="page-link  {{ $i === $articles->currentPage() ? 'disable-link' : '' }}"
-                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->url($i) : $articles->url($i) }}">{{ $i }}</a>
+                        @for ($i = 1; $i <= $events->lastPage(); $i++)
+                            <li class="page-item {{ $i === $events->currentPage() ? 'active' : '' }}">
+                                <a class="page-link  {{ $i === $events->currentPage() ? 'disable-link' : '' }}"
+                                    href="{{ !empty($trash) ? $events->appends(['trash' => 'on'])->url($i) : $events->url($i) }}">{{ $i }}</a>
                             </li>
                         @endfor
 
                         {{-- Nút "Next" --}}
-                        @if ($articles->hasMorePages())
+                        @if ($events->hasMorePages())
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="{{ !empty($trash) ? $articles->appends(['trash' => 'on'])->nextPageUrl() : $articles->nextPageUrl() }}"
+                                    href="{{ !empty($trash) ? $events->appends(['trash' => 'on'])->nextPageUrl() : $events->nextPageUrl() }}"
                                     aria-label="Next">
                                     <span aria-hidden="true">Next</span>
                                 </a>
