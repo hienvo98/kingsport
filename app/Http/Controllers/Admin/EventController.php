@@ -44,9 +44,8 @@ class EventController extends Controller
     {
         try {
             //xử lý sản phẩm liên quan sự kiện
-            if ($request->productInArticle) {
-                $product_id = Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray();
-                $request->merge(['product_id' => serialize($product_id)]);
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
             }
             //xử lý ảnh banner
             if ($request->imageThumb) {
@@ -65,7 +64,7 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
@@ -95,9 +94,10 @@ class EventController extends Controller
                 $request->merge(['banners' => basename($path)]);
             }
             //xử lý sản phẩm liên quan
-            if ($request->productInArticle) {
-                $product_id = Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray();
-                $request->merge(['product_id' => serialize($product_id)]);
+              if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }else{
+                $request->merge(['product_id'=>null]);
             }
             if ($event->update($request->all())) return response()->json(['code' => 200, 'message' => 'đã cập nhật'], 200);
         } catch (\Exception $e) {

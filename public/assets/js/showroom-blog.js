@@ -52,8 +52,6 @@ $(document).ready(function () {
             var quillContent = quill.root.innerHTML;
             formData.append('content', quillContent);
         }
-        var productInArticle = $(`select#choices-multiple-groups`).val(); //dùng cho article
-        formData.append('productInArticle', productInArticle);
         $.ajax({
             url: $(this).data('route'),
             type: 'post',
@@ -94,8 +92,6 @@ $(document).ready(function () {
             var quillContent = quill.root.innerHTML;
             formData.append('content', quillContent);
         }
-        var productInArticle = $(`select#choices-multiple-groups`).val(); //dùng cho article, event
-        formData.append('productInArticle', productInArticle);
         $.ajax({
             type: 'POST',
             url: $(this).data('route'),
@@ -157,7 +153,6 @@ $(document).ready(function () {
     var debounceTimer;
     $(`input#search`).on('input', function () {
         clearTimeout(debounceTimer); // Xóa bất kỳ hẹn giờ nào còn tồn tại
-
         debounceTimer = setTimeout(function () {
             // Thực hiện tìm kiếm ở đây sau khi người dùng ngưng gõ trong 0.5 giây
             var searchTerm = $(`input#search`).val();

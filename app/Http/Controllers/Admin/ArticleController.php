@@ -14,6 +14,7 @@ use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use App\Libraries\Helper;
 use App\Models\Product;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -60,7 +61,8 @@ class ArticleController extends Controller
         $_category = Category::with(['products' => function ($query) {
             $query->where('status', 'on');
         }])->where('status', 1)->select('id', 'name')->get();
-        return view('admin.article.create', ['category' => $_category]);
+        $tags = Tag::all();
+        return view('admin.article.create', ['category' => $_category, 'tags' => $tags]);
     }
 
     /**
@@ -69,11 +71,13 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request)
     {
         try {
-            //kiểm tra bài viết có sản phẩm liên quan không
-            if ($request->productInArticle) {
-                $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-                $request->merge(['product_id' => $product_id]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
-            };
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }
+            if(!empty($request->tags)){
+                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]);
+            }
+            // return response()->json(['messages' => $request->all()]);
             $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
             //kiểm tra,xử lý và lưu ngày xuất bản bài viết
             $request->publish_date ? $request->merge(['publish_date' => Carbon::parse($request->input('publish_date'))]) : '';
@@ -83,7 +87,6 @@ class ArticleController extends Controller
                 $imagePath = $this->imageStorage->storeImage($request->thumbnailArticle, 'blog_images/' . $request->input('title') . '/' . 'thumbnail');
                 $request->merge(['thumbnail' => basename($imagePath)]); //lưu tên ảnh vào request
             }
-
             $ArticleContent = $request->content; // content của bài viết chưa xử lý
             $title = $request->title; //tiêu để bài viết
             //xử lý, tất cả ảnh trong bài viết và trả về nội dung bài viết đã xử lý.
@@ -124,7 +127,8 @@ class ArticleController extends Controller
         $contentUpdatedUrl = $this->imageStorage->updateUrlContent($content, 'blog_images', $title);
         $post->content = $contentUpdatedUrl;
         $category = Category::with('products')->get();
-        return view('admin.article.edit', compact('post', 'category'));
+        $tags = Tag::all();
+        return view('admin.article.edit', compact('post', 'category','tags'));
     }
 
     /**
@@ -147,12 +151,18 @@ class ArticleController extends Controller
             }
             //xử lý bài viết và lưu ảnh mới 
             $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
-
+            
             $request->merge(['content' => $processedContent]);
-            if ($request->productInArticle) {
-                $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-                $request->merge(['product_id' => $product_id]);
-            };
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }else{
+                $request->merge(['product_id'=>null]);
+            }
+            if(!empty($request->tags)){
+                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]); //lưu danh sách tag
+            }else{
+                $request->merge(['tags_id'=>null]);
+            }
             $post->update($request->all());
             return response()->json(['code' => 200, 'messages' => $post], 200);
         } catch (\Exception $e) {

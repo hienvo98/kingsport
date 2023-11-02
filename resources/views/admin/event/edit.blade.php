@@ -83,7 +83,7 @@
                                                                         class="form-label">Banner</label>
                                                                     <input type="file" class="form-control thumbnail"
                                                                         name="imageThumb" id="thumbnail"
-                                                                        placeholder="Thumbnail" required>
+                                                                        placeholder="Thumbnail">
                                                                 </div>
                                                                 <div class="col-xl-12">
                                                                     <label for=""
