@@ -14,6 +14,7 @@ use App\Libraries\ImageStorageLibrary;
 use App\Libraries\MimeChecker;
 use App\Libraries\Helper;
 use App\Models\Product;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -60,7 +61,8 @@ class ArticleController extends Controller
         $_category = Category::with(['products' => function ($query) {
             $query->where('status', 'on');
         }])->where('status', 1)->select('id', 'name')->get();
-        return view('admin.article.create', ['category' => $_category]);
+        $tags = Tag::all();
+        return view('admin.article.create', ['category' => $_category, 'tags' => $tags]);
     }
 
     /**
@@ -68,34 +70,39 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        // return response() -> json('messages'=>$request->)
-        //kiểm tra bài viết có sản phẩm liên quan không
-        if ($request->productInArticle) {
-            $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-            $request->merge(['product_id' => $product_id]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
-        };
-        $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
-        //kiểm tra,xử lý và lưu ngày xuất bản bài viết
-        $request->publish_date ? $request->merge(['publish_date' => Carbon::parse($request->input('publish_date'))]) : '';
-        //kiểm tra có thumbnail bài viết
-        if ($request->thumbnailArticle) {
-            //xử lý và lưu ảnh thumbnail
-            $imagePath = $this->imageStorage->storeImage($request->thumbnailArticle, 'blog_images/' . $request->input('title') . '/' . 'thumbnail');
-            $request->merge(['thumbnail' => basename($imagePath)]); //lưu tên ảnh vào request
-        }
-
-        $ArticleContent = $request->content; // content của bài viết chưa xử lý
-        $title = $request->title; //tiêu để bài viết
-        //xử lý, tất cả ảnh trong bài viết và trả về nội dung bài viết đã xử lý.
-        $content = $this->imageStorage->processAndSaveImagesInContentCreate($ArticleContent, 'blog_images', $title); //nội dung đã xử lý
-        $request->merge(['content' => $content]); // lưu nội dung vào $request
-        //tạo bài viết
-        if (Article::create($request->all())) {
-            return response([
-                'status' => 'success',
-                'code' => 200,
-                'messages' => 'đã tạo bài viết thành công'
-            ]);
+        try {
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }
+            if(!empty($request->tags)){
+                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]);
+            }
+            // return response()->json(['messages' => $request->all()]);
+            $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
+            //kiểm tra,xử lý và lưu ngày xuất bản bài viết
+            $request->publish_date ? $request->merge(['publish_date' => Carbon::parse($request->input('publish_date'))]) : '';
+            //kiểm tra có thumbnail bài viết
+            if ($request->thumbnailArticle) {
+                //xử lý và lưu ảnh thumbnail
+                $imagePath = $this->imageStorage->storeImage($request->thumbnailArticle, 'blog_images/' . $request->input('title') . '/' . 'thumbnail');
+                $request->merge(['thumbnail' => basename($imagePath)]); //lưu tên ảnh vào request
+            }
+            $ArticleContent = $request->content; // content của bài viết chưa xử lý
+            $title = $request->title; //tiêu để bài viết
+            //xử lý, tất cả ảnh trong bài viết và trả về nội dung bài viết đã xử lý.
+            $content = $this->imageStorage->processAndSaveImagesInContentCreate($ArticleContent, 'blog_images', $title); //nội dung đã xử lý
+            $request->merge(['content' => $content]); // lưu nội dung vào $request
+            //tạo bài viết
+            if (Article::create($request->all())) {
+                return response([
+                    'status' => 'success',
+                    'code' => 200,
+                    'messages' => 'đã tạo bài viết thành công'
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -120,7 +127,8 @@ class ArticleController extends Controller
         $contentUpdatedUrl = $this->imageStorage->updateUrlContent($content, 'blog_images', $title);
         $post->content = $contentUpdatedUrl;
         $category = Category::with('products')->get();
-        return view('admin.article.edit', compact('post', 'category'));
+        $tags = Tag::all();
+        return view('admin.article.edit', compact('post', 'category','tags'));
     }
 
     /**
@@ -128,28 +136,39 @@ class ArticleController extends Controller
      */
     public function update(ArticleUpdateRequest $request, string $id)
     {
-        $post = Article::find($id);
-        if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
-        //sử lý thay đổi title bài viết;
-        if ($request->title != $post->title) {
-            //đổi tên thư mục lưu ảnh ki title thay đổi
-            $this->imageStorage->updateNameFolder('blog_images', $post->title, $request->title);
+        try {
+            $post = Article::find($id);
+            if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
+            //sử lý thay đổi title bài viết;
+            if ($request->title != $post->title) {
+                //đổi tên thư mục lưu ảnh ki title thay đổi
+                $this->imageStorage->updateNameFolder('blog_images', $post->title, $request->title);
+            }
+            //xử lý khi thay đổi thumbnail
+            if ($request->thumbnailImage) {
+                $newThumbPath = $this->imageStorage->processImageUpdate($request->thumbnailImage, 'blog_images', $request->title, 'thumbnail', $post->thumbnail);
+                $request->merge(['thumbnail' => basename($newThumbPath)]);
+            }
+            //xử lý bài viết và lưu ảnh mới 
+            $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
+            
+            $request->merge(['content' => $processedContent]);
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }else{
+                $request->merge(['product_id'=>null]);
+            }
+            if(!empty($request->tags)){
+                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]); //lưu danh sách tag
+            }else{
+                $request->merge(['tags_id'=>null]);
+            }
+            $post->update($request->all());
+            return response()->json(['code' => 200, 'messages' => $post], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        //xử lý khi thay đổi thumbnail
-        if ($request->thumbnailImage) {
-            $newThumbPath = $this->imageStorage->processImageUpdate($request->thumbnailImage, 'blog_images', $request->title, 'thumbnail', $post->thumbnail);
-            $request->merge(['thumbnail' => basename($newThumbPath)]);
-        }
-        //xử lý bài viết và lưu ảnh mới 
-        $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
-
-        $request->merge(['content' => $processedContent]);
-        if ($request->productInArticle) {
-            $product_id = serialize(Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray()); //xử lý id của sản phẩm liên quan
-            $request->merge(['product_id' => $product_id]);
-        };
-        $post->update($request->all());
-        return response()->json(['code' => 200, 'messages' => $post], 200);
     }
 
     /**
@@ -157,58 +176,72 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        $post = Article::find($id);
-
-        if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm'], 404);
-        $post->status = 'off';
-        if ($post->save()) {
-            return response()->json([
-                'code' => 200,
-                'messages' => $id
-            ], 200);
+        try {
+            $post = Article::find($id);
+            if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm'], 404);
+            $post->status = 'off';
+            if ($post->save()) {
+                return response()->json([
+                    'code' => 200,
+                    'messages' => $id
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
     public function search(Request $request)
     {
-        $keywords = $request->keywords;
-        $articles = Article::with('category')->where('title', 'like', "%$keywords%")->get();
-        $published_article_list = $this->get_published_article_list($articles); //lấy ds các bài viết đã xuất bản
-        $unpublished_article_list = $this->get_unpublished_article_list($articles); //lấy ds các bài viết chưa xuất bản
-        return response()->json([
-            'code' => 200,
-            'all' =>  $this->get_card_html($articles, 'search'),
-            'off' => $this->get_card_html($unpublished_article_list, 'search'),
-            'on' => $this->get_card_html($published_article_list, 'search')
-        ], 200);
+        try {
+            $keywords = $request->keywords;
+            $articles = Article::with('category')->where('title', 'like', "%$keywords%")->get();
+            $published_article_list = $this->get_published_article_list($articles); //lấy ds các bài viết đã xuất bản
+            $unpublished_article_list = $this->get_unpublished_article_list($articles); //lấy ds các bài viết chưa xuất bản
+            return response()->json([
+                'code' => 200,
+                'all' =>  $this->get_card_html($articles, 'search'),
+                'off' => $this->get_card_html($unpublished_article_list, 'search'),
+                'on' => $this->get_card_html($published_article_list, 'search')
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function filterArticlesAjax($flag = 'index')
     {
-        if ($flag == 'index') {
-            $articles = Article::with('category')->paginate(9);
-            $unpublished_article_list = $this->get_unpublished_article_list($articles);
-            $published_article_list = $this->get_published_article_list($articles);
-        } else {
-            if ($flag == 'trash') {
-                $articles = Article::with('category')->where('status', 'off')->paginate(9);
+        try {
+            if ($flag == 'index') {
+                $articles = Article::with('category')->paginate(9);
                 $unpublished_article_list = $this->get_unpublished_article_list($articles);
                 $published_article_list = $this->get_published_article_list($articles);
             } else {
-                $category = Category::find($flag);
-                if (empty($category)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy danh mục'], 404);
-                $articles = $category->articles()->paginate(9);
-                $unpublished_article_list = $this->get_unpublished_article_list($articles);
-                $published_article_list = $this->get_published_article_list($articles);
+                if ($flag == 'trash') {
+                    $articles = Article::with('category')->where('status', 'off')->paginate(9);
+                    $unpublished_article_list = $this->get_unpublished_article_list($articles);
+                    $published_article_list = $this->get_published_article_list($articles);
+                } else {
+                    $category = Category::find($flag);
+                    if (empty($category)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy danh mục'], 404);
+                    $articles = $category->articles()->paginate(9);
+                    $unpublished_article_list = $this->get_unpublished_article_list($articles);
+                    $published_article_list = $this->get_published_article_list($articles);
+                }
             }
+            return response()->json([
+                'code' => 200,
+                'all' => $this->get_card_html($articles, 'current'),
+                'on' => $this->get_card_html($published_article_list, 'current'),
+                'off' => $this->get_card_html($unpublished_article_list, 'current'),
+                'nav' =>  $this->get_nav($articles, $flag)
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        return response()->json([
-            'code' => 200,
-            'all' => $this->get_card_html($articles, 'current'),
-            'on' => $this->get_card_html($published_article_list, 'current'),
-            'off' => $this->get_card_html($unpublished_article_list, 'current'),
-            'nav' =>  $this->get_nav($articles, $flag)
-        ], 200);
     }
 
     private function get_published_article_list($articles)

@@ -42,17 +42,21 @@ class EventController extends Controller
      */
     public function store(EventCreateRequest $request)
     {
-        //xử lý sản phẩm liên quan sự kiện
-        if ($request->productInArticle) {
-            $product_id = Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray();
-            $request->merge(['product_id' => serialize($product_id)]);
+        try {
+            //xử lý sản phẩm liên quan sự kiện
+            if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }
+            //xử lý ảnh banner
+            if ($request->imageThumb) {
+                $path = ImageStorageLibrary::storeImage($request->imageThumb, "event/$request->name/banners");
+                $request->merge(['banners' => basename($path)]);
+            }
+            if (Event::create($request->all())) return response()->json(['code' => 200, 'messages' => 'đã tạo thành công'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        //xử lý ảnh banner
-        if ($request->imageThumb) {
-            $path = ImageStorageLibrary::storeImage($request->imageThumb, "event/$request->name/banners");
-            $request->merge(['banners' => basename($path)]);
-        }
-        if (Event::create($request->all())) return response()->json(['code' => 200, 'messages' => 'đã tạo thành công'], 200);
     }
 
     /**
@@ -60,7 +64,7 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
@@ -78,21 +82,28 @@ class EventController extends Controller
      */
     public function update(EventUpdateRequest $request, string $id)
     {
-        $event = Event::find($id);
-        if (empty($event)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sự kiện'], 404);
-        //xử lý tên thư mục khi tên event thay đổi
-        if ($request->name != $event->name) ImageStorageLibrary::updateNameFolder('event', $event->name, $request->name);
-        //xử lý ảnh khi thay đổi
-        if ($request->imageThumb) {
-           $path = ImageStorageLibrary::processImageUpdate($request->imageThumb, 'event', $request->name, 'banners', $event->banners);
-           $request->merge(['banners'=>basename($path)]);
+        try {
+
+            $event = Event::find($id);
+            if (empty($event)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sự kiện'], 404);
+            //xử lý tên thư mục khi tên event thay đổi
+            if ($request->name != $event->name) ImageStorageLibrary::updateNameFolder('event', $event->name, $request->name);
+            //xử lý ảnh khi thay đổi
+            if ($request->imageThumb) {
+                $path = ImageStorageLibrary::processImageUpdate($request->imageThumb, 'event', $request->name, 'banners', $event->banners);
+                $request->merge(['banners' => basename($path)]);
+            }
+            //xử lý sản phẩm liên quan
+              if (!empty($request->products)) {
+                $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
+            }else{
+                $request->merge(['product_id'=>null]);
+            }
+            if ($event->update($request->all())) return response()->json(['code' => 200, 'message' => 'đã cập nhật'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        //xử lý sản phẩm liên quan
-        if ($request->productInArticle) {
-            $product_id = Product::whereIn('name', explode(',', $request->productInArticle))->pluck('id')->toArray();
-            $request->merge(['product_id' => serialize($product_id)]);
-        }
-        if($event->update($request->all())) return response() -> json(['code'=>200,'message'=>'đã cập nhật'],200);
     }
 
     /**
@@ -100,20 +111,30 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        $event = Event::find($id);
-        if (empty($event)) return response()->json(['code' => 404, 'messages' => 'Không tìm thấy event'], 404);
-        if ($event->update(['status' => 'off'])) return response()->json(['code' => 200, 'messages' => 'đã cập nhật trạng thái'], 200);
+        try {
+            $event = Event::find($id);
+            if (empty($event)) return response()->json(['code' => 404, 'messages' => 'Không tìm thấy event'], 404);
+            if ($event->update(['status' => 'off'])) return response()->json(['code' => 200, 'messages' => 'đã cập nhật trạng thái'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
     public function search(Request $request)
     {
-        $events = Event::where('name', 'like', "%$request->keywords%")->get();
-        if ($events->count() > 0) {
-            return response()->json([
-                'code' => 200,
-                'all' => $this->get_card_html($events, 'search'),
-                'on' => $this->get_card_html($events->where('status', 'on'), 'search'),
-                'off' => $this->get_card_html($events->where('status', 'off'), 'search')
-            ], 200);
+        try {
+            $events = Event::where('name', 'like', "%$request->keywords%")->get();
+            if ($events->count() > 0) {
+                return response()->json([
+                    'code' => 200,
+                    'all' => $this->get_card_html($events, 'search'),
+                    'on' => $this->get_card_html($events->where('status', 'on'), 'search'),
+                    'off' => $this->get_card_html($events->where('status', 'off'), 'search')
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

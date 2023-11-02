@@ -152,8 +152,7 @@
                                 @endif
                             </ul>
                         </nav>
-                        <button type="button" class="btn btn-primary btn-wave m-1 waves-effect waves-light">Thêm Sản
-                            Phẩm</button>
+                        <button type="button" class="btn btn-primary btn-wave m-1 waves-effect waves-light"><a href="{{ route('admin.product.create') }}" class="text-light">Thêm sản phẩm</a></button>
                     </div>
                 </div>
             </div>

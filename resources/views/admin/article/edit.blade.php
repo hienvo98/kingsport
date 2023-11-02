@@ -23,7 +23,8 @@
     <!-- Start::row-1 -->
     <div class="row">
         <div class="col-xl-12">
-            <form class="form-update" data-route="{{ route('admin.post.update',['id'=>$post->id]) }}" method="POST" enctype="multipart/form-data">
+            <form class="form-update" data-route="{{ route('admin.post.update', ['id' => $post->id]) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf()
                 <div class="row">
                     <div class="col-xl-12">
@@ -78,13 +79,15 @@
                                                     <div class="row gy-3 p-3">
                                                         <div class="col-xl-12">
                                                             <label for="blog-title" class="form-label">Tiêu đề</label>
-                                                            <input type="text" name="title" value="{{ $post->title }}" class="form-control"
-                                                                id="blog-title" placeholder="Blog Title">
+                                                            <input type="text" name="title" value="{{ $post->title }}"
+                                                                class="form-control" id="blog-title"
+                                                                placeholder="Blog Title">
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <label for="blog-url" class="form-label">URL</label>
-                                                            <input type="text" value="{{ $post->url }}" name="url" class="form-control"
-                                                                id="blog-url" placeholder="Blog Title">
+                                                            <input type="text" value="{{ $post->url }}" name="url"
+                                                                class="form-control" id="blog-url"
+                                                                placeholder="Blog Title">
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <label for="blog-category" class="form-label">Chọn danh
@@ -93,34 +96,53 @@
                                                                 name="blog-category" id="blog-category">
                                                                 <option value="">Select Category</option>
                                                                 @foreach ($category as $cate)
-                                                                    <option {{ $post->category_id==$cate->id?'selected':'' }} value="{{ $cate->id }}">{{ $cate->name }}
+                                                                    <option
+                                                                        {{ $post->category_id == $cate->id ? 'selected' : '' }}
+                                                                        value="{{ $cate->id }}">{{ $cate->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="blog-category" class="form-label">Chọn Tag Bài
+                                                                Viết</label>
+                                                            <select class="form-control" name="tag_id" data-trigger
+                                                                name="blog-category" id="blog-category">
+                                                                <option value="">Select Tag</option>
+                                                                @foreach ($tags as $tag)
+                                                                    <option
+                                                                        {{ $tag->id == $post->tag_id ? 'selected' : '' }}
+                                                                        value="{{ $tag->id }}">{{ $tag->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-xl-6">
                                                             <label for="seo-title" class="form-label">Seo Title</label>
-                                                            <input type="text" value="{{ $post->seo_title }}" name="seo_title" class="form-control"
-                                                                id="seo_title" placeholder="Enter Name">
+                                                            <input type="text" value="{{ $post->seo_title }}"
+                                                                name="seo_title" class="form-control" id="seo_title"
+                                                                placeholder="Enter Name">
                                                         </div>
                                                         <div class="col-xl-6">
                                                             <label for="seo-description" class="form-label">Seo
                                                                 Description</label>
-                                                            <input type="text" value="{{ $post->seo_description }}" name="seo_description"
-                                                                class="form-control" id="seo_description"
-                                                                placeholder="Enter Name">
+                                                            <input type="text" value="{{ $post->seo_description }}"
+                                                                name="seo_description" class="form-control"
+                                                                id="seo_description" placeholder="Enter Name">
                                                         </div>
                                                         <div class="col-xl-3">
-                                                            <label for="seo-keyword"  class="form-label">Seo
+                                                            <label for="seo-keyword" class="form-label">Seo
                                                                 Keyword</label>
-                                                            <input type="text" value="{{ $post->seo_keywords }}" name="seo_keywords" class="form-control"
-                                                                id="seo_keyword" placeholder="Enter Name">
+                                                            <input type="text" value="{{ $post->seo_keywords }}"
+                                                                name="seo_keywords" class="form-control" id="seo_keyword"
+                                                                placeholder="Enter Name">
                                                         </div>
                                                         <div class="col-xl-3">
                                                             <label for="publish-date" class="form-label">Ngày xuất
                                                                 bản</label>
-                                                            <input type="text" value="{{ $post->publish_date }}" name="publish_date"
-                                                                class="form-control" id="publish-date" value=""
+                                                            <input type="text" value="{{ $post->publish_date }}"
+                                                                name="publish_date" class="form-control"
+                                                                id="publish-date" value=""
                                                                 placeholder="Choose date">
                                                         </div>
                                                         <div class="col-xl-3">
@@ -129,8 +151,10 @@
                                                             <select class="form-control" data-trigger name="on_form"
                                                                 id="form-status">
                                                                 <option value="">Select</option>
-                                                                <option {{ $post->on_form=='on'?'selected':'' }} value="on">Bật</option>
-                                                                <option  {{ $post->on_form=='off'?'selected':'' }} value="off">Tắt</option>
+                                                                <option {{ $post->on_form == 'on' ? 'selected' : '' }}
+                                                                    value="on">Bật</option>
+                                                                <option {{ $post->on_form == 'off' ? 'selected' : '' }}
+                                                                    value="off">Tắt</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-xl-3">
@@ -139,26 +163,32 @@
                                                             <select class="form-control" data-trigger name="status"
                                                                 id="form-status">
                                                                 <option value="">Select</option>
-                                                                <option  {{ $post->status=='on'?'selected':'' }} value="on">Bật</option>
-                                                                <option  {{ $post->status=='off'?'selected':'' }} value="off">Tắt</option>
+                                                                <option {{ $post->status == 'on' ? 'selected' : '' }}
+                                                                    value="on">Bật</option>
+                                                                <option {{ $post->status == 'off' ? 'selected' : '' }}
+                                                                    value="off">Tắt</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control thumbnail" name="thumbnailImage"
-                                                                id="thumbnail" placeholder="Thumbnail">
+                                                            <input type="file" class="form-control thumbnail"
+                                                                name="thumbnailImage" id="thumbnail"
+                                                                placeholder="Thumbnail">
                                                         </div>
                                                         <div class="col-xl-2">
                                                             <label for="" class="form-label">Ảnh
                                                                 Thumbnail</label><br>
-                                                            <img id="thumbnailImg" src="{{ url("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail") }}" alt=" Chưa Có Ảnh..."
+                                                            <img id="thumbnailImg"
+                                                                src="{{ url("storage/uploads/blog_images/$post->title/thumbnail/$post->thumbnail") }}"
+                                                                alt=" Chưa Có Ảnh..."
                                                                 class="img-fluid img-thumbnail rounded">
                                                         </div>
                                                         <div class="col-xl-12">
-                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô tả Ngắn</label>
-                                                            <textarea class="form-control" name="description"  id="exampleFormControlTextarea1" rows="3">{{ $post->description }}</textarea>
-                                                          </div>
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô
+                                                                tả Ngắn</label>
+                                                            <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{ $post->description }}</textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,7 +208,8 @@
                                             <div class="card custom-card shadow-none mb-0 border-0">
                                                 <div class="card-body p-0">
                                                     <div class="row gy-3 p-3">
-                                                        <label for="product-description-add" class="form-label">Nội dung bài Viết</label>
+                                                        <label for="product-description-add" class="form-label">Nội dung
+                                                            bài Viết</label>
                                                         <div id="blog-content">{!! $post->content !!}</div>
                                                     </div>
                                                 </div>
@@ -225,7 +256,18 @@
                                                                                             <optgroup
                                                                                                 label="{{ $cat->name }}">
                                                                                                 @foreach ($cat->products as $product)
-                                                                                                    <option {{ in_array($product->name,$post->products()->pluck('name')->toArray())?'selected':'' }}
+                                                                                                    <option
+                                                                                                        {{ in_array($product->name,$post->products()->pluck('name')->toArray())? 'selected': '' }}
+                                                                                                        value="{{ $product->name }}">
+                                                                                                        {{ $product->name }}
+                                                                                                    </option>
+                                                                                                @endforeach
+                                                                                            </optgroup>
+                                                                                        @else
+                                                                                            <optgroup
+                                                                                                label="{{ $cat->name }}">
+                                                                                                @foreach ($cat->products as $product)
+                                                                                                    <option
                                                                                                         value="{{ $product->name }}">
                                                                                                         {{ $product->name }}
                                                                                                     </option>
@@ -233,6 +275,49 @@
                                                                                             </optgroup>
                                                                                         @endif
                                                                                     @endforeach
+                                                                                @endif
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-12">
+                                                                    <div class="card custom-card">
+                                                                        <div
+                                                                            class="card-header d-flex align-items-center justify-content-between">
+                                                                            <h6 class="card-title">Danh Sách Tags</h6>
+                                                                        </div>
+                                                                        <div class="card-body">
+
+                                                                            <p class="fw-semibold mb-2">Có Thể Chọn Nhiều
+                                                                                Sản Phẩm</p>
+                                                                            <select data-trigger class="form-control"
+                                                                                name="tags[]"
+                                                                                id="choices-multiple-groups" multiple>
+                                                                                <option value="">Chọn Sản Phẩm
+                                                                                </option>
+                                                                                @if (!$tags->isEmpty())
+                                                                                    @if (!empty(unserialize($post->tags_id)))
+                                                                                        <optgroup label="Danh sách tags">
+                                                                                            @foreach ($tags as $tag)
+                                                                                                <option
+                                                                                                    {{ in_array($tag->id, unserialize($post->tags_id)) ? 'selected' : '' }}
+                                                                                                    data-value="{{ $tag->id }}"
+                                                                                                    value="{{ $tag->name }}">
+                                                                                                    {{ $tag->name }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </optgroup>
+                                                                                    @else
+                                                                                        <optgroup label="Danh sách tags">
+                                                                                            @foreach ($tags as $tag)
+                                                                                                <option
+                                                                                                    data-value="{{ $tag->id }}"
+                                                                                                    value="{{ $tag->name }}">
+                                                                                                    {{ $tag->name }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </optgroup>
+                                                                                    @endif
                                                                                 @endif
                                                                             </select>
                                                                         </div>

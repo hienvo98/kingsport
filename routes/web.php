@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\TopSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +59,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     Route::prefix('product')->group(function () {
         Route::get('/index', [ProductController::class, 'index'])->name('product.index');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
-        Route::post('/storesssssssssssssssss',[ProductController::class,'store'])->name('product.store');
+        Route::post('/store',[ProductController::class,'store'])->name('product.store');
         Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
         Route::post('/update/{id}',[ProductController::class,'update'])->name('product.update');
         Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
@@ -82,6 +84,26 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/delete/{id}',[ArticleController::class,'destroy'])->name('post.destroy');
         Route::get('/search',[ArticleController::class,'search']);
         Route::get('/filterArticlesAjax/{flag?}',[ArticleController::class,'filterArticlesAjax']);
+    });
+
+    Route::prefix('/tag')->group(function(){
+        Route::get('/index/{id?}',[TagController::class,'index'])->name('tag.index');
+        Route::get('/create',[TagController::class,'create'])->name('tag.create');
+        Route::post('/store',[TagController::class,'store'])->name('tag.store');
+        Route::get('/edit/{id}',[TagController::class,'edit'])->name('tag.edit');
+        Route::post('/update/{id}',[TagController::class,'update'])->name('tag.update');
+        Route::get('/delete/{id}',[TagController::class,'destroy'])->name('tag.destroy');
+        Route::get('/search',[TagController::class,'search']);
+    });
+
+    Route::prefix('/topsearch')->group(function(){
+        Route::get('/index/{id?}',[TopSearchController::class,'index'])->name('topsearch.index');
+        Route::get('/create',[TopSearchController::class,'create'])->name('topsearch.create');
+        Route::post('/store',[TopSearchController::class,'store'])->name('topsearch.store');
+        Route::get('/edit/{id}',[TopSearchController::class,'edit'])->name('topsearch.edit');
+        Route::post('/update/{id}',[TopSearchController::class,'update'])->name('topsearch.update');
+        Route::get('/delete/{id}',[TopSearchController::class,'destroy'])->name('topsearch.destroy');
+        Route::get('/search',[TopSearchController::class,'search']);
     });
 
     Route::prefix('/showroom')->group(function(){

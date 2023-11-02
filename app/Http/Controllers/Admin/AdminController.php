@@ -152,9 +152,6 @@ class AdminController extends Controller
     }
     public function search($id)
     {
-        // $roles = User::find($id)->roles->map(function($role){
-        //     return  "<option selected value='$role->id'>$role->name</option>";
-        // });
         $roles = User::find($id)->roles->pluck('id');
         return response()->json([
             'code' => 200,

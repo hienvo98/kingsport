@@ -23,7 +23,8 @@
     <!-- Start::row-1 -->
     <div class="row">
         <div class="col-xl-12">
-            <form class="form-create" data-route="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="form-create" data-route="{{ route('admin.post.store') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf()
                 <div class="row">
                     <div class="col-xl-12">
@@ -46,7 +47,8 @@
                                             </li>
                                             <li class="nav-item m-1">
                                                 <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="image"
-                                                    href="#image" aria-selected="true">Sản Phẩm Liên Quan Bài Viết</a>
+                                                    href="#image" aria-selected="true">Sản Phẩm và Tags Liên Quan Bài
+                                                    Viết</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -98,6 +100,18 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
+                                                        <div class="col-xl-12">
+                                                            <label for="blog-category" class="form-label">Chọn Tag Bài
+                                                                Viết</label>
+                                                            <select class="form-control" name="tag_id" data-trigger
+                                                                name="blog-category" id="blog-category">
+                                                                <option value="">Select Tag</option>
+                                                                @foreach ($tags as $tag)
+                                                                    <option value="{{ $tag->id }}">{{ $tag->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                         <div class="col-xl-6">
                                                             <label for="seo-title" class="form-label">Seo Title</label>
                                                             <input type="text" name="seo_title" class="form-control"
@@ -113,13 +127,16 @@
                                                         <div class="col-xl-3">
                                                             <label for="seo-keyword" class="form-label">Seo
                                                                 Keyword</label>
-                                                            <input type="text" name="seo_keywords" class="form-control"
-                                                                id="seo_keyword" placeholder="Enter Name">
+                                                            <input type="text" name="seo_keywords"
+                                                                class="form-control" id="seo_keyword"
+                                                                placeholder="Enter Name">
                                                         </div>
                                                         <div class="col-xl-3">
-                                                            <label for="publish-date" class="form-label">Ngày xuất bản</label>
-                                                            <input type="text" value="" name="publish_date" class="form-control" id="publish-date"
-                                                                value="" placeholder="Choose date">
+                                                            <label for="publish-date" class="form-label">Ngày xuất
+                                                                bản</label>
+                                                            <input type="text" value="" name="publish_date"
+                                                                class="form-control" id="publish-date" value=""
+                                                                placeholder="Choose date">
                                                         </div>
                                                         <div class="col-xl-3">
                                                             <label for="product-status-add" class="form-label">Trạng thái
@@ -144,19 +161,22 @@
                                                         <div class="col-xl-8">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Thumbnail</label>
-                                                            <input type="file" class="form-control thumbnail" name="thumbnailArticle"
-                                                                id="thumbnail" placeholder="Thumbnail" required>
+                                                            <input type="file" class="form-control thumbnail"
+                                                                name="thumbnailArticle" id="thumbnail"
+                                                                placeholder="Thumbnail" required>
                                                         </div>
                                                         <div class="col-xl-2">
                                                             <label for="" class="form-label">Ảnh
                                                                 Thumbnail</label><br>
-                                                            <img id="thumbnailImg" style="display: none" src="" alt=" Chưa Có Ảnh..."
+                                                            <img id="thumbnailImg" style="display: none" src=""
+                                                                alt=" Chưa Có Ảnh..."
                                                                 class="img-fluid img-thumbnail rounded">
                                                         </div>
                                                         <div class="col-xl-12">
-                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô tả Ngắn</label>
-                                                            <textarea class="form-control" name="description"  id="exampleFormControlTextarea1" rows="3"></textarea>
-                                                          </div>
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Mô
+                                                                tả Ngắn</label>
+                                                            <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,7 +208,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="tab-pane p-0" id="image" role="tabpanel">
                             <div class="row">
                                 <div class="p-4">
@@ -198,9 +217,6 @@
                                                 <div class="card-body p-0">
                                                     <div class="row gy-3 p-3">
                                                         <div class="col-xl-12 my-3">
-
-
-
                                                             <div class="row">
                                                                 <div class="col-xl-12">
                                                                     <div class="card custom-card">
@@ -215,7 +231,6 @@
                                                                             <select data-trigger class="form-control"
                                                                                 name="products[]"
                                                                                 id="choices-multiple-groups" multiple>
-
                                                                                 <option value="">Chọn Sản Phẩm
                                                                                 </option>
                                                                                 @if (!$category->isEmpty())
@@ -238,8 +253,37 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-xl-12">
+                                                                    <div class="card custom-card">
+                                                                        <div
+                                                                            class="card-header d-flex align-items-center justify-content-between">
+                                                                            <h6 class="card-title">Danh Sách Tags</h6>
+                                                                        </div>
+                                                                        <div class="card-body">
 
+                                                                            <p class="fw-semibold mb-2">Có Thể Chọn Nhiều
+                                                                                Sản Phẩm</p>
+                                                                            <select data-trigger class="form-control"
+                                                                                name="tags[]"
+                                                                                id="choices-multiple-groups" multiple>
+                                                                                <option value="">Chọn Sản Phẩm
+                                                                                </option>
+                                                                                @if (!$tags->isEmpty())
+                                                                                    <optgroup label="Danh sách tags">
+                                                                                        @foreach ($tags as $tag)
+                                                                                                <option
+                                                                                                    data-value="{{ $tag->id }}"
+                                                                                                    value="{{ $tag->name }}">
+                                                                                                    {{ $tag->name }}
+                                                                                                </option>
+                                                                                        @endforeach
+                                                                                    </optgroup>
+                                                                                @endif
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

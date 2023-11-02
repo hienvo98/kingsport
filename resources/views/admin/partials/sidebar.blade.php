@@ -128,6 +128,7 @@
                     </li>
                 @endcan
                 <!-- Start::slide -->
+
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class="bx bxl-product-hunt side-menu__icon"></i>
@@ -169,6 +170,21 @@
                                 </ul>
                             </li>
                         @endcanany
+                    </ul>
+                </li>
+                <li class="slide has-sub">
+                    <a href="javascript:void(0);" class="side-menu__item">
+                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <span class="side-menu__label">Tìm Kiếm Nhiều Nhất</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+                    <ul class="slide-menu child1">
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.topsearch.index') }}" class="side-menu__item">Danh Sách</a>
+                        </li>
+                        {{-- <li class="slide has-sub">
+                            <a href="{{ route('admin.showroom.create') }}" class="side-menu__item">Tạo showroom</a>
+                        </li> --}}
                     </ul>
                 </li>
                 <!-- card -->
@@ -221,6 +237,16 @@
                                 <a href="javascript:void(0)">Bài Viết</a>
                             </li>
                             <li class="slide has-sub">
+                                <a href="javascript:void(0);" class="side-menu__item">Tag Bài Viết
+                                    <i class="fe fe-chevron-right side-menu__angle"></i></a>
+                                <ul class="slide-menu child2">
+                                    <li class="slide">
+                                        <a href="{{ route('admin.tag.index') }}" class="side-menu__item">Danh
+                                            Sách Tag bài viết</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="slide has-sub">
                                 <a href="javascript:void(0);" class="side-menu__item">Thông Tin Bài Viết
                                     <i class="fe fe-chevron-right side-menu__angle"></i></a>
                                 <ul class="slide-menu child2">
@@ -236,7 +262,7 @@
                         </ul>
                     </li>
                 @endcanany
-                <!-- showrooms -->              
+                <!-- showrooms -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class='bx bxs-store-alt side-menu__icon'></i>
@@ -255,7 +281,7 @@
                 </li>
                 <!-- End::slide -->
 
-                <!-- FAQ -->            
+                <!-- FAQ -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class='bx bx-question-mark side-menu__icon'></i>
@@ -282,15 +308,15 @@
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
 
-                        <ul class="slide-menu child1">
-                            <li class="slide has-sub">
-                                <a href="{{ route('admin.event.index') }}" class="side-menu__item">Danh Sách</a>
-                            </li>
-                            <li class="slide has-sub">
-                                <a href="{{ route('admin.event.create') }}" class="side-menu__item">Tạo Sự Kiện</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <ul class="slide-menu child1">
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.event.index') }}" class="side-menu__item">Danh Sách</a>
+                        </li>
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.event.create') }}" class="side-menu__item">Tạo Sự Kiện</a>
+                        </li>
+                    </ul>
+                </li>
                 <!-- end event -->
                 <!-- voucher -->
                 <li class="slide has-sub">

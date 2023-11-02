@@ -30,28 +30,32 @@ class SubCategoryControlelr extends Controller
      */
     public function store(Request $request)
     {
-        $subCate = new SubCategory();
-        $subCate->category_id = $request -> category_id;
-        $subCate->name = $request -> sub_category_name;
-        $subCate->ordinal_number = $request->sub_ordinal_number;
-        $subCate->status = $data['status']= true ? '1': '0';
-        if(!empty($request->avatar)){
-            $pathImage = ImageStorageLibrary::storeImage($request->avatar,"category/{$request->category_name}/avatarSub/{$request->sub_category_name}");
-            $subCate->avatar = basename($pathImage);
+        try {
+            $subCate = new SubCategory();
+            $subCate->category_id = $request->category_id;
+            $subCate->name = $request->sub_category_name;
+            $subCate->ordinal_number = $request->sub_ordinal_number;
+            $subCate->status = $data['status'] = true ? '1' : '0';
+            if (!empty($request->avatar)) {
+                $pathImage = ImageStorageLibrary::storeImage($request->avatar, "category/{$request->category_name}/avatarSub/{$request->sub_category_name}");
+                $subCate->avatar = basename($pathImage);
+            }
+            if ($subCate->save()) {
+                return response([
+                    'code' => 200,
+                    'message' => 'Success',
+                    'data' => $subCate,
+                ]);
+            } else {
+                return response([
+                    'code' => 401,
+                    'message' => 'Failure',
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        if($subCate->save()) {
-            return response([
-                'code' => 200,
-                'message' =>'Success',
-                'data' =>$subCate,
-            ]);
-        }else{
-            return response([
-                'code' => 401,
-                'message' =>'Failure',
-            ]);
-        }
-
     }
 
     /**
@@ -86,10 +90,16 @@ class SubCategoryControlelr extends Controller
         //
     }
 
-    public function getRank(Request $request){
-        return response() -> json([
-            'code' => 200,
-            'messages' => SubCategory::where('category_id',$request->categoryId)->count()
-        ],200);
+    public function getRank(Request $request)
+    {
+        try {
+            return response()->json([
+                'code' => 200,
+                'messages' => SubCategory::where('category_id', $request->categoryId)->count()
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

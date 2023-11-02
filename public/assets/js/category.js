@@ -139,16 +139,17 @@ $(document).ready(function () {
     
     $(`form#categoryForm`).submit(function(e){
         e.preventDefault();
+        var route = $(this).data('route');
         var formData = new FormData(this);
         $.ajax({
-            url: '/admin/category/store',
+            url: route,
             type: 'post',
             processData: false,
             contentType: false,
             data: formData,
             success: function (response) {
-                // console.log(response)
                 $("#createModal").modal("hide");
+                // console.log(response);
                 $(`#success`).click();
             },
             error: function (error) {

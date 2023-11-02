@@ -49,32 +49,33 @@ class ShowroomController extends Controller
      */
     public function store(ShowroomCreateRequest $request)
     {
-        $thumbnail = $request->file('imageThumb');
-        if ($thumbnail) {
-            if (!MimeChecker::isImage($thumbnail->getPathname())) {
-                return response()->json(['message' => 'Tệp không hợp lệ. Chỉ cho phép tải lên hình ảnh dưới 3MB.'], 400);
-            } else {
+        try {
+            $thumbnail = $request->file('imageThumb');
+            if ($thumbnail) {
                 $imagePath = $this->imageStorage->storeImage($thumbnail, 'showroom-images/' . $request->input('name') . '/' . 'thumbnail');
                 $fileName = basename($imagePath);
                 $request->merge(['thumbnail' => $fileName]);
             }
-        }
-        if ($request->hasFile('images_detail')) {
-            $images = $request->file('images_detail');
-            $imageList = [];
-            foreach ($images as $image) {
-                $imagePath = $this->imageStorage->storeImage($image, 'showroom-images/' . $request->input('name') . '/images-detail', $fileName);
-                $imageList[] =  basename($imagePath);
+            if ($request->hasFile('images_detail')) {
+                $images = $request->file('images_detail');
+                $imageList = [];
+                foreach ($images as $image) {
+                    $imagePath = $this->imageStorage->storeImage($image, 'showroom-images/' . $request->input('name') . '/images-detail', $fileName);
+                    $imageList[] =  basename($imagePath);
+                }
+                $request->merge(['images' => serialize($imageList)]);
             }
-            $request->merge(['images' => serialize($imageList)]);
-        }
 
-        if (ShowRoom::create($request->all())) {
-            return response([
-                'status' => 'success',
-                'code' => 200,
-                'messages' => 'đã thêm showroom thành công'
-            ]);
+            if (ShowRoom::create($request->all())) {
+                return response([
+                    'status' => 'success',
+                    'code' => 200,
+                    'messages' => 'đã thêm showroom thành công'
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -105,29 +106,34 @@ class ShowroomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $showroom = ShowRoom::find($id);
-        if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
-        if ($request->title != $showroom->name) {
-            //đổi tên thư mục lưu ảnh
-            ImageStorageLibrary::updateNameFolder('showroom-images', $showroom->name, $request->name);
-        }
-        if ($request->imageThumb) {
-            //xoá và lưu thumbnail mới
-            $newPath = ImageStorageLibrary::processImageUpdate($request->imageThumb, 'showroom-images', $request->name, 'thumbnail', $showroom->thumbnail);
-            $request->merge(["thumbnail" => basename($newPath)]);
-        }
-        if ($request->images_detail) {
-            $directoryImagesDetail = public_path("storage/uploads/showroom-images/$request->name/images-detail"); //lấy đường dẫn thư mục
-            ImageStorageLibrary::deleteFolder($directoryImagesDetail); //xoá thư mục lưu ảnh hiện tại
-            $listImagesName = [];
-            foreach ($request->images_detail as $image) {
-                $path = ImageStorageLibrary::storeImage($image, "showroom-images/$request->name/images-detail"); // tạo thư mục và cập nhật ảnh mới
-                $listImagesName[] = basename($path);
+        try {
+            $showroom = ShowRoom::find($id);
+            if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
+            if ($request->title != $showroom->name) {
+                //đổi tên thư mục lưu ảnh
+                ImageStorageLibrary::updateNameFolder('showroom-images', $showroom->name, $request->name);
             }
-            $request->merge(['images' => serialize($listImagesName)]);
+            if ($request->imageThumb) {
+                //xoá và lưu thumbnail mới
+                $newPath = ImageStorageLibrary::processImageUpdate($request->imageThumb, 'showroom-images', $request->name, 'thumbnail', $showroom->thumbnail);
+                $request->merge(["thumbnail" => basename($newPath)]);
+            }
+            if ($request->images_detail) {
+                $directoryImagesDetail = public_path("storage/uploads/showroom-images/$request->name/images-detail"); //lấy đường dẫn thư mục
+                ImageStorageLibrary::deleteFolder($directoryImagesDetail); //xoá thư mục lưu ảnh hiện tại
+                $listImagesName = [];
+                foreach ($request->images_detail as $image) {
+                    $path = ImageStorageLibrary::storeImage($image, "showroom-images/$request->name/images-detail"); // tạo thư mục và cập nhật ảnh mới
+                    $listImagesName[] = basename($path);
+                }
+                $request->merge(['images' => serialize($listImagesName)]);
+            }
+            $showroom->update($request->all());
+            return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $showroom->update($request->all());
-        return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
     }
 
     /**
@@ -135,45 +141,61 @@ class ShowroomController extends Controller
      */
     public function destroy(string $id)
     {
-        $showroom = ShowRoom::find($id);
-        if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
-        $showroom->status = 'off';
-        $showroom->save();
-        return response(['code' => 200, 'messages' => 'đã xoá showroom thành công'], 200);
+
+        try {
+            $showroom = ShowRoom::find($id);
+            if (empty($showroom)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy showroom'], 404);
+            $showroom->status = 'off';
+            $showroom->save();
+            return response(['code' => 200, 'messages' => 'đã xoá showroom thành công'], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
-    public function filterShowroomAjax($id='')
+    public function filterShowroomAjax($id = '')
     {
-        if($id){
-            $region = Regions::find($id);
-            if (empty($region)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy khu vực'], 404);
-            $showrooms = ShowRoom::where('region_id', $id)->paginate(9);
-        }else{
-            $showrooms = ShowRoom::paginate(9);
+        try {
+            if ($id) {
+                $region = Regions::find($id);
+                if (empty($region)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy khu vực'], 404);
+                $showrooms = ShowRoom::where('region_id', $id)->paginate(9);
+            } else {
+                $showrooms = ShowRoom::paginate(9);
+            }
+            $showrooms_on_html = $showrooms->where('status', 'on');
+            $showrooms_off_html = $showrooms->where('status', 'off');
+            return response()->json([
+                'code' => '200',
+                'all' =>  $this->get_card_html($showrooms, 'current'),
+                'on' => $this->get_card_html($showrooms_on_html, 'current'),
+                'off' => $this->get_card_html($showrooms_off_html, 'current'),
+                'nav' => $this->get_nav($showrooms, $id)
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $showrooms_on_html = $showrooms->where('status', 'on');
-        $showrooms_off_html = $showrooms->where('status', 'off');
-        return response()->json([
-            'code' => '200',
-            'all' =>  $this->get_card_html($showrooms, 'current'),
-            'on' => $this->get_card_html($showrooms_on_html, 'current'),
-            'off' => $this->get_card_html($showrooms_off_html, 'current'),
-            'nav' => $this->get_nav($showrooms, $id)
-        ], 200);
     }
 
     public function search(Request $request)
     {
-        $keywords = $request->keywords;
-        $showrooms = ShowRoom::where('name', 'like', "%$keywords%")->get();
-        $showrooms_on_html = $showrooms->where('status', 'on');
-        $showrooms_off_html = $showrooms->where('status', 'off');
-        return response()->json([
-            'code' => '200',
-            'all' =>  $this->get_card_html($showrooms, 'search'),
-            'on' => $this->get_card_html($showrooms_on_html, 'search'),
-            'off' => $this->get_card_html($showrooms_off_html, 'search'),
-        ], 200);
+        try {
+            $keywords = $request->keywords;
+            $showrooms = ShowRoom::where('name', 'like', "%$keywords%")->get();
+            $showrooms_on_html = $showrooms->where('status', 'on');
+            $showrooms_off_html = $showrooms->where('status', 'off');
+            return response()->json([
+                'code' => '200',
+                'all' =>  $this->get_card_html($showrooms, 'search'),
+                'on' => $this->get_card_html($showrooms_on_html, 'search'),
+                'off' => $this->get_card_html($showrooms_off_html, 'search'),
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
 
