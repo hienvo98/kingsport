@@ -88,7 +88,7 @@
                 @can('Super Admin')
                     <li class="slide has-sub">
                         <a href="javascript:void(0);" class="side-menu__item">
-                            <i class="bx bx-file-blank side-menu__icon"></i>
+                            <i class="bx bxs-analyse side-menu__icon"></i>
                             <span class="side-menu__label">Quản Lý Hệ Thống</span>
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
@@ -130,7 +130,7 @@
                 <!-- Start::slide -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
+                        <i class="bx bxl-product-hunt side-menu__icon"></i>
                         <span class="side-menu__label">Quản Lý Sản Phẩm</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -174,7 +174,7 @@
                 <!-- card -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-cart side-menu__icon'></i>
                         <span class="side-menu__label">Quản Lý Đơn Hàng</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -192,7 +192,7 @@
                 <!-- card -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-user-pin side-menu__icon'></i>
                         <span class="side-menu__label">Quản Trị Người Dùng</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -239,7 +239,7 @@
                 <!-- showrooms -->              
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-store-alt side-menu__icon'></i>
                         <span class="side-menu__label">Showroom</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -258,7 +258,7 @@
                 <!-- FAQ -->            
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bx-question-mark side-menu__icon'></i>
                         <span class="side-menu__label">FAQ</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -277,7 +277,7 @@
                 <!-- Event -->
                 <li class="slide has-sub">
                         <a href="javascript:void(0);" class="side-menu__item">
-                            <i class='bx bxl-blogger side-menu__icon'></i>
+                            <i class='bx bxs-calendar-event side-menu__icon'></i>
                             <span class="side-menu__label">Sự Kiện</span>
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
