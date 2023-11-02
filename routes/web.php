@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
@@ -133,6 +134,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::post('/update/{id}',[EventController::class,'update'])->name('event.update');
         Route::get('/delete/{id}',[EventController::class,'destroy'])->name('event.destroy');
         Route::get('/search',[EventController::class,'search']);
+    });
+
+    Route::prefix('/voucher')->group(function(){
+        Route::get('/index',[VoucherController::class,'index'])->name('voucher.index');
+        Route::get('/create',[VoucherController::class,'create'])->name('voucher.create');
+        Route::post('/store',[VoucherController::class,'store'])->name('voucher.store');
+        Route::get('/edit/{id}',[VoucherController::class,'edit'])->name('voucher.edit');
+        Route::post('/update/{id}',[VoucherController::class,'update'])->name('voucher.update');
+        Route::get('/delete/{id}',[VoucherController::class,'destroy'])->name('voucher.destroy');
+        Route::get('/search',[VoucherController::class,'search']);
     });
 
     Route::post('/authorizeUser',[AdminController::class,'authorizeUser']);

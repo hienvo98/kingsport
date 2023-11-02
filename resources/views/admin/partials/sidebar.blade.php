@@ -88,7 +88,7 @@
                 @can('Super Admin')
                     <li class="slide has-sub">
                         <a href="javascript:void(0);" class="side-menu__item">
-                            <i class="bx bx-file-blank side-menu__icon"></i>
+                            <i class="bx bxs-analyse side-menu__icon"></i>
                             <span class="side-menu__label">Quản Lý Hệ Thống</span>
                             <i class="fe fe-chevron-right side-menu__angle"></i>
                         </a>
@@ -131,7 +131,7 @@
 
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class="bx bx-file-blank side-menu__icon"></i>
+                        <i class="bx bxl-product-hunt side-menu__icon"></i>
                         <span class="side-menu__label">Quản Lý Sản Phẩm</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -190,7 +190,7 @@
                 <!-- card -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-cart side-menu__icon'></i>
                         <span class="side-menu__label">Quản Lý Đơn Hàng</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -208,7 +208,7 @@
                 <!-- card -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-user-pin side-menu__icon'></i>
                         <span class="side-menu__label">Quản Trị Người Dùng</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -265,7 +265,7 @@
                 <!-- showrooms -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bxs-store-alt side-menu__icon'></i>
                         <span class="side-menu__label">Showroom</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -284,7 +284,7 @@
                 <!-- FAQ -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bx-question-mark side-menu__icon'></i>
                         <span class="side-menu__label">FAQ</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
@@ -302,11 +302,11 @@
 
                 <!-- Event -->
                 <li class="slide has-sub">
-                    <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
-                        <span class="side-menu__label">Sự Kiện</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
+                        <a href="javascript:void(0);" class="side-menu__item">
+                            <i class='bx bxs-calendar-event side-menu__icon'></i>
+                            <span class="side-menu__label">Sự Kiện</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
 
                     <ul class="slide-menu child1">
                         <li class="slide has-sub">
@@ -318,6 +318,23 @@
                     </ul>
                 </li>
                 <!-- end event -->
+                <!-- voucher -->
+                <li class="slide has-sub">
+                        <a href="javascript:void(0);" class="side-menu__item">
+                            <i class='bx bxs-discount side-menu__icon'></i>
+                            <span class="side-menu__label">Khuyến Mãi </span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+                        <ul class="slide-menu child1">
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.voucher.index') }}" class="side-menu__item">Danh Sách</a>
+                            </li>
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.voucher.create') }}" class="side-menu__item">Tạo Khuyến Mãi</a>
+                            </li>
+                        </ul>
+                    </li>
+                <!-- endvoucher -->
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                     width="24" height="24" viewBox="0 0 24 24">
