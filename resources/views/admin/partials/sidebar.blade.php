@@ -174,7 +174,7 @@
                 </li>
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
-                        <i class='bx bxl-blogger side-menu__icon'></i>
+                        <i class='bx bx-search side-menu__icon'></i>
                         <span class="side-menu__label">Tìm Kiếm Nhiều Nhất</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
