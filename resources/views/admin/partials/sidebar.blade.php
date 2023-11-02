@@ -292,6 +292,23 @@
                         </ul>
                     </li>
                 <!-- end event -->
+                <!-- voucher -->
+                <li class="slide has-sub">
+                        <a href="javascript:void(0);" class="side-menu__item">
+                            <i class='bx bxs-discount side-menu__icon'></i>
+                            <span class="side-menu__label">Khuyến Mãi </span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+                        <ul class="slide-menu child1">
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.voucher.index') }}" class="side-menu__item">Danh Sách</a>
+                            </li>
+                            <li class="slide has-sub">
+                                <a href="{{ route('admin.voucher.create') }}" class="side-menu__item">Tạo Khuyến Mãi</a>
+                            </li>
+                        </ul>
+                    </li>
+                <!-- endvoucher -->
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                     width="24" height="24" viewBox="0 0 24 24">
