@@ -29,6 +29,15 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive mb-4">
+                        <div class="mb-3 border-bottom border-block-end-dashed">
+                            <div class="input-group">
+                                <input type="text" id="search" data-route="{{ url('/admin/product/search') }}"
+                                    class="form-control bg-light border-0" placeholder="Tìm Tên sản phẩm"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-light" type="button" id="button-addon2"><i
+                                        class="ri-search-line text-muted"></i></button>
+                            </div>
+                        </div>
                         <table class="table text-nowrap table-bordered">
                             <thead>
                                 <tr>
@@ -49,7 +58,7 @@
                             <tbody>
                                 @if (!empty($products))
                                     @foreach ($products as $item)
-                                        <tr class="product-list">
+                                        <tr class="product-list current">
                                             {{-- <td class="product-checkbox"><input class="form-check-input" type="checkbox"
                                                     id="product1" value="" aria-label="..."></td> --}}
                                             <td>

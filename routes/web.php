@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
         Route::post('/update/{id}',[ProductController::class,'update'])->name('product.update');
         Route::get('/delete/{productId}',[ProductController::class,'destroy'])->name('product.destroy');
+        Route::get('/search',[ProductController::class,'search']);
     });
 
     Route::prefix('/role')->group(function(){

@@ -22,7 +22,7 @@
                         Danh Sách Tìm Kiếm Nhiều Nhất
                     </div>
                     <div class="header-element header-search" style="width:40%">
-                        <input type="search" id="search" data-route="{{ url('admin/tag/search') }}" data-type-name="Category" style="background-color: #F0F1F7" name="category"
+                        <input type="search" id="search" data-route="{{ url('admin/topsearch/search') }}" data-type-name="Category" style="background-color: #F0F1F7" name="category"
                             class="form-control border-0 px-2 " placeholder="Tìm Kiếm" aria-label="Username">
                         <!-- End::header-link -->
                     </div>
@@ -32,7 +32,7 @@
                         <table class="table text-nowrap table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align: center;">Tag Bài Viết</th>
+                                    <th scope="col" style="text-align: center;">Tag Tìm kiếm</th>
                                     {{-- <th scope="col">Danh Mục Thuộc Tính</th> --}}
                                     {{-- <th scope="col">Thứ tự</th> --}}
                                     <th scope="col" style="text-align: center;">Trạng Thái</th>

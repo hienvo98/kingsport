@@ -335,7 +335,7 @@
                                                                             data-color-1="{{ isset($product->colors[0]) ? $product->colors[0]->name : '' }}"
                                                                             data-color-2="{{ isset($product->colors[1]) ? $product->colors[1]->name : '' }}"
                                                                             data-color-3="{{ isset($product->colors[2]) ? $product->colors[2]->name : '' }}"
-                                                                            id="avatar" name="avatar"
+                                                                            id="avatar" name="avatarThumb"
                                                                             data-color="avatar"
                                                                             class="product-Images form-control "
                                                                             data-allow-reorder="true"

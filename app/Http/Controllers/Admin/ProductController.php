@@ -66,13 +66,13 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
+            // dd($request->all());
             $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'products', $request->name);
             $request->merge(['description' => $desctiption]);
-            $list_color_image = $request->file();
-            $avatarPath = ImageStorageLibrary::storeImage($list_color_image['avatarThumb'], "products/{$request->name}/avatar");
+            $list_image_path = $request->file();
+            $avatarPath = ImageStorageLibrary::storeImage($list_image_path['avatarThumb'], "products/{$request->name}/avatar");
             $request->merge(['avatar' => basename($avatarPath)]);
-            $subCategory_id = serialize($request->subCat);
-            $request->merge(['subCategory_id' => $subCategory_id]);
+            $request->merge(['subCategory_id' => serialize($request->subCat)]);
             $product = Product::create($request->all());
             $listColor = [
                 'red' => '#FF0000',
@@ -83,8 +83,8 @@ class ProductController extends Controller
                 'brown' => '#A52A2A'
             ];
             $count = 0;
-            if ($list_color_image) {
-                foreach ($list_color_image['image_color'] as $color => $list_image) {
+            if (!empty($list_image_path['image_color'])) {
+                foreach ($list_image_path['image_color'] as $color => $list_image) {
                     //tạo các phiên bản màu của sản phẩm
                     if ($color) {
                         $ver_color = color_version::create([
@@ -142,11 +142,8 @@ class ProductController extends Controller
             }
         }])->with('colors', 'colors.images')->find($id);
         if (!$product) abort(404);
-        preg_match_all('/<img[^>]+src="([^"]+)"/', $product->description, $matches);
-        foreach ($matches[1] as $imagePath) {
-            $product->description = str_replace($imagePath, url("storage/uploads/products/$product->name/content/$imagePath"), $product->description);
-        }
-
+        $contentUpdateUrl = ImageStorageLibrary::updateUrlContent($product->description, 'products', $product->name);
+        $product->description = $contentUpdateUrl;
         $color_ver = [];
         foreach ($product->colors as $color) {
             $color_ver[$color->name] = unserialize($color->images->url);
@@ -178,121 +175,19 @@ class ProductController extends Controller
             $product = Product::with('category')->with('colors', 'colors.images')->find($id);
             //sử lý khi không tìm thấy sản phẩm
             if (!$product) return response()->json(['code' => 404, 'messages' => 'Không Tìm Thấy Sản Phẩm'], 404);
-            //xử lý khi tên sản phẩm thay đổi
-            if ($product->name != $request->name) {
-                //sử lý đổi tên thư mục chứa ảnh của sản phẩm
-                $oldNameDirectory = public_path("storage/uploads/products/$product->name");
-                $newNameDirectory = public_path("storage/uploads/products/$request->name");
-                File::move($oldNameDirectory, $newNameDirectory);
-                $product->name = $request->name;
-                $product->save();
+            //xử lý đổi tên thư mục lưu ảnh khi tên sản phẩm thay đổi
+            $product->name != $request->name ? ImageStorageLibrary::updateNameFolder('products', $product->name, $request->name) : '';
+            // xử lý ảnh avatar nếu có thay đổi
+            if ($request->avatarThumb) {
+                $newImagePath = ImageStorageLibrary::processImageUpdate($request->avatarThumb, 'products', $request->name, 'avatar', $product->avatar);
+                $request->merge(['avatar' => basename($newImagePath)]);
             }
-
-            $desc = $request->desc;
-            //xoá ảnh trong 
-
-            preg_match_all('/<img[^>]+src="([^"]+)"/', $desc, $matches);
-            //tạo thư mục lưu trữ tạm thời ảnh của content
-            $newFolderConent = public_path("storage/uploads/products/$product->name/content2");
-            if (!File::isDirectory($newFolderConent)) {
-                File::makeDirectory($newFolderConent, 0755, true);
-            }
-            foreach ($matches[1] as $key => $path) {
-                $nameImage = basename($path);
-                $oldPath = public_path("storage/uploads/products/$product->name/content/$nameImage");
-                if (file_exists($oldPath)) {
-                    $destinationPath = public_path("storage/uploads/products/$product->name/content2/$nameImage");
-                    File::copy($oldPath, $destinationPath);
-                    $desc = str_replace($path, $nameImage, $desc);
-                    unset($matches[1][$key]);
-                };
-            }
-
-            foreach ($matches[1] as $imagePath) {
-                $newImagePath = $this->storeImage($imagePath, $request->input('name'), 'content2');
-                // Lấy tên tệp hình ảnh từ đường dẫn
-                $imageName = pathinfo($newImagePath, PATHINFO_BASENAME);
-                // Thay thế đường dẫn bằng tên tệp hình ảnh
-                $desc = str_replace($imagePath, $imageName, $desc);
-            }
-
-            //xoá thư mục content củ
-            $directory = public_path("storage/uploads/products/$product->name/content");
-            if (File::isDirectory($directory)) File::deleteDirectory($directory);
-            //lấy thư mục vừa lưu ảnh trong content
-            $temporaryDirectory = public_path("storage/uploads/products/$product->name/content2");
-            //đổi tên thư mục tạm thời lại thành content 
-            File::move($temporaryDirectory, $directory);
-            $product->description = $desc;
-            // xử lý ảnh avatar
-            if ($request->avatar) {
-                if (file_exists(public_path("storage/uploads/products/$product->name/avatar/$product->avatar"))) {
-                    unlink(public_path("storage/uploads/products/$product->name/avatar/$product->avatar"));
-                    $pathAvatar = ImageStorageLibrary::storeImage($request->avatar, "products/$product->name/avatar");
-                    $product->avatar = basename($pathAvatar);
-                }
-            }
-
-            //sử lý đổi màu sản phẩm
-            foreach ($request->color as $key => $color) {
-                if (!empty($color)) {
-                    if (!empty($product->colors[$key])) {
-                        $oldColor = $product->colors[$key]->name;
-                        $oldColorDirectory = public_path("storage/uploads/products/$product->name/$oldColor");
-                        $newColorDirectory = public_path("storage/uploads/products/$product->name/$color");
-                        if (File::isDirectory($oldColorDirectory)) {
-                            File::move($oldColorDirectory, $newColorDirectory);
-                            $color_ver = color_version::where(function ($query) use ($product, $oldColor) {
-                                $query->where('product_id', $product->id)->where('name', $oldColor);
-                            })->first();
-                            $color_ver->name = $color;
-                            $color_ver->save();
-                        }
-                    } else {
-                        $listColor = [
-                            'red' => '#FF0000',
-                            'gray' => '#808080',
-                            'white' => '#FFFFFF',
-                            'beige' => '#F5F5DC',
-                            'black' => '#000000',
-                            'brown' => '#A52A2A'
-                        ];
-                        $color_ver =  color_version::create([
-                            'product_id' => $product->id,
-                            'name' => $color,
-                            'code_color' => $listColor[$color]
-                        ]);
-                        image_service::create([
-                            'color_ver_id' => $color_ver->id,
-                        ]);
-                        File::makeDirectory(public_path("storage/uploads/products/$product->name/$color"), 0755, true);
-                    }
-                }
-            }
-            //xử lý khi upload ảnh mới
-            if ($request->image_color) {
-                foreach ($request->image_color as $color => $images) {
-                    if (!empty($images)) {
-                        if (File::isDirectory(public_path("storage/uploads/products/$product->name/$color"))) {
-                            File::deleteDirectory(public_path("storage/uploads/products/$product->name/$color"));
-                        }
-                        $url = [];
-                        foreach ($images as $image) {
-                            $path = ImageStorageLibrary::storeImage($image, "products/$product->name/$color");
-                            $url[] = basename($path);
-                        }
-                        $color_ver = color_version::where(function ($query) use ($product, $color) {
-                            $query->where('product_id', $product->id)->where('name', $color);
-                        })->first();
-                        $image_service = image_service::where('color_ver_id', $color_ver->id)->first();
-                        $image_service->url = serialize($url);
-                        $image_service->save();
-                    }
-                }
-            }
-            $subCategory_id = serialize($request->subCat);
-            $request->merge(['subCategory_id' => $subCategory_id]);
-            $product->update($request->except(['name', 'avatar']));
+            //xử lý bài viết và lưu lại ảnh mới
+            $request->merge(['description' => ImageStorageLibrary::processAndSaveImagesInContentUpdate($request->desc, 'products', $request->name)]);
+            //sử lý màu sản phẩm và list ảnh sp theo màu
+            $this->updateColorVerAndStoreImageByColorVer($request->color, $product, $request->image_color);
+            $request->merge(['subCategory_id' => serialize($request->subCat)]); //lưu danh sách subCate
+            $product->update($request->all());
             return response()->json(['code' => 200, 'messages' => 'đã cập nhật thành công'], 200);
         } catch (\Exception $e) {
             // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
@@ -323,11 +218,156 @@ class ProductController extends Controller
         }
     }
 
-    private function storeImage($imagePath, $title, $directory)
+    public function search(Request $request)
     {
-        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagePath));
-        $imageName = time() . '_' . Str::random(10) . '.png';
-        Storage::disk('public')->put('uploads/products/' . $title . "/$directory/" . $imageName, $imageData);
-        return asset('storage/uploads/products/' . $imageName);
+        $keywords = $request->keywords;
+        $products = Product::with('category')->where('name', 'like', "%$keywords%")->get();
+        $productSearch = $products->map(function ($product) {
+            if (isset($product->subCategory_id) && is_array(unserialize($product->subCategory_id))) {
+                return Product::with(['category.subCategory' => function ($query) use ($product) {
+                    $query->whereIn('id', unserialize($product->subCategory_id));
+                }])->find($product->id);
+            } else {
+                $product->category->subCategory = collect();
+                return $product;
+            }
+        });
+        return response() -> json([
+            'code'=>200,
+            'html'=>$this->get_html($productSearch,'search')
+        ],200);
+        // dd($productSearch);
+    }
+
+    private function get_html($products,$flag)
+    {
+        $html = '';
+        foreach ($products as $product) {
+            $categoryName=  $product->category->name;
+            $pathAvatar = url("storage/uploads/products/$product->name/avatar/$product->avatar");
+            $sale_price = $product->sale_price > 0 ? number_format($product->regular_price, 0, '', '.') . ' đ' : '';
+            $regular_price = $product->sale_price > 0 ? number_format($product->sale_price, 0, '', '.') . ' đ' : number_format($product->regular_price, 0, '', '.') . ' đ';
+            $routeEdit = route('admin.product.edit',['id'=>$product->id]);
+            $disabled = $product->status=='off'?'disable-link':'';
+            $status = $product->status == 'on'?"<span class='badge bg-success-transparent'>Bật</span>":"<span class='badge bg-danger-transparent'>Tắt</span>";
+            $SubcategoryHtml = '';
+            if(!$product->category->subCategory->isEmpty()){
+                foreach($product->category->subCategory as $subCat){
+                    $SubcategoryHtml.="<span
+                    class='badge bg-light text-default'>$subCat->name</span><br>";
+                }
+            }else{
+                $SubcategoryHtml .= "<span class='badge bg-light text-default'>Không Có</span>";
+            };
+            
+            $html .= "<tr class='product-list $flag'>
+            <td>
+            <div class='d-flex align-items-center'>
+            <div class='me-2'>
+                <span class='avatar avatar-md avatar-rounded'>
+                    <img src='$pathAvatar'
+                        alt=''>
+                </span>
+            </div>
+            <div class='fw-semibold'>
+                $product->name
+            </div>
+        </div>
+
+            </td>
+
+            <td style='text-align: center'>
+                <span class='badge bg-light text-default'>$categoryName</span>
+            </td>
+            <td style='text-align: center' >
+                $SubcategoryHtml
+            </td>
+            <td>
+                <p class='text-danger text-decoration-line-through'>
+                    $sale_price
+                </p>
+                <p class='text-primary'>$regular_price
+                </p>
+            </td>
+            <td> $product->quantity </td>
+            <td>
+                $status
+            </td>
+            <td>
+                <div class='hstack gap-2 fs-15'>
+                    <a href='$routeEdit'
+                        class='btn btn-icon btn-sm btn-info-light'><i
+                            class='ri-edit-line'></i></a>
+                            <a href=''
+                            class='btn btn-icon btn-sm btn-danger-light product-btn btnDeleteProduct $disabled' data-id='$product->id'><i
+                                class='ri-delete-bin-line'></i></a>
+                </div>
+            </td>
+        </tr>";
+        }
+        return $html;
+    }
+
+    private function updateColorVerAndStoreImageByColorVer($listColor, $product, $listImage)
+    {
+        //sử lý đổi màu sản phẩm
+        foreach ($listColor as $key => $color) {
+            if (!empty($color)) {
+                if (!empty($product->colors[$key])) {
+                    $oldColor = $product->colors[$key]->name;
+                    $oldColorDirectory = public_path("storage/uploads/products/$product->name/$oldColor");
+                    $newColorDirectory = public_path("storage/uploads/products/$product->name/$color");
+                    if (File::isDirectory($oldColorDirectory)) {
+                        File::move($oldColorDirectory, $newColorDirectory);
+                        $color_ver = color_version::where(function ($query) use ($product, $oldColor) {
+                            $query->where('product_id', $product->id)->where('name', $oldColor);
+                        })->first();
+                        $color_ver->name = $color;
+                        $color_ver->save();
+                    }
+                } else {
+                    $listColor = [
+                        'red' => '#FF0000',
+                        'gray' => '#808080',
+                        'white' => '#FFFFFF',
+                        'beige' => '#F5F5DC',
+                        'black' => '#000000',
+                        'brown' => '#A52A2A'
+                    ];
+                    $color_ver =  color_version::create([
+                        'product_id' => $product->id,
+                        'name' => $color,
+                        'code_color' => $listColor[$color]
+                    ]);
+                    image_service::create([
+                        'color_ver_id' => $color_ver->id,
+                    ]);
+                    File::makeDirectory(public_path("storage/uploads/products/$product->name/$color"), 0755, true);
+                }
+            }
+        }
+        //xử lý khi upload ảnh mới
+        if ($listImage) {
+            foreach ($listImage as $color => $images) {
+                if (!empty($images)) {
+                    if (File::isDirectory(public_path("storage/uploads/products/$product->name/$color"))) {
+                        File::deleteDirectory(public_path("storage/uploads/products/$product->name/$color"));
+                    }
+                    $url = [];
+                    foreach ($images as $image) {
+                        $path = ImageStorageLibrary::storeImage($image, "products/$product->name/$color");
+                        $url[] = basename($path);
+                    }
+                    $color_ver = color_version::where(function ($query) use ($product, $color) {
+                        $query->where('product_id', $product->id)->where('name', $color);
+                    })->first();
+                    $image_service = image_service::where('color_ver_id', $color_ver->id)->first();
+                    $image_service->url = serialize($url);
+                    $image_service->save();
+                }
+            }
+        }
     }
 }
+
+

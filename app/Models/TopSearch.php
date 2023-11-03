@@ -9,5 +9,5 @@ class TopSearch extends Model
 {
     use HasFactory;
     protected $table = 'topsearcheds';
-    protected $fillable = ['name','url','seo_title','seo_keywords','seo_description'];
+    protected $fillable = ['name','url','seo_title','seo_keywords','seo_description','status'];
 }

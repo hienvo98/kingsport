@@ -25,7 +25,7 @@ class ProductUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'category_id' => 'required',
             'desc' => 'required|string|min:12',
-            'avatar' => 'image|mimes:jpeg,png,jpg,webp|max:3072',
+            'avatarThumb' => 'image|mimes:jpeg,png,jpg,webp|max:3072',
             'regular_price' => 'required|integer',
             'sale_price' => 'integer',
             'image_color.*' => 'required',
@@ -38,9 +38,9 @@ class ProductUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'avatar.image' => 'file avatar bạn vừa tải không phải là ảnh',
-            'avatar.mines' => 'file avatar có đuôi định là jpeg,png,jpg,gif,webp',
-            'avatar.max' => 'kích thước tối đa file avatar được tải lên là 3MB',
+            'avatarThumb.image' => 'file avatar bạn vừa tải không phải là ảnh',
+            'avatarThumb.mines' => 'file avatar có đuôi định là jpeg,png,jpg,gif,webp',
+            'avatarThumb.max' => 'kích thước tối đa file avatar được tải lên là 3MB',
             'name.required' => 'Tên sản phẩm không được bỏ trống',
             'name.unique' => 'Tên Sản Phẩm Đã Tồn Tại',
             'category_id.required' => 'Danh mục sản phẩm chưa được chọn',

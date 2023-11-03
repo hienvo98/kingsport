@@ -19,8 +19,8 @@ $(document).ready(function () {
                     $('#categories_status option[value=false]').prop('selected', true);
                 }
                 $('#categories_ordinal_number').val('Danh mục thứ ' + data.data.ordinal_number);
-                $('#categories_ordinal_number').prop('disabled',true);
-                $('img#imageCatEdit').attr('src',data.pathImage);
+                $('#categories_ordinal_number').prop('disabled', true);
+                $('img#imageCatEdit').attr('src', data.pathImage);
                 $('img#imageCatEdit').show();
                 $('#category_id').val(data.data.id);
                 $(`input#editNumber`).val(data.data.ordinal_number);
@@ -33,6 +33,8 @@ $(document).ready(function () {
     }
 
     let addSubmodalCategory = function () {
+        $('img#imageCatEdit').val();
+        $('img#imageCatEdit').hide();
         var categoryId = $(this).data('category-id');
         $(`form#sub-categoryForm`).append(`<input type="hidden" name="category_id" value="${categoryId}">`)
         $.ajax({
@@ -40,7 +42,7 @@ $(document).ready(function () {
             type: 'get',
             success: function (data) {
                 $("#sub_ordinal_number").val(`Danh Mục Thuộc Tính Thứ ${data.messages + 1}`);
-                $("#sub_ordinal_number").prop('disabled',true);
+                $("#sub_ordinal_number").prop('disabled', true);
                 $(`input[name=sub_ordinal_number]`).val(data.messages + 1);
             },
             error: function (error) {
@@ -51,8 +53,8 @@ $(document).ready(function () {
         $(`form#sub-categoryForm`).append(`<input type="hidden" name="category_name" value="${categoryName}">`);
         $('#createSubCateModal').modal('show');
         $('#SubCategory_name').val(categoryName);
-        $('#SubCategory_name').prop('disabled',true);
-        $('.btnAddSubCate').attr('data-id',categoryId);
+        $('#SubCategory_name').prop('disabled', true);
+        $('.btnAddSubCate').attr('data-id', categoryId);
     }
 
     $("#openCreateModal").click(function () {
@@ -95,7 +97,7 @@ $(document).ready(function () {
                 $('span#statusCategory-' + categoryId).text('Đã Tắt');
                 $('span#statusCategory-' + categoryId).removeClass('bg-success');
                 $('span#statusCategory-' + categoryId).addClass('bg-danger');
-                $("a#cat-"+categoryId).addClass('disable-link');
+                $("a#cat-" + categoryId).addClass('disable-link');
                 $('#successAlertContainer').removeClass('d-none');
                 setTimeout(function () {
                     $('#successAlertContainer').addClass('d-none');
@@ -107,23 +109,23 @@ $(document).ready(function () {
         });
     });
 
-    $(`input[name=avatar]`).change(function(){
+    $(`input[name=avatar]`).change(function () {
         $(this).next().hide();
-        $(this).next().attr('src',URL.createObjectURL(this.files[0]));
+        $(this).next().attr('src', URL.createObjectURL(this.files[0]));
         $(this).next().show();
     })
 
     $('.btn-edit-category').click(editModalCategory);
 
     //save after edit category
-    $(`form#editCategoryForm`).submit(function(e){
+    $(`form#editCategoryForm`).submit(function (e) {
         e.preventDefault();
         var categoryId = $('#category_id').val();
         var formData = new FormData(this);
         $.ajax({
             url: `category/update/${categoryId}`,
             type: 'post',
-            data:formData,
+            data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
@@ -136,8 +138,8 @@ $(document).ready(function () {
 
         })
     })
-    
-    $(`form#categoryForm`).submit(function(e){
+
+    $(`form#categoryForm`).submit(function (e) {
         e.preventDefault();
         var route = $(this).data('route');
         var formData = new FormData(this);
@@ -161,12 +163,12 @@ $(document).ready(function () {
     //subcategory
     $('.subcategory').click(addSubmodalCategory);
     // lưu subCat
-    $(`form#sub-categoryForm`).submit(function(e){
+    $(`form#sub-categoryForm`).submit(function (e) {
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
             url: '/admin/category/sub-category/create',
-            type:'post',
+            type: 'post',
             processData: false,
             contentType: false,
             data: formData,
