@@ -308,7 +308,7 @@
                                                                         <p class="fw-semibold mb-2 fs-14">Chọn file ảnh:
                                                                         </p>
                                                                         <input type="file" data-ver-color=""
-                                                                            id="avatar" name="avatar"
+                                                                            id="avatar" name="avatarThumb"
                                                                             data-color="avatar"
                                                                             class="product-Images form-control "
                                                                             data-allow-reorder="true"
@@ -641,12 +641,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-
-
-
-
                                                         <div class="col-xl-12" id="addImage"
                                                             data-asset="{{ asset('') }}">
                                                             <span class="btn btn-outline-primary">Ảnh Chi Tiết Sản Phẩm<i
@@ -769,11 +763,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

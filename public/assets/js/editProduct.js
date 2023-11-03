@@ -2,19 +2,19 @@ $(document).ready(function () {
     $("#product-category-add").trigger("change");
     $("input[name='regular_price']").trigger('keyup');
     $("input[name='discount']").trigger('keyup');
-    let pathAvatar = $(`input[name=avatar]`).data('pathavatar');
+    let pathAvatar = $(`input[name=avatarThumb]`).data('pathavatar');
     $(`div[data-slide=avatar]`).append(` <div class="swiper-slide" style="position:relative">
     <img class="img-fluid thumbnail" data-num="" src="${pathAvatar}" alt="img">
 </div>`)
-    let pathColor = $(`input[name=avatar]`).data('pathcolor');
-    let num_color = $(`input[name=avatar]`).data('num-color');
+    let pathColor = $(`input[name=avatarThumb]`).data('pathcolor');
+    let num_color = $(`input[name=avatarThumb]`).data('num-color');
     for (let i = 1; i <= num_color; i++) {
         $(`div#addImage`).click();
         $(`a[data-group-color]`).first().remove();
         $(`input#file-color-${i}`).prop('required', false);
-        $(`select[data-select-color=color-${i}]`).val($(`input[name=avatar]`).data(`color-${i}`));
+        $(`select[data-select-color=color-${i}]`).val($(`input[name=avatarThumb]`).data(`color-${i}`));
         $(`select.select-color`).trigger('change');
-        $(`div[data-slide=color-${i}]`).append($(`input[name=avatar]`).data(`image-${i}`));
+        $(`div[data-slide=color-${i}]`).append($(`input[name=avatarThumb]`).data(`image-${i}`));
     }
 
     $(`form#form-product-edit`).submit(function (e) {

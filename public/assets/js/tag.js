@@ -47,6 +47,7 @@ $(document).ready(function () {
                     type: 'get',
                     data: data,
                     success: function (response) {
+                        $(`tr.search`).remove()
                         $(`tbody`).append(response.html);
                         $(`a.btn-edit`).click(editTag);
                         $(`a.btn-delete`).click(deleteTag);

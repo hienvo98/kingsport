@@ -179,51 +179,7 @@ $(document).ready(function () {
     $(`form#form-product`).submit(function (e) {
         e.preventDefault();
         $(`div#errors`).empty();
-        let formData = new FormData()
-        let listSubCat = $(`input[data-type='subCat']`);
-        for (var i = 0; i < listSubCat.length; i++) {
-            var checkbox = $(`input[data-stt=sub-${i}]`);
-            // Kiểm tra xem checkbox có được checked không
-            if (checkbox.is(':checked')) {
-                // Nếu được checked, thêm giá trị của checkbox vào FormData object
-                formData.append('subCat[]', checkbox.val());
-            }
-        }
-        for (let i = 1; i <= 3; i++) {
-            // Lấy danh sách các tệp tin từ input file
-            let files = $("input#file-color-" + i).prop("files");
-            let color = $("input#file-color-" + i).attr('data-ver-color');
-            // Thêm từng tệp tin vào đối tượng FormData
-            if ($("input#file-color-" + i).attr('name')) {
-                for (let j = 0; j < files.length; j++) {
-                    formData.append(`image_color[${color}][]`, files[j]);
-                }
-            }
-        }
-        let listColor = $(`input.check-color`);
-        for (let i = 1; i <= listColor.length; i++) {
-            if ($(`input#color-${i}`).val()) formData.append('color[]', $(`input#color-${i}`).val());
-        }
-        formData.append('avatarThumb', $(`input[name=avatar]`).prop('files')[0]);
-        formData.append('name', $(`input#product-name-add`).val());
-        formData.append('url', $(`input[name=url]`).val())
-        formData.append('category_id', $('select#product-category-add').val());
-        formData.append('regular_price', $(`input[name=regular_price]`).val());
-        formData.append('discount', $(`input[name=discount]`).val());
-        formData.append('sale_price', $(`input[name=sale_price]`).val());
-        formData.append('quantity', $(`input[name=quantity]`).val());
-        formData.append('sold', $(`input[name=sold]`).val());
-        formData.append('sorting', $(`input[name=sorting]`).val());
-        $(`input[name=on_outstanding]`).is(':checked') ? formData.append('on_outstanding', $(`input[name=on_outstanding]`).val()) : '';
-        $(`input[name=on_hot]`).is(':checked') ? formData.append('on_hot', $(`input[name=on_hot]`).val()) : '';
-        $(`input[name=on_sale]`).is(':checked') ? formData.append('on_sale', $(`input[name=on_sale]`).val()) : '';
-        $(`input[name=on_installment]`).is(':checked') ? formData.append('on_installment', $(`input[name=on_installment]`).val()) : '';
-        $(`input[name=on_new]`).is(':checked') ? formData.append('on_new', $(`input[name=on_new]`).val()) : '';
-        $(`input[name=on_comming]`).is(':checked') ? formData.append('on_comming', $(`input[name=on_comming]`).val()) : '';
-        $(`input[name=on_gift]`).is(':checked') ? formData.append('on_gift', $(`input[name=on_gift]`).val()) : '';
-        formData.append('status', $(`select[name=status]`).val());
-        formData.append('status_stock', $(`select[name=status_stock]`).val());
-
+        let formData = new FormData(this)
         const quillContent = quill.root.innerHTML;
         formData.append('desc', quillContent);
         $.ajax({
@@ -269,20 +225,54 @@ $(document).ready(function () {
     })
 
 
-    $(`a.btnDeleteProduct`).click(function (even) {
-        even.preventDefault();
-        let id = $(this).data('id');
-        $.ajax({
-            url: 'delete/' + id,
-            type: 'get',
-            success: function (response) {
-                if (response.messages == 'success') $('#success').click();
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        })
-    })
+    $(`a.btnDeleteProduct`).click(deleteProduct)
 
+    var debounceTimer;
+    $(`input#search`).on('input', function () {
+        clearTimeout(debounceTimer); // Xóa bất kỳ hẹn giờ nào còn tồn tại
+        debounceTimer = setTimeout(function () {
+            // Thực hiện tìm kiếm ở đây sau khi người dùng ngưng gõ trong 0.5 giây
+            var searchTerm = $(`input#search`).val();
+            if (searchTerm.trim() !== '') {
+                $(`tr.current`).hide();
+                var route = $(`input#search`).data('route');
+                var data = { keywords: searchTerm };
+                $.ajax({
+                    url: route,
+                    type: 'get',
+                    data: data,
+                    success: function (response) {
+                        $(`tr.search`).remove()
+                        $(`tbody`).append(response.html);
+                        $(`a.btnDeleteProduct`).click(deleteProduct);
+                    },
+                    error: function (error) {
+                        if (error.responseJSON && error.responseJSON.errors) {
+                            var errors = error.responseJSON.errors;
+                            console.log("Lỗi cụ thể:");
+                            console.log(errors);
+                        }
+                    }
+                })
+            } else {
+                $(`tr.search`).remove();
+                $(`tr.current`).show();
+            }
+        }, 500); // Đợi 0.5 giây trước khi thực hiện tìm kiếm
+    });
 });
 
+var deleteProduct = function (even) {
+    even.preventDefault();
+    let id = $(this).data('id');
+    $.ajax({
+        url: 'delete/' + id,
+        type: 'get',
+        success: function (response) {
+            if (response.messages == 'success') $('#success').click();
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    })
+}

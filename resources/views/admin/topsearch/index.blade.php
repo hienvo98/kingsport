@@ -32,7 +32,7 @@
                         <table class="table text-nowrap table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align: center;">Tag Bài Viết</th>
+                                    <th scope="col" style="text-align: center;">Tag Tìm kiếm</th>
                                     {{-- <th scope="col">Danh Mục Thuộc Tính</th> --}}
                                     {{-- <th scope="col">Thứ tự</th> --}}
                                     <th scope="col" style="text-align: center;">Trạng Thái</th>
