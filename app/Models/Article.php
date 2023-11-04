@@ -24,7 +24,6 @@ class Article extends Model
         'user_id',
         'product_id',
         'description',
-        'tag_id',
         'tags_id'
     ];
     public function category()
@@ -40,5 +39,4 @@ class Article extends Model
             return collect();
         }
     }
-    
 }

@@ -18,6 +18,7 @@ use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class ArticleController extends Controller
@@ -74,8 +75,8 @@ class ArticleController extends Controller
             if (!empty($request->products)) {
                 $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
             }
-            if(!empty($request->tags)){
-                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]);
+            if (!empty($request->tags)) {
+                $request->merge(['tags_id' => serialize(Tag::whereIn('name', $request->tags)->pluck('id')->toArray())]);
             }
             // return response()->json(['messages' => $request->all()]);
             $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
@@ -119,6 +120,29 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
+        // $post = Article::find($id);
+        // $tags = Tag::whereIn('id',unserialize($post->tags_id))->get();
+        // $post->tags = $tags;
+        // $postsInit = Article::paginate(13);
+        // $posts = $postsInit->map(function($post){
+        //     if(isset($post->tags_id)&&is_array(unserialize($post->tags_id))){
+        //         $tags = Tag::whereIn('id',unserialize($post->tags_id))->select('name','id')->get();
+        //         $post->setAttribute('tags',$tags);
+        //         return $post;
+        //     };
+        //     return $post;
+        // });
+        
+        // $tag_id = 1;
+        // $postsInit = Article::all();
+        // $paginatedPosts = $postsInit->filter(function ($post) use ($tag_id) {
+        //     if (isset($post->tags_id) && is_array(unserialize($post->tags_id))) {
+        //         return in_array($tag_id, unserialize($post->tags_id));
+        //     }
+        //     return false;
+        // })->toQuery()->paginate(2);
+        // dd($paginatedPosts);
+
         $post = Article::find($id);
         if (empty($post)) abort(404);
         $content = $post->content;
@@ -128,7 +152,7 @@ class ArticleController extends Controller
         $post->content = $contentUpdatedUrl;
         $category = Category::with('products')->get();
         $tags = Tag::all();
-        return view('admin.article.edit', compact('post', 'category','tags'));
+        return view('admin.article.edit', compact('post', 'category', 'tags'));
     }
 
     /**
@@ -151,17 +175,17 @@ class ArticleController extends Controller
             }
             //xử lý bài viết và lưu ảnh mới 
             $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
-            
+
             $request->merge(['content' => $processedContent]);
             if (!empty($request->products)) {
                 $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
-            }else{
-                $request->merge(['product_id'=>null]);
+            } else {
+                $request->merge(['product_id' => null]);
             }
-            if(!empty($request->tags)){
-                $request->merge(['tags_id'=>serialize(Tag::whereIn('name',$request->tags)->pluck('id')->toArray())]); //lưu danh sách tag
-            }else{
-                $request->merge(['tags_id'=>null]);
+            if (!empty($request->tags)) {
+                $request->merge(['tags_id' => serialize(Tag::whereIn('name', $request->tags)->pluck('id')->toArray())]); //lưu danh sách tag
+            } else {
+                $request->merge(['tags_id' => null]);
             }
             $post->update($request->all());
             return response()->json(['code' => 200, 'messages' => $post], 200);

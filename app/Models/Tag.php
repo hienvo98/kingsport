@@ -9,7 +9,4 @@ class Tag extends Model
 {
     use HasFactory;
     protected $fillable=['name','status'];
-    public function posts(){
-        return $this->hasMany(Article::class);
-    }
 }
