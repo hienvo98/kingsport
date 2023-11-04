@@ -47,6 +47,7 @@ class ProductController extends Controller
             $products->currentPage(),
             ['path' => request()->url()]
         );
+
         return view('admin.product.list', ['products' => $filteredProductsPaginated]);
     }
 
@@ -66,7 +67,6 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            // dd($request->all());
             $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'products', $request->name);
             $request->merge(['description' => $desctiption]);
             $list_image_path = $request->file();

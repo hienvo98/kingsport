@@ -103,20 +103,6 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="col-xl-12">
-                                                            <label for="blog-category" class="form-label">Chọn Tag Bài
-                                                                Viết</label>
-                                                            <select class="form-control" name="tag_id" data-trigger
-                                                                name="blog-category" id="blog-category">
-                                                                <option value="">Select Tag</option>
-                                                                @foreach ($tags as $tag)
-                                                                    <option
-                                                                        {{ $tag->id == $post->tag_id ? 'selected' : '' }}
-                                                                        value="{{ $tag->id }}">{{ $tag->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
                                                         <div class="col-xl-6">
                                                             <label for="seo-title" class="form-label">Seo Title</label>
                                                             <input type="text" value="{{ $post->seo_title }}"
