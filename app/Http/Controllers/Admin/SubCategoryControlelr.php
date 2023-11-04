@@ -30,28 +30,19 @@ class SubCategoryControlelr extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'name' => 'required|string|max:255|unique:category_type',
+                'avatarThumb'=>'required|image|mimes:png,jpg,jpeg,webp|max:3072'
+            ]
+        );
         try {
-            $subCate = new SubCategory();
-            $subCate->category_id = $request->category_id;
-            $subCate->name = $request->sub_category_name;
-            $subCate->ordinal_number = $request->sub_ordinal_number;
-            $subCate->status = $data['status'] = true ? '1' : '0';
-            if (!empty($request->avatar)) {
-                $pathImage = ImageStorageLibrary::storeImage($request->avatar, "category/{$request->category_name}/avatarSub/{$request->sub_category_name}");
-                $subCate->avatar = basename($pathImage);
+            if ($request->avatarThumb) {
+                $path = ImageStorageLibrary::storeImage($request->avatarThumb, "category/$request->parent_name/avatarSub/$request->name");
+                $request->merge(['avatar'=>basename($path)]);
             }
-            if ($subCate->save()) {
-                return response([
-                    'code' => 200,
-                    'message' => 'Success',
-                    'data' => $subCate,
-                ]);
-            } else {
-                return response([
-                    'code' => 401,
-                    'message' => 'Failure',
-                ]);
-            }
+            SubCategory::create($request->all());
+            return response()->json(['code' => 200, 'messages' => 'đã tạo thành công'], 200);
         } catch (\Exception $e) {
             // Xử lý ngoại lệ và trả về thông báo lỗi dưới dạng JSON
             return response()->json(['error' => $e->getMessage()], 500);

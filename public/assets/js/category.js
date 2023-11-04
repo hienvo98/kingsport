@@ -14,9 +14,9 @@ $(document).ready(function () {
             success: function (data) {
                 $('#categories_name').val(data.data.name);
                 if (data.data.status === '1') {
-                    $('#categories_status option[value=true]').prop('selected', true);
+                    $('#categories_status option[value=1]').prop('selected', true);
                 } else {
-                    $('#categories_status option[value=false]').prop('selected', true);
+                    $('#categories_status option[value=0]').prop('selected', true);
                 }
                 $('#categories_ordinal_number').val('Danh mục thứ ' + data.data.ordinal_number);
                 $('#categories_ordinal_number').prop('disabled', true);
@@ -43,14 +43,14 @@ $(document).ready(function () {
             success: function (data) {
                 $("#sub_ordinal_number").val(`Danh Mục Thuộc Tính Thứ ${data.messages + 1}`);
                 $("#sub_ordinal_number").prop('disabled', true);
-                $(`input[name=sub_ordinal_number]`).val(data.messages + 1);
+                $(`input[name=ordinal_number]`).val(data.messages + 1);
             },
             error: function (error) {
                 console.log(error);
             }
         })
         var categoryName = $(this).data('category-name');
-        $(`form#sub-categoryForm`).append(`<input type="hidden" name="category_name" value="${categoryName}">`);
+        $(`form#sub-categoryForm`).append(`<input type="hidden" name="parent_name" value="${categoryName}">`);
         $('#createSubCateModal').modal('show');
         $('#SubCategory_name').val(categoryName);
         $('#SubCategory_name').prop('disabled', true);
@@ -59,29 +59,6 @@ $(document).ready(function () {
 
     $("#openCreateModal").click(function () {
         $("#createModal").modal("show");
-    });
-
-    $("input[type='search']").keyup(function (e) {
-        let type = $(this).data('type-name');
-        let keyword = this.value;
-        let data = {
-            type: type,
-            keyword: keyword
-        };
-        $.ajax({
-            type: 'get',
-            url: '/admin/category/search',
-            data: data,
-            success: function (data) {
-                $('tbody#type').html(data.data);
-                $("a.deleteModalCategoryOpen").click(deleteModalCategory);
-                $('.btn-edit-category').click(editModalCategory);
-                $('.subcategory').click(addSubmodalCategory);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        })
     });
 
     $("a.deleteModalCategoryOpen").click(deleteModalCategory);
@@ -93,23 +70,14 @@ $(document).ready(function () {
             url: '/admin/category/delete/' + categoryId,
             type: 'GET',
             success: function (data) {
-                // console.log(data);
-                $('span#statusCategory-' + categoryId).text('Đã Tắt');
-                $('span#statusCategory-' + categoryId).removeClass('bg-success');
-                $('span#statusCategory-' + categoryId).addClass('bg-danger');
-                $("a#cat-" + categoryId).addClass('disable-link');
-                $('#successAlertContainer').removeClass('d-none');
-                setTimeout(function () {
-                    $('#successAlertContainer').addClass('d-none');
-                    // location.reload();
-                }, 2000);
+                $(`#success`).click()
             },
             error: function (xhr, textStatus, errorThrown) {
             }
         });
     });
 
-    $(`input[name=avatar]`).change(function () {
+    $(`input[name=avatarThumb]`).change(function () {
         $(this).next().hide();
         $(this).next().attr('src', URL.createObjectURL(this.files[0]));
         $(this).next().show();
@@ -181,6 +149,43 @@ $(document).ready(function () {
             }
         })
     })
+
+    var debounceTimer;
+    $(`input#search`).on('input', function () {
+        clearTimeout(debounceTimer); // Xóa bất kỳ hẹn giờ nào còn tồn tại
+        debounceTimer = setTimeout(function () {
+            // Thực hiện tìm kiếm ở đây sau khi người dùng ngưng gõ trong 0.5 giây
+            var searchTerm = $(`input#search`).val();
+            if (searchTerm.trim() !== '') {
+                $(`tr.current`).hide();
+                var route = $(`input#search`).data('route');
+                var data = { keywords: searchTerm };
+                $.ajax({
+                    url: route,
+                    type: 'get',
+                    data: data,
+                    success: function (response) {
+                        $(`tr.search`).remove()
+                        $(`tbody`).append(response.html);
+                        $("a.deleteModalCategoryOpen").click(deleteModalCategory);
+                        $('.btn-edit-category').click(editModalCategory);
+                        $('.subcategory').click(addSubmodalCategory);
+                    },
+                    error: function (error) {
+                        if (error.responseJSON && error.responseJSON.errors) {
+                            var errors = error.responseJSON.errors;
+                            console.log("Lỗi cụ thể:");
+                            console.log(errors);
+                        }
+                    }
+                })
+            } else {
+                $(`tr.search`).remove();
+                $(`tr.current`).show();
+            }
+        }, 500); // Đợi 0.5 giây trước khi thực hiện tìm kiếm
+    });
+
 
     function showSuccessToast() {
         const successToastElement = document.getElementById('successToast');

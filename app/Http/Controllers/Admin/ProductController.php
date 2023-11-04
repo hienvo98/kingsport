@@ -8,15 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use Illuminate\Support\Str;
 use App\Libraries\ImageStorageLibrary;
-use App\Libraries\MimeChecker;
 use App\Models\color_version;
 use App\Models\image_service;
-use GuzzleHttp\Handler\Proxy;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use function PHPUnit\Framework\matches;

@@ -20,7 +20,7 @@
                                                     <div class="col-xl-12">
                                                         <label for="product-name-add" class="form-label">Tên Danh
                                                             Mục</label>
-                                                        <input type="text" class="form-control" name="category_name"
+                                                        <input type="text" class="form-control" name="name"
                                                             id="categories_name" placeholder="Name" required>
                                                         <label for="product-name-add"
                                                             class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Category
@@ -29,7 +29,7 @@
                                                     <div class="col-xl-12">
                                                         <label for="" class="form-label">Ảnh Đại Diện Danh
                                                             Mục</label>
-                                                        <input type="file" class="form-control" name="avatar"
+                                                        <input type="file" class="form-control" name="avatarThumb"
                                                             placeholder="Name">
                                                         <img style="display: none" src="" id="imageCatEdit"
                                                             alt="Image"
@@ -40,8 +40,8 @@
                                                             Thái</label>
                                                         <select class="form-control" name="status"
                                                             id="categories_status">
-                                                            <option value="true">Bật</option>
-                                                            <option value="false">Tắt</option>
+                                                            <option value="1">Bật</option>
+                                                            <option value="0">Tắt</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-xl-12">

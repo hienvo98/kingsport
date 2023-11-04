@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Article;
 use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\ArticleUpdateRequest;
-use Illuminate\Support\Facades\Storage;
 use App\Libraries\ImageStorageLibrary;
-use App\Libraries\MimeChecker;
 use App\Libraries\Helper;
 use App\Models\Product;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Pagination\LengthAwarePaginator;
+
 
 
 class ArticleController extends Controller
