@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Libraries\ImageStorageLibrary;
+use App\Libraries\MimeChecker;
 use App\Models\color_version;
 use App\Models\image_service;
 use Illuminate\Support\Facades\File;
@@ -62,7 +63,9 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'products', $request->name);
+            //validate ảnh trong bài viết
+            if (!MimeChecker::ValidateImageInContent($request->desc)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
+            $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'products', $request->name); //xử lý và lưu ảnh trong bài viết
             $request->merge(['description' => $desctiption]);
             $list_image_path = $request->file();
             $avatarPath = ImageStorageLibrary::storeImage($list_image_path['avatarThumb'], "products/{$request->name}/avatar");
@@ -166,6 +169,8 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, string $id)
     {
         try {
+            //validate ảnh trong bài viết
+            if (!MimeChecker::ValidateImageInContent($request->desc)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
             //tìm sản phẩm
             $product = Product::with('category')->with('colors', 'colors.images')->find($id);
             //sử lý khi không tìm thấy sản phẩm

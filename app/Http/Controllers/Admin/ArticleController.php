@@ -10,6 +10,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Libraries\ImageStorageLibrary;
 use App\Libraries\Helper;
+use App\Libraries\MimeChecker;
 use App\Models\Product;
 use App\Models\Tag;
 use Carbon\Carbon;
@@ -68,13 +69,13 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request)
     {
         try {
+            if (!MimeChecker::ValidateImageInContent($request->content)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
             if (!empty($request->products)) {
                 $request->merge(['product_id' => serialize(Product::whereIn('name', $request->products)->pluck('id')->toArray())]); //lưu danh sách id sản phẩm liên quan vào request để tạo bài viết
             }
             if (!empty($request->tags)) {
                 $request->merge(['tags_id' => serialize(Tag::whereIn('name', $request->tags)->pluck('id')->toArray())]);
             }
-            // return response()->json(['messages' => $request->all()]);
             $request->merge(['user_id' => Auth::id()]); // lưu id người tạo
             //kiểm tra,xử lý và lưu ngày xuất bản bài viết
             $request->publish_date ? $request->merge(['publish_date' => Carbon::parse($request->input('publish_date'))]) : '';
@@ -128,7 +129,7 @@ class ArticleController extends Controller
         //     };
         //     return $post;
         // });
-        
+
         // $tag_id = 1;
         // $postsInit = Article::all();
         // $paginatedPosts = $postsInit->filter(function ($post) use ($tag_id) {
@@ -138,7 +139,6 @@ class ArticleController extends Controller
         //     return false;
         // })->toQuery()->paginate(2);
         // dd($paginatedPosts);
-
         $post = Article::find($id);
         if (empty($post)) abort(404);
         $content = $post->content;
@@ -157,6 +157,8 @@ class ArticleController extends Controller
     public function update(ArticleUpdateRequest $request, string $id)
     {
         try {
+            //vatidate ảnh trong content dc post lên
+            if (!MimeChecker::ValidateImageInContent($request->content)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
             $post = Article::find($id);
             if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
             //sử lý thay đổi title bài viết;
