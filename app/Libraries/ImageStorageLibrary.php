@@ -63,7 +63,7 @@ class ImageStorageLibrary
         return $processedContent;
     }
 
-    public static function storeImageContent($imagePath, $directoryParent, $title, $directory)
+    private static function storeImageContent($imagePath, $directoryParent, $title, $directory)
     {
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagePath));
         $imageName = time() . '_' . Str::random(10) . '.png';
@@ -106,7 +106,7 @@ class ImageStorageLibrary
         return false;
     }
 
-    public static function changeNameFolderContent($directoryParent, $name)
+    private static function changeNameFolderContent($directoryParent, $name)
     {
         //xoá thư mục content cũ
         if (File::isDirectory(public_path("storage/uploads/$directoryParent/$name/content"))) {
@@ -118,7 +118,7 @@ class ImageStorageLibrary
         };
     }
 
-    public static function createDirectoryContent2($directoryParent, $name)
+    private static function createDirectoryContent2($directoryParent, $name)
     {
         if (!File::isDirectory(public_path("storage/uploads/$directoryParent/$name/content2"))) {
             File::makeDirectory(public_path("storage/uploads/$directoryParent/$name/content2"), 0755, true);

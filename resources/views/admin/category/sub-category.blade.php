@@ -17,19 +17,18 @@
                                     <div class="card custom-card shadow-none mb-0 border-0">
                                         <div class="card-body p-0">
                                             <div class="row gy-3">
-                                            
                                                 <div class="col-xl-12">
                                                     <label for="product-name-add" class="form-label">Danh Mục Cha</label>
                                                     <input type="text" readonly class="form-control" name="category_name" id="SubCategory_name" placeholder="Name">
                                                 </div>
                                                 <div class="col-xl-12">
                                                     <label for="product-name-add" class="form-label">Tên Thuộc Tính</label>
-                                                    <input type="text" class="form-control" name="sub_category_name" placeholder="Name" required>
+                                                    <input type="text" class="form-control" name="name" placeholder="Name" required>
                                                 </div>
                                                 <div class="col-xl-12">
                                                     <label for="" class="form-label">Ảnh Đại Diện Danh
                                                         Mục</label>
-                                                    <input type="file" class="form-control" name="avatar"
+                                                    <input type="file" class="form-control" name="avatarThumb"
                                                         placeholder="Name">
                                                     <img style="display: none" src="" id="imageCatEdit"
                                                         alt="Image"
@@ -38,14 +37,14 @@
                                                 <div class="col-xl-12">
                                                     <label for="product-status" class="form-label">Trạng Thái</label>
                                                     <select class="form-control" name="status" id="product-status">
-                                                        <option value="true">Bật</option>
-                                                        <option value="false">Tắt</option>
+                                                        <option value="1">Bật</option>
+                                                        <option value="0">Tắt</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-xl-12">
                                                     <label for="product-order" class="form-label">Số Thứ Tự</label>
                                                     <input type="text" class="form-control" name="ordinal_number" id="sub_ordinal_number"/>
-                                                    <input type="hidden" name="sub_ordinal_number" value="">
+                                                    <input type="hidden" name="ordinal_number" value="">
                                                 </div>                                         
                                             </div>
                                         </div>
