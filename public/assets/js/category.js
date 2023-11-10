@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var $titleInput = $('.blog-title');
-    $titleInput.keyup(function () {
+    $titleInput.change(function () {
         const title = $(this).val();
         const url = title
             .toLowerCase()
