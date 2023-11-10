@@ -50,6 +50,7 @@ $(document).ready(function () {
     }
 
     let addSubmodalCategory = function () {
+        $(`form#sub-categoryForm`)[0].reset();
         $('img#imageCatEdit').val();
         $('img#imageCatEdit').hide();
         var categoryId = $(this).data('category-id');
