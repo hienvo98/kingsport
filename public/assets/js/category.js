@@ -1,4 +1,21 @@
 $(document).ready(function () {
+    var $titleInput = $('.blog-title');
+    $titleInput.keyup(function () {
+        const title = $(this).val();
+        const url = title
+            .toLowerCase()
+            .replace(/ /g, '-')
+            .replace(/[àáảãạâầấẩẫậăằắẳẵặ]/g, 'a')
+            .replace(/[èéẻẽẹêềếểễệ]/g, 'e')
+            .replace(/[ìíỉĩị]/g, 'i')
+            .replace(/[òóỏõọôồốổỗộơờớởỡợ]/g, 'o')
+            .replace(/[ùúủũụưừứửữự]/g, 'u')
+            .replace(/[ỳýỷỹỵ]/g, 'y')
+            .replace(/đ/g, 'd')
+            .replace(/[^a-z0-9-]/g, '-')
+            .replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+        $(this).next().val(url);
+    });
 
     let deleteModalCategory = function () {
         var categoryId = $(this).data('category-id');
@@ -58,6 +75,8 @@ $(document).ready(function () {
     }
 
     $("#openCreateModal").click(function () {
+        $(`form#categoryForm`)[0].reset();
+        $('img#image').hide();
         $("#createModal").modal("show");
     });
 

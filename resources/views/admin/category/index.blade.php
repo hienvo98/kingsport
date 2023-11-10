@@ -78,7 +78,7 @@
                                             <div class="hstack gap-2 fs-15">
                                                 <a href="javascript:void(0);"
                                                     class="btn btn-icon btn-sm btn-info-light btn-edit-category"
-                                                    data-category-id="{{ $cate->id }}"><i class="ri-edit-line"></i></a>
+                                                    data-category-id="{{ $cate->id }}" ><i class="ri-edit-line"></i></a>
 
                                                 <a href="javascript:void(0);"
                                                     class="btn btn-icon btn-sm btn-danger-light product-btn deleteModalCategoryOpen {{ $cate->status == 0 ? 'disable-link' : '' }}"
