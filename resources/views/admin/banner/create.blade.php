@@ -23,10 +23,11 @@
                                                     <div class="row gy-3">
                                                         <div class="col-xl-12">
                                                             <label for="product-name-add" class="form-label">Tên</label>
-                                                            <input type="text" class="form-control"
+                                                            <input type="text" id="blog-title" class="form-control"
                                                                 name="name" placeholder="Name" id="tagName" required>
                                                         </div>
                                                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                                        <input type="hidden" id="blog-url" name="url" value="">
                                                         <div class="col-xl-12">
                                                             <label for="blog-thumbnail"
                                                                 class="form-label">Banner</label>

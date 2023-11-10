@@ -9,7 +9,7 @@ class Banner extends Model
 {
     use HasFactory;
     protected $table = 'banners';
-    protected $fillable = ['user_id','name','image','sorting','seo_title','seo_description','seo_keywords','status'];
+    protected $fillable = ['user_id','name', 'url','image','sorting','seo_title','seo_description','seo_keywords','status'];
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }
