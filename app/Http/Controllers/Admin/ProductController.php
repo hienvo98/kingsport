@@ -14,9 +14,6 @@ use App\Models\color_version;
 use App\Models\image_service;
 use Illuminate\Support\Facades\File;
 use Illuminate\Pagination\LengthAwarePaginator;
-
-use function PHPUnit\Framework\matches;
-
 class ProductController extends Controller
 {
     /**
@@ -36,6 +33,7 @@ class ProductController extends Controller
                 return $product;
             };
         });
+        
         $filteredProductsPaginated = new LengthAwarePaginator(
             $productsSubquery,
             $products->total(),
@@ -80,6 +78,7 @@ class ProductController extends Controller
                 'black' => '#000000',
                 'brown' => '#A52A2A'
             ];
+            
             $count = 0;
             if (!empty($list_image_path['image_color'])) {
                 foreach ($list_image_path['image_color'] as $color => $list_image) {

@@ -92,11 +92,19 @@ class ImageStorageLibrary
 
     public static function processImageUpdate($newPath, $directoryParent, $name, $directory, $oldImageName)
     {
-        $oldThumbNail = public_path("storage/uploads/$directoryParent/$name/$directory/$oldImageName");
-        if (File::exists($oldThumbNail)) {
-            unlink($oldThumbNail);
+        if(!empty($directory)){
+            $oldThumbNail = public_path("storage/uploads/$directoryParent/$name/$directory/$oldImageName");
+            if (File::exists($oldThumbNail)) {
+                unlink($oldThumbNail);
+            }
+            $newThumbPath = self::storeImage($newPath, "$directoryParent/$name/$directory");
+        }else{
+            $oldThumbNail = public_path("storage/uploads/$directoryParent/$name/$oldImageName");
+            if (File::exists($oldThumbNail)) {
+                unlink($oldThumbNail);
+            }
+            $newThumbPath = self::storeImage($newPath, "$directoryParent/$name");
         }
-        $newThumbPath = self::storeImage($newPath, "$directoryParent/$name/$directory");
         return $newThumbPath;
     }
 

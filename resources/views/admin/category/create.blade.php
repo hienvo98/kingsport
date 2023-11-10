@@ -24,8 +24,9 @@
                                                         <div class="col-xl-12">
                                                             <label for="product-name-add" class="form-label">Tên Danh
                                                                 Mục</label>
-                                                            <input type="text" class="form-control"
-                                                                name="name" placeholder="Name" required>
+                                                            <input type="text" class="form-control blog-title"
+                                                                name="name" placeholder="Name"  required>
+                                                                <input type="hidden" class="blog-url" name="url">
                                                             <label for="product-name-add"
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Category
                                                                 Name should not exceed 30 characters</label>
@@ -35,7 +36,7 @@
                                                                 Mục</label>
                                                             <input type="file" class="form-control" name="avatarThumb"
                                                                 placeholder="Name" required>
-                                                            <img style="display: none" src="" alt="Image"
+                                                            <img style="display: none" src="" id="image" alt="Image"
                                                                 class="img-fluid img-thumbnail rounded mt-2" />
                                                         </div>
                                                         <div class="col-xl-12">

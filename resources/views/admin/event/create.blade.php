@@ -78,10 +78,6 @@
                                                                     <input type="text" id="blog-url" name="url"
                                                                         class="form-control" id="event-url"
                                                                         placeholder="Liên kết" required>
-                                                                    @error('url')
-                                                                        <div class="alert alert-danger">{{ $message }}
-                                                                        </div>
-                                                                    @enderror
                                                                 </div>
                                                                 <div class="col-xl-12">
                                                                     <label for="blog-thumbnail"

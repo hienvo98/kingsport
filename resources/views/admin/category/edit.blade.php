@@ -20,8 +20,9 @@
                                                     <div class="col-xl-12">
                                                         <label for="product-name-add" class="form-label">Tên Danh
                                                             Mục</label>
-                                                        <input type="text" class="form-control" name="name"
+                                                        <input type="text" class="form-control blog-title" name="name"
                                                             id="categories_name" placeholder="Name" required>
+                                                            <input type="hidden" name="url" class="blog-url">
                                                         <label for="product-name-add"
                                                             class="form-label mt-1 fs-12 op-5 text-muted mb-0">*Category
                                                             Name should not exceed 30 characters</label>

@@ -68,6 +68,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="tab-content task-tabs-container">
                         <div class="tab-pane show active p-0" id="all-tasks" role="tabpanel">
                             <div class="row" id="tasks-container">
@@ -196,12 +197,14 @@
                                                     <div class="row gy-3 p-3">
                                                         <label for="product-description-add" class="form-label">Nội dung
                                                             bài Viết</label>
-                                                        <div id="blog-content">{!! $post->content !!}</div>
+                                                            <script>
+
+                                                            </script>
+                                                        <div id="blog-content">{!!html_entity_decode($post->content) !!}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -216,9 +219,6 @@
                                                 <div class="card-body p-0">
                                                     <div class="row gy-3 p-3">
                                                         <div class="col-xl-12 my-3">
-
-
-
                                                             <div class="row">
                                                                 <div class="col-xl-12">
                                                                     <div class="card custom-card">
@@ -329,7 +329,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+    <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></scrip>
     <script src=" {{ asset('assets/js/prism-custom.js') }} "></script>
     <script src="{{ asset('assets/js/choices.js') }} "></script>
     <script src="{{ asset('assets/js/showroom-blog.js') }}"></script>

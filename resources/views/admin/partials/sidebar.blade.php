@@ -172,6 +172,19 @@
                         @endcanany
                     </ul>
                 </li>
+
+                <li class="slide has-sub">
+                    <a href="javascript:void(0);" class="side-menu__item">
+                        <i class='bx bx-image side-menu__icon'></i>
+                        <span class="side-menu__label">Banner</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+                    <ul class="slide-menu child1">
+                        <li class="slide has-sub">
+                            <a href="{{ route('admin.banner.index') }}" class="side-menu__item">Danh Sách</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class='bx bx-search side-menu__icon'></i>

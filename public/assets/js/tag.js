@@ -1,7 +1,34 @@
 $(document).ready(function () {
+    const $titleInput = $('#blog-title');
+    const $urlInput = $('#blog-url');
+
+    $titleInput.on('input', function () {
+        const title = $titleInput.val();
+
+        const url = title
+            .toLowerCase()
+            .replace(/ /g, '-')
+            .replace(/[àáảãạâầấẩẫậăằắẳẵặ]/g, 'a')
+            .replace(/[èéẻẽẹêềếểễệ]/g, 'e')
+            .replace(/[ìíỉĩị]/g, 'i')
+            .replace(/[òóỏõọôồốổỗộơờớởỡợ]/g, 'o')
+            .replace(/[ùúủũụưừứửữự]/g, 'u')
+            .replace(/[ỳýỷỹỵ]/g, 'y')
+            .replace(/đ/g, 'd')
+            .replace(/[^a-z0-9-]/g, '-')
+            .replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+        $urlInput.val(url);
+    });
+    $(`input#thumbnail`).change(function(){
+        $(`img#thumbnailImg`).attr('src',URL.createObjectURL(this.files[0]));
+        $(`img#thumbnailImg`).show();
+    })
 
     $("#openCreateModal").click(function () {
         $(`form#tagForm`)[0].reset();
+        $(`input[name=imageThumb]`).prop('required',true);
+        $(`img#thumbnailImg`).val('');
+        $(`img#thumbnailImg`).hide();
         $(`form#tagForm`).attr('data-route', $(this).data('route'));
         $("#createModal").modal("show");
     });
@@ -70,13 +97,17 @@ $(document).ready(function () {
 
 var editTag = function () {
     $(`form#tagForm`)[0].reset();
+    $(`input[name=imageThumb]`).prop('required',false);
     $(`select`).val($(this).data('status'));
     $(`select`).change();
-    $(`#tagName`).val($(this).data('name'));
+    $(`#blog-title`).val($(this).data('name'));
+    $(`#blog-url`).val($(this).data('url'));
     $(`input[name=url]`).val($(this).data('url'));
     $(`input[name=seo_title]`).val($(this).data('seo-title'));
     $(`input[name=seo_keywords]`).val($(this).data('seo-keywords'));
     $(`textarea[name=seo_description]`).text($(this).data('seo-description'));
+    $(`img#thumbnailImg`).attr('src',$(this).data('image'));
+    $(`img#thumbnailImg`).show();
     $(`form#tagForm`).attr('data-route', $(this).data('route'));
     $("#createModal").modal("show");
 };

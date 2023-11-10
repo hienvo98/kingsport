@@ -15,8 +15,8 @@ use App\Models\Product;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -151,13 +151,14 @@ class ArticleController extends Controller
         return view('admin.article.edit', compact('post', 'category', 'tags'));
     }
 
+
     /**
      * Update the specified resource in storage.
      */
     public function update(ArticleUpdateRequest $request, string $id)
     {
         try {
-            //vatidate ảnh trong content dc post lên
+            // vatidate ảnh trong content dc post lên
             if (!MimeChecker::ValidateImageInContent($request->content)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
             $post = Article::find($id);
             if (empty($post)) return response()->json(['code' => 404, 'messages' => 'không tìm thấy sản phẩm', 404]);
@@ -172,7 +173,7 @@ class ArticleController extends Controller
                 $request->merge(['thumbnail' => basename($newThumbPath)]);
             }
             //xử lý bài viết và lưu ảnh mới 
-            $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate($request->content, 'blog_images', $request->title);
+            $processedContent = $this->imageStorage->processAndSaveImagesInContentUpdate(html_entity_decode($request->content), 'blog_images', $request->title);
 
             $request->merge(['content' => $processedContent]);
             if (!empty($request->products)) {

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\SubCategoryControlelr;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TopSearchController;
+use App\Http\Controllers\MigrateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +30,7 @@ use App\Http\Controllers\Admin\TopSearchController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
+Route::post('/migrate',[MigrateController::class,'migrateNewSource']);
 Route::view('/', 'auth.login');
 
 Auth::routes();
@@ -137,6 +138,16 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
         Route::get('/search',[EventController::class,'search']);
     });
 
+    Route::prefix('/banner')->group(function(){
+        Route::get('/index',[BannerController::class,'index'])->name('banner.index');
+        Route::get('/create',[BannerController::class,'create'])->name('banner.create');
+        Route::post('/store',[BannerController::class,'store'])->name('banner.store');
+        Route::get('/edit/{id}',[BannerController::class,'edit'])->name('banner.edit');
+        Route::post('/update/{id}',[BannerController::class,'update'])->name('banner.update');
+        Route::get('/delete/{id}',[BannerController::class,'destroy'])->name('banner.destroy');
+        Route::get('/search',[BannerController::class,'search']);
+    });
+
     Route::prefix('/voucher')->group(function(){
         Route::get('/index',[VoucherController::class,'index'])->name('voucher.index');
         Route::get('/create',[VoucherController::class,'create'])->name('voucher.create');
@@ -158,6 +169,7 @@ Route::group(['middleware' => ['auth','isAdmin'],'prefix'=>'admin','as'=>'admin.
     Route::get('/roleUser/search/{id}',[AdminController::class,'search']);
     Route::post('/store',[AdminController::class,'store']);
 });
+
 
 
 //dùng để reset lại tất cả các quyền và cấp super Admin

@@ -17,13 +17,15 @@
                                     <div class="card custom-card shadow-none mb-0 border-0">
                                         <div class="card-body p-0">
                                             <div class="row gy-3">
-                                                <div class="col-xl-12">
+                                                {{-- <div class="col-xl-12">
                                                     <label for="product-name-add" class="form-label">Danh Mục Cha</label>
-                                                    <input type="text" readonly class="form-control" name="category_name" id="SubCategory_name" placeholder="Name">
-                                                </div>
+                                                    <input type="text" readonly class="form-control" name="category_name_parent"  placeholder="Name">                          
+                                                </div> --}}
                                                 <div class="col-xl-12">
                                                     <label for="product-name-add" class="form-label">Tên Thuộc Tính</label>
-                                                    <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                                    <input type="text" class="form-control blog-title"
+                                                    name="name" placeholder="Name"  required>
+                                                    <input type="hidden" class="blog-url" name="url">
                                                 </div>
                                                 <div class="col-xl-12">
                                                     <label for="" class="form-label">Ảnh Đại Diện Danh
