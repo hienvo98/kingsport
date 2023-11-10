@@ -34,7 +34,7 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required|string|max:255|unique:table,column,except,id',
+            'name'=>'required|string|max:255|unique:banners',
             'imageThumb' => 'required|image|mimes:png,jpg,jpeg,webp',
             'seo_title' => 'required|string|max:255',
             'seo_description' => 'required|string',
