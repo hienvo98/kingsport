@@ -119,7 +119,6 @@ $(document).ready(function () {
             data: formData,
             success: function (response) {
                 $("#createModal").modal("hide");
-                // console.log(response);
                 $(`#success`).click();
             },
             error: function (error) {

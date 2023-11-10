@@ -1,7 +1,14 @@
 $(document).ready(function () {
+    $(`input#thumbnail`).change(function(){
+        $(`img#thumbnailImg`).attr('src',URL.createObjectURL(this.files[0]));
+        $(`img#thumbnailImg`).show();
+    })
 
     $("#openCreateModal").click(function () {
         $(`form#tagForm`)[0].reset();
+        $(`input[name=imageThumb]`).prop('required',true);
+        $(`img#thumbnailImg`).val('');
+        $(`img#thumbnailImg`).hide();
         $(`form#tagForm`).attr('data-route', $(this).data('route'));
         $("#createModal").modal("show");
     });
@@ -70,6 +77,7 @@ $(document).ready(function () {
 
 var editTag = function () {
     $(`form#tagForm`)[0].reset();
+    $(`input[name=imageThumb]`).prop('required',false);
     $(`select`).val($(this).data('status'));
     $(`select`).change();
     $(`#tagName`).val($(this).data('name'));
@@ -77,6 +85,8 @@ var editTag = function () {
     $(`input[name=seo_title]`).val($(this).data('seo-title'));
     $(`input[name=seo_keywords]`).val($(this).data('seo-keywords'));
     $(`textarea[name=seo_description]`).text($(this).data('seo-description'));
+    $(`img#thumbnailImg`).attr('src',$(this).data('image'));
+    $(`img#thumbnailImg`).show();
     $(`form#tagForm`).attr('data-route', $(this).data('route'));
     $("#createModal").modal("show");
 };
