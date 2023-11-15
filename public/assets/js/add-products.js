@@ -262,6 +262,26 @@ $(document).ready(function () {
     });
 });
 
+$(`ul.task-main-nav li`).click(function () {
+    $(`ul.task-main-nav li`).removeClass('active');
+    $(this).addClass('active');
+    var newURL = $(this).find('a').data('update-url');
+    history.replaceState(null, '', newURL);
+    console.log($(this).data('route-filter'));
+    $.ajax({
+        url: $(this).find('a').data('route-filter'),
+        type: 'get',
+        success: function (data) {
+            $(`tbody`).html(data.html);
+            $('ul.pagination').html(data.nav);
+            $(`a.btnDeleteProduct`).click(deleteProduct);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+})
+
 var deleteProduct = function (even) {
     even.preventDefault();
     let id = $(this).data('id');

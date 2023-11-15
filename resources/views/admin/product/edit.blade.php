@@ -200,11 +200,6 @@
                                                         </div>
 
                                                         <div class="col-xl-4">
-                                                            @error('regular_price')
-                                                                <div class="alert alert-danger text-capitalize">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
                                                             <label for="product-dealer-price" class="form-label">Giá Chưa
                                                                 sale</label>
                                                             <input type="text" name="regular_price"
@@ -215,15 +210,9 @@
                                                             <label for="product-description-add"
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                         </div>
-
                                                         <div class="col-xl-4">
-                                                            @error('discount')
-                                                                <div class="alert alert-danger text-capitalize">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
                                                             <label for="product-discount"
-                                                                class="form-label">Discount</label>
+                                                            class="form-label">Discount</label>
                                                             <input type="text" name="discount" class="form-control"
                                                                 id="product-discount" value="{{ $product->discount }}"
                                                                 placeholder="Discount in %" disabled>
@@ -231,23 +220,14 @@
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0">Từ
                                                                 1-50</label>
                                                         </div>
-
-
                                                         <div class="col-xl-4">
-                                                            @error('sale_price')
-                                                                <div class="alert alert-danger text-capitalize">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
-                                                            <label for="product-dealer-price" class="form-label">Giá Chưa
-                                                                sale</label>
+                                                            <label for="product-dealer-price" class="form-label">Giá sale</label>
                                                             <input type="text" name="sale_price"
                                                                 value="{{ $product->sale_price }}" class="form-control"
                                                                 id="product-dealer-price" placeholder="Last Price">
                                                             <label for="product-description-add"
                                                                 class="form-label mt-1 fs-12 op-5 text-muted mb-0"></label>
                                                         </div>
-
                                                         <div class="col-xl-4">
                                                             <label for="product-cost-add" class="form-label">Số
                                                                 Lượng</label>
@@ -325,7 +305,7 @@
                                                                         <p class="fw-semibold mb-2 fs-14">Chọn file ảnh:
                                                                         </p>
                                                                         <input type="file"
-                                                                            data-pathavatar='{{ url("storage/uploads/products/$product->name/avatar/$product->avatar") }}'
+                                                                            data-pathavatar='{{ url("storage/uploads/product/$product->name/avatar/$product->avatar") }}'
                                                                             data-pathcolor="{{ url("storage/uploads/products/$product->name") }}"
                                                                             data-num-color={{ $product->colors->count() }}
                                                                             data-ver-color=""
@@ -695,11 +675,6 @@
                                                 <div class="card-body p-0">
                                                     <div class="row gy-3 p-3">
                                                         <div class="col-xl-6">
-                                                            @error('status')
-                                                                <div class="alert alert-danger text-capitalize">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
                                                             <label for="product-status-add" class="form-label">Trạng Thái
                                                                 Hiển
                                                                 Thị</label>
@@ -825,7 +800,6 @@
             </form>
         </div>
     </div>
-
     <script src="{{ asset('assets/js/add-products.js') }}"></script>
     <script src="{{ asset('assets/js/editProduct.js') }}"></script>
 @endsection

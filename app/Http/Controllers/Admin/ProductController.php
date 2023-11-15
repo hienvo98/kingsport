@@ -14,35 +14,22 @@ use App\Models\color_version;
 use App\Models\image_service;
 use Illuminate\Support\Facades\File;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, $id = '')
     {
-        $products = Product::with('category')->paginate(6);
-        $productsSubquery = $products->map(function ($product) {
-            if (isset($product->subCategory_id) && is_array(unserialize($product->subCategory_id))) {
-                $subCategory_id = unserialize($product->subCategory_id);
-                return Product::with(['category.subCategory' => function ($query) use ($subCategory_id) {
-                    $query->whereIn('id', $subCategory_id);
-                }])->find($product->id);
-            } else {
-                $product->category->subCategory = collect();
-                return $product;
-            };
-        });
-        
-        $filteredProductsPaginated = new LengthAwarePaginator(
-            $productsSubquery,
-            $products->total(),
-            $products->perPage(),
-            $products->currentPage(),
-            ['path' => request()->url()]
-        );
-
-        return view('admin.product.list', ['products' => $filteredProductsPaginated]);
+        $trash = $request->trash;
+        $products  = $this->get_list_products($id,$trash);
+        $count = [
+            'products'=>Product::count(),
+            'products_off'=>Product::where('status','off')->count()
+        ];
+        $category = Category::all();
+        return view('admin.product.index',compact('products','category','trash','id','count'));
     }
 
     /**
@@ -63,10 +50,10 @@ class ProductController extends Controller
         try {
             //validate ảnh trong bài viết
             if (!MimeChecker::ValidateImageInContent($request->desc)) return response()->json(['code' => 422, 'messages' => 'ảnh trong bài viết không đúng định đạng jpg, png, jpeg, webp hoặc lớn hơn 3MB'], 422);
-            $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'products', $request->name); //xử lý và lưu ảnh trong bài viết
+            $desctiption =  ImageStorageLibrary::processAndSaveImagesInContentCreate($request->desc, 'product', $request->name); //xử lý và lưu ảnh trong bài viết
             $request->merge(['description' => $desctiption]);
             $list_image_path = $request->file();
-            $avatarPath = ImageStorageLibrary::storeImage($list_image_path['avatarThumb'], "products/{$request->name}/avatar");
+            $avatarPath = ImageStorageLibrary::storeImage($list_image_path['avatarThumb'], "product/{$request->name}/avatar");
             $request->merge(['avatar' => basename($avatarPath)]);
             $request->merge(['subCategory_id' => serialize($request->subCat)]);
             $product = Product::create($request->all());
@@ -78,7 +65,7 @@ class ProductController extends Controller
                 'black' => '#000000',
                 'brown' => '#A52A2A'
             ];
-            
+
             $count = 0;
             if (!empty($list_image_path['image_color'])) {
                 foreach ($list_image_path['image_color'] as $color => $list_image) {
@@ -91,7 +78,7 @@ class ProductController extends Controller
                         ]);
                         $url = [];
                         foreach ($list_image as $k => $image) {
-                            $imagePath = ImageStorageLibrary::storeImage($image, "products/{$request->name}/{$color}");
+                            $imagePath = ImageStorageLibrary::storeImage($image, "product/{$request->name}/{$color}");
                             $url[] = basename($imagePath);
                             $count++;
                         }
@@ -139,7 +126,7 @@ class ProductController extends Controller
             }
         }])->with('colors', 'colors.images')->find($id);
         if (!$product) abort(404);
-        $contentUpdateUrl = ImageStorageLibrary::updateUrlContent($product->description, 'products', $product->name);
+        $contentUpdateUrl = ImageStorageLibrary::updateUrlContent($product->description, 'product', $product->name);
         $product->description = $contentUpdateUrl;
         $color_ver = [];
         foreach ($product->colors as $color) {
@@ -150,7 +137,7 @@ class ProductController extends Controller
         foreach ($color_ver as $color => $images) {
             $html = '';
             foreach ($images as $image) {
-                $src = url("storage/uploads/products/$product->name/$color/$image");
+                $src = url("storage/uploads/product/$product->name/$color/$image");
                 $html .=  "<div class='swiper-slide' style='position:relative'>
                 <img class='img-fluid thumbnail' src='$src' alt='img'>
             </div>";
@@ -175,14 +162,14 @@ class ProductController extends Controller
             //sử lý khi không tìm thấy sản phẩm
             if (!$product) return response()->json(['code' => 404, 'messages' => 'Không Tìm Thấy Sản Phẩm'], 404);
             //xử lý đổi tên thư mục lưu ảnh khi tên sản phẩm thay đổi
-            $product->name != $request->name ? ImageStorageLibrary::updateNameFolder('products', $product->name, $request->name) : '';
+            $product->name != $request->name ? ImageStorageLibrary::updateNameFolder('product', $product->name, $request->name) : '';
             // xử lý ảnh avatar nếu có thay đổi
             if ($request->avatarThumb) {
-                $newImagePath = ImageStorageLibrary::processImageUpdate($request->avatarThumb, 'products', $request->name, 'avatar', $product->avatar);
+                $newImagePath = ImageStorageLibrary::processImageUpdate($request->avatarThumb, 'product', $request->name, 'avatar', $product->avatar);
                 $request->merge(['avatar' => basename($newImagePath)]);
             }
             //xử lý bài viết và lưu lại ảnh mới
-            $request->merge(['description' => ImageStorageLibrary::processAndSaveImagesInContentUpdate($request->desc, 'products', $request->name)]);
+            $request->merge(['description' => ImageStorageLibrary::processAndSaveImagesInContentUpdate($request->desc, 'product', $request->name)]);
             //sử lý màu sản phẩm và list ảnh sp theo màu
             $this->updateColorVerAndStoreImageByColorVer($request->color, $product, $request->image_color);
             $request->merge(['subCategory_id' => serialize($request->subCat)]); //lưu danh sách subCate
@@ -231,34 +218,43 @@ class ProductController extends Controller
                 return $product;
             }
         });
-        return response() -> json([
-            'code'=>200,
-            'html'=>$this->get_html($productSearch,'search')
-        ],200);
+        return response()->json([
+            'code' => 200,
+            'html' => $this->get_html($productSearch, 'search')
+        ], 200);
         // dd($productSearch);
     }
 
-    private function get_html($products,$flag)
+    public function filterProductsAjax($flag=''){
+        $products = $flag=='trash'?$this->get_list_products('','on'):$this->get_list_products($flag,'');
+        return response() -> json([
+            'html' => $this->get_html($products,'current'),
+            'nav' => $this->get_nav($products,$flag)
+        ]);
+    }
+
+
+    private function get_html($products, $flag)
     {
         $html = '';
         foreach ($products as $product) {
-            $categoryName=  $product->category->name;
-            $pathAvatar = url("storage/uploads/products/$product->name/avatar/$product->avatar");
+            $categoryName =  $product->category->name;
+            $pathAvatar = url("storage/uploads/product/$product->name/avatar/$product->avatar");
             $sale_price = $product->sale_price > 0 ? number_format($product->regular_price, 0, '', '.') . ' đ' : '';
             $regular_price = $product->sale_price > 0 ? number_format($product->sale_price, 0, '', '.') . ' đ' : number_format($product->regular_price, 0, '', '.') . ' đ';
-            $routeEdit = route('admin.product.edit',['id'=>$product->id]);
-            $disabled = $product->status=='off'?'disable-link':'';
-            $status = $product->status == 'on'?"<span class='badge bg-success-transparent'>Bật</span>":"<span class='badge bg-danger-transparent'>Tắt</span>";
+            $routeEdit = route('admin.product.edit', ['id' => $product->id]);
+            $disabled = $product->status == 'off' ? 'disable-link' : '';
+            $status = $product->status == 'on' ? "<span class='badge bg-success-transparent'>Bật</span>" : "<span class='badge bg-danger-transparent'>Tắt</span>";
             $SubcategoryHtml = '';
-            if(!$product->category->subCategory->isEmpty()){
-                foreach($product->category->subCategory as $subCat){
-                    $SubcategoryHtml.="<span
+            if (!$product->category->subCategory->isEmpty()) {
+                foreach ($product->category->subCategory as $subCat) {
+                    $SubcategoryHtml .= "<span
                     class='badge bg-light text-default'>$subCat->name</span><br>";
                 }
-            }else{
+            } else {
                 $SubcategoryHtml .= "<span class='badge bg-light text-default'>Không Có</span>";
             };
-            
+
             $html .= "<tr class='product-list $flag'>
             <td>
             <div class='d-flex align-items-center'>
@@ -307,6 +303,54 @@ class ProductController extends Controller
         return $html;
     }
 
+    private function get_nav($products, $flag){
+        $html = '';
+            $previousHtml = "<li class='page-item disabled'>
+            <span class='page-link'>Previous</span>
+        </li>";
+        $currentPage = $products->currentPage();
+        $startPage = max($currentPage - 3, 1); // Hiển thị tối đa 3 trang trước trang hiện tại
+        $endPage = min($currentPage + 3, $products->lastPage());
+        $body = '';
+        for ($i = $startPage; $i <= $endPage; $i++) {
+            if(empty($flag)){
+                $url = url('admin/product/index')."?page=$i";
+            }else{
+                $url = $flag=='trash'?url('admin/product/index')."?trash=on&page=$i":url("admin/product/index/$flag")."?page=$i";
+            }
+            if ($i == $currentPage) {
+                $body .= '<li class="page-item active"><a class="page-link" href="javascript:void(0);">' . $i . '</a></li>';
+            } else {
+                $body .= '<li class="page-item"><a class="page-link" href="' .$url . '">' . $i . '</a></li>';
+            }
+        }
+        $dotHtml= $products->currentPage() + 3 < $products->lastPage()?"<li class='page-item'>
+        <a class='page-link' href='javascript:void(0);'>
+            <i class='bi bi-three-dots'></i>
+        </a>
+    </li>
+            <li class='page-item'>
+                <a class='page-link' href='javascript:void(0);'>
+                    <i class='bi bi-three-dots'></i>
+                </a>
+            </li>":'';
+            if(empty($flag)){
+                $url = url('admin/product/index')."?page=2";
+            }else{
+                $url = $flag=='trash'?url('admin/product/index')."?trash=on&page=2":url("admin/product/index/$i")."?page=2";
+            }
+        $nextHtml = $products->hasMorePages()?"<li class='page-item'>
+        <a class='page-link' href='$url'
+            aria-label='Next'>
+            <span aria-hidden='true'>Next</span>
+        </a>
+    </li>":"<li class='page-item disabled'>
+    <span class='page-link'>Next</span>
+</li>";
+      $html .= $previousHtml.$body.$dotHtml.$nextHtml;
+    return $html;
+    }
+
     private function updateColorVerAndStoreImageByColorVer($listColor, $product, $listImage)
     {
         //sử lý đổi màu sản phẩm
@@ -314,8 +358,8 @@ class ProductController extends Controller
             if (!empty($color)) {
                 if (!empty($product->colors[$key])) {
                     $oldColor = $product->colors[$key]->name;
-                    $oldColorDirectory = public_path("storage/uploads/products/$product->name/$oldColor");
-                    $newColorDirectory = public_path("storage/uploads/products/$product->name/$color");
+                    $oldColorDirectory = public_path("storage/uploads/product/$product->name/$oldColor");
+                    $newColorDirectory = public_path("storage/uploads/product/$product->name/$color");
                     if (File::isDirectory($oldColorDirectory)) {
                         File::move($oldColorDirectory, $newColorDirectory);
                         $color_ver = color_version::where(function ($query) use ($product, $oldColor) {
@@ -341,7 +385,7 @@ class ProductController extends Controller
                     image_service::create([
                         'color_ver_id' => $color_ver->id,
                     ]);
-                    File::makeDirectory(public_path("storage/uploads/products/$product->name/$color"), 0755, true);
+                    File::makeDirectory(public_path("storage/uploads/product/$product->name/$color"), 0755, true);
                 }
             }
         }
@@ -349,12 +393,12 @@ class ProductController extends Controller
         if ($listImage) {
             foreach ($listImage as $color => $images) {
                 if (!empty($images)) {
-                    if (File::isDirectory(public_path("storage/uploads/products/$product->name/$color"))) {
-                        File::deleteDirectory(public_path("storage/uploads/products/$product->name/$color"));
+                    if (File::isDirectory(public_path("storage/uploads/product/$product->name/$color"))) {
+                        File::deleteDirectory(public_path("storage/uploads/product/$product->name/$color"));
                     }
                     $url = [];
                     foreach ($images as $image) {
-                        $path = ImageStorageLibrary::storeImage($image, "products/$product->name/$color");
+                        $path = ImageStorageLibrary::storeImage($image, "product/$product->name/$color");
                         $url[] = basename($path);
                     }
                     $color_ver = color_version::where(function ($query) use ($product, $color) {
@@ -367,6 +411,64 @@ class ProductController extends Controller
             }
         }
     }
+
+    private function get_list_products($id,$trash){
+        if ($trash == 'on') {
+            $products = Product::with('category.subCategory')->where('status', 'off')->paginate(20);
+            $filteredProducts = $products->map(function ($product) {
+                if (!empty($product->subCategory_id)) {
+                    $subCategoryIds = unserialize($product->subCategory_id);
+                    if (is_array($subCategoryIds)) {
+                        $product->category->subCategory = $product->category->subCategory->whereIn('id', $subCategoryIds);
+                    } else {
+                        $product->category->subCategory = collect(); // Không có subcategory
+                    }
+                } else {
+                    $product->category->subCategory = collect(); // Không có subcategory
+                }
+                return $product;
+            });
+        } else {
+            if (empty($id)) {
+                $products = Product::with('category.subCategory')->paginate(20);
+                $filteredProducts = $products->map(function ($product) {
+                    if (!empty($product->subCategory_id)) {
+                        $subCategoryIds = unserialize($product->subCategory_id);
+                        if (is_array($subCategoryIds)) {
+                            $product->category->subCategory = $product->category->subCategory->whereIn('id', $subCategoryIds);
+                        } else {
+                            $product->category->subCategory = collect(); // Không có subcategory
+                        }
+                    } else {
+                        $product->category->subCategory = collect(); // Không có subcategory
+                    }
+                    return $product;
+                });
+            } else {
+                $products = Product::with('category.subCategory')->where('category_id', $id)->paginate(20);
+                $filteredProducts = $products->map(function ($product) {
+                    if (!empty($product->subCategory_id)) {
+                        $subCategoryIds = unserialize($product->subCategory_id);
+                        if (is_array($subCategoryIds)) {
+                            $product->category->subCategory = $product->category->subCategory->whereIn('id', $subCategoryIds);
+                        } else {
+                            $product->category->subCategory = collect(); // Không có subcategory
+                        }
+                    } else {
+                        $product->category->subCategory = collect(); // Không có subcategory
+                    }
+                    return $product;
+                });
+            }
+        }
+
+        $filteredProductsPaginated = new LengthAwarePaginator(
+            $filteredProducts,
+            $products->total(),
+            $products->perPage(),
+            $products->currentPage(),
+            ['path' => request()->url()]
+        );
+        return $filteredProductsPaginated;
+    }
 }
-
-

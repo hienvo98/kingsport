@@ -1,7 +1,14 @@
 $(document).ready(function () {
     $("#product-category-add").trigger("change");
-    $("input[name='regular_price']").trigger('keyup');
-    $("input[name='discount']").trigger('keyup');
+    let regular_price = $(`input[name=regular_price]`).val();
+    let format_number_regular = regular_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    $(`input[name=regular_price]`).next().text(format_number_regular + " " + 'Đồng');
+    let sale_price = $(`input[name=sale_price]`).val();
+    let format_number_sale = sale_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    $("input[name='sale_price']").next().text(format_number_sale.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " Đồng");
+    let discount = $(`input[name=discount]`).val();
+    $(`input[name=discount]`).next().text("Giảm giá " + discount + "%");
+    $(`input[name=discount]`).prop('disabled',false);
     let pathAvatar = $(`input[name=avatarThumb]`).data('pathavatar');
     $(`div[data-slide=avatar]`).append(` <div class="swiper-slide" style="position:relative">
     <img class="img-fluid thumbnail" data-num="" src="${pathAvatar}" alt="img">
