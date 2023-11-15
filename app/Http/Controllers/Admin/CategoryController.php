@@ -121,7 +121,7 @@ class CategoryController extends Controller
             );
             $category = Category::find($categoryId);
             if (empty($category)) return response()->json(['message' => 'Danh mục không tồn tại'], 404);
-            $request->name != $category->name ? ImageStorageLibrary::updateNameFolder('category', $category->name, $request->name) : '';
+            $request->name != $category->name ? ImageStorageLibrary::updateNameFolder('category',$category->name,$request->name):'';
             if (!empty($request->avatarThumb)) {
                 $path = ImageStorageLibrary::processImageUpdate($request->avatarThumb, 'category', $request->name, 'avatar', $category->avatar);
                 $request->merge(['avatar' => basename($path)]);

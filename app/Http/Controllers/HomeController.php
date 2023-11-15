@@ -32,7 +32,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        return view('welcome');
     }
 
     public function reset(Request $request)
