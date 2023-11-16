@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 
 class HomeController extends Controller
@@ -83,5 +84,17 @@ class HomeController extends Controller
             abort(403);
         }
         return 'okokko';
+    }
+
+    public function testCloud(){
+        $content = "Hello, this is the content of the file.";
+
+        $fileName = 'example.txt';
+
+        //$this->storeInGCS($fileName, $content);
+        $a = Storage::disk('gcs')->put($fileName, $content);
+        dd($a);
+
+        return "File uploaded to GCS successfully!";
     }
 }

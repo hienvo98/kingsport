@@ -30,6 +30,12 @@ use App\Http\Controllers\MigrateController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+/// ---------------------------------------------------------------- - example routes
+
+//Route::get('/cloud',[HomeController::class,'testCloud']);
+
+/// ----------------------------------------------------------------
 Route::post('/migrate',[MigrateController::class,'migrateNewSource']);
 Route::view('/', 'auth.login');
 
