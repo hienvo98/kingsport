@@ -14,6 +14,9 @@ WORKDIR /var/www/html/kingsport
 
 RUN docker-php-ext-install pdo pdo_mysql
 
+RUN sail artisan package:discover --ansi
+
+
 RUN sed -i "s/user = www-data/user = ${PHPUSER}/g" /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i "s/group = www-data/group = ${PHPGROUP}/g" /usr/local/etc/php-fpm.d/www.conf
 
