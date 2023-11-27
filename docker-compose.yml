@@ -1,7 +1,7 @@
 version: '3.7'
 networks:
     kingsport_network:
-        external: true
+        external: false
 
 services:
     nginx_kingsport:
@@ -68,11 +68,11 @@ services:
                 - mysql_kingsport
             networks:
                 - kingsport_network
-    # composer_installation:
-    #     container_name: composer_installation_go_wa
-    #     image: composer:1.10.19
-    #     volumes:
-    #         - ./:/app
-    #     command: composer install
+    composer_installation:
+        container_name: composer_installation
+        image: composer:1.10.19
+        volumes:
+            - ./:/app
+        command: composer install
 volumes:
     kingsport_db_data: {}
