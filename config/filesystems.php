@@ -58,7 +58,7 @@ return [
         'gcs' => [
             'driver' => 'gcs',
             'key_file_path' => env('GOOGLE_CLOUD_STORAGE_KEY_FILE', null),
-            'key_file' => [],
+            'key_file' =>  env('GOOGLE_CLOUD_KEY_FILE', base_path()."\laravelapp-405203-405e4369d50c.json"),
             'project_id' => env('GOOGLE_CLOUD_STORAGE_PROJECT_ID', 'LaravelApp'),
             'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'app-storage-laravel'),
             'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''), 

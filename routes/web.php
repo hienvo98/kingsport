@@ -33,7 +33,7 @@ use App\Http\Controllers\MigrateController;
 
 /// ---------------------------------------------------------------- - example routes
 
-//Route::get('/cloud',[HomeController::class,'testCloud']);
+Route::get('/cloud',[HomeController::class,'testCloud']);
 
 /// ----------------------------------------------------------------
 Route::post('/migrate',[MigrateController::class,'migrateNewSource']);

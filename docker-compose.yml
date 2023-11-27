@@ -1,0 +1,78 @@
+version: '3.7'
+networks:
+    kingsport_network:
+        external: true
+
+services:
+    nginx_kingsport:
+        image: nginx:stable-alpine
+        container_name: nginx_kingsport
+        ports:
+            - "8090:80"
+        volumes:
+            - ./:/var/www/html/kingsport
+            - ./config_docker/nginx/default.conf:/etc/nginx/nginx.conf:ro
+            - ./config_docker/nginx/logs/nginx/:/var/log/nginx
+        depends_on:
+            - php_kingsport
+            - mysql_kingsport
+        networks:
+            - kingsport_network
+    php_kingsport:
+        build:
+            context: .
+            dockerfile: DockerFile
+            args:
+                - PHPUSER=${PHPUSER:-www-data}
+                - PHPGROUP=${PHPGROUP:-www-data}
+        container_name: php_kingsport
+        volumes:
+            - ./:/var/www/html/kingsport
+            - ./config_docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        ports:
+            - "9006:9000"
+        depends_on:
+            - mysql_kingsport
+        networks:
+            - kingsport_network
+
+    mysql_kingsport:
+        #      platform: linux/x86_64
+        image: mariadb:10.4
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_HOST: kingsport_network
+            MYSQL_USERNAME: homestead
+            MYSQL_ROOT_PASSWORD: secrect
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secrect
+            MYSQL_DATABASE: homestead
+        volumes:
+            - kingsport_db_data:/var/lib/mysql
+        ports:
+            - "8806:3306"
+        networks:
+            - kingsport_network
+    phpmy_admin_kingsport:
+            image: phpmyadmin/phpmyadmin:latest
+            restart: always
+            container_name: phpmy_admin_kingsport
+            ports:
+                - "8070:80"
+            environment:
+                MYSQL_USERNAME: root
+                PMA_HOST: mysql_kingsport
+                MYSQL_ROOT_PASSWORD: 
+                UPLOAD_LIMIT: 300M
+            depends_on:
+                - mysql_kingsport
+            networks:
+                - kingsport_network
+    # composer_installation:
+    #     container_name: composer_installation_go_wa
+    #     image: composer:1.10.19
+    #     volumes:
+    #         - ./:/app
+    #     command: composer install
+volumes:
+    kingsport_db_data: {}
